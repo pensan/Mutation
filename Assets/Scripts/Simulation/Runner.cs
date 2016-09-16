@@ -7,12 +7,21 @@ public class Runner : Agent
 
     private Sensor[] sensors;
 
+    public RunnerMovement Movement
+    {
+        get;
+        private set;
+    }
+
 
     void Awake()
     {
         startPosition = this.transform.position;
 
         sensors = GetComponentsInChildren<Sensor>();
+        Movement = GetComponent<RunnerMovement>();
+
+        Movement.UseUserInput = true;
     }
 
 

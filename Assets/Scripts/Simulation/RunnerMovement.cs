@@ -18,7 +18,7 @@ public class RunnerMovement : MonoBehaviour
         private set;
     }
 
-    public double[] Input
+    public double[] CurInput
     {
         get;
         set;
@@ -38,9 +38,8 @@ public class RunnerMovement : MonoBehaviour
 
     private void CheckForInput()
     {
-        horizontalInput = UnityEngine.Input.GetAxis("Horizontal");
-
-        if (UnityEngine.Input.GetButtonDown("Space"))
+        horizontalInput = Input.GetAxis("Horizontal");
+        if (Input.GetButtonDown("Jump"))
         {
             jumpForce = 1;
         }
@@ -48,11 +47,15 @@ public class RunnerMovement : MonoBehaviour
 
     private void ApplyInput()
     {
+        SpeedPerc = (float)horizontalInput;
+
         Vector3 movement = Vector3.zero;
-        movement.x += SpeedPerc * SPEED;
+        movement.x += SpeedPerc * SPEED * Time.deltaTime;
 
         this.transform.position += movement;
 
+        Debug.Log("Speed: " + SpeedPerc);
+        Debug.Log("Move: " + movement);
 
     }
 }
