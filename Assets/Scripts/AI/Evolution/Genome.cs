@@ -4,7 +4,7 @@ public class Genome : IComparable<Genome>
 {
     private static Random randomizer = new Random();
 
-    public Agent Parent
+    public Agent ParentAgent
     {
         get;
         set;
@@ -24,7 +24,7 @@ public class Genome : IComparable<Genome>
 
     public Genome(NeuralNetwork neuralNet, Agent parent = null)
     {
-        this.Parent = parent;
+        this.ParentAgent = parent;
         this.neuralNet = neuralNet;
         Fitness = 0;
     }
@@ -37,7 +37,7 @@ public class Genome : IComparable<Genome>
             Fitness = 0;
     }
 
-    public double[] GetOutputs(double[] inputs)
+    public double[] CalculateOutputs(double[] inputs)
     {
         return neuralNet.CalculateYValues(inputs);
     }

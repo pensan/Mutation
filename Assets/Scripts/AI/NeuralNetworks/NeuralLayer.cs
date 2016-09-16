@@ -8,7 +8,7 @@ public class NeuralLayer
 
     public delegate double ActivationFunction(double xValue);
 
-    public ActivationFunction ActivationMethod;
+    public ActivationFunction ActivationMethod = MathHelper.SigmoidFunction;
 
 
     public int NodeCount
