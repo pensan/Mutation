@@ -3,7 +3,8 @@ using System.Collections;
 
 public class RunnerMovement : MonoBehaviour
 {
-    private const int SPEED = 30;
+    private const int MAX_SPEED = 25;
+    private const int MAX_JUMP = 40;
 
 
     public bool UseUserInput
@@ -24,6 +25,13 @@ public class RunnerMovement : MonoBehaviour
         set;
     }
 
+    private Rigidbody2D rigidBodyComponent;
+    private bool jumping;
+
+    void Awake()
+    {
+        rigidBodyComponent = GetComponent<Rigidbody2D>();
+    }
 
     private double horizontalInput, jumpForce;
 	void FixedUpdate ()
@@ -40,22 +48,23 @@ public class RunnerMovement : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal");
         if (Input.GetButtonDown("Jump"))
-        {
             jumpForce = 1;
-        }
+        else
+            jumpForce = 0;
     }
 
     private void ApplyInput()
     {
         SpeedPerc = (float)horizontalInput;
 
-        Vector3 movement = Vector3.zero;
-        movement.x += SpeedPerc * SPEED * Time.deltaTime;
+        if (rigidBodyComponent.velocity.y == 0 || !jumping)
+        {
+            if (jumpForce > 0)
+                jumping = true;
+            else if (rigidBodyComponent.velocity.y == 0)
+                jumping = false;
 
-        this.transform.position += movement;
-
-        Debug.Log("Speed: " + SpeedPerc);
-        Debug.Log("Move: " + movement);
-
+            rigidBodyComponent.velocity = new Vector2(SpeedPerc * MAX_SPEED, rigidBodyComponent.velocity.y + (float)jumpForce * MAX_JUMP);
+        }
     }
 }

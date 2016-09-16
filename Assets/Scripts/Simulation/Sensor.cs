@@ -8,6 +8,7 @@ public class Sensor : MonoBehaviour
     public SpriteRenderer cross;
 
     private const float MAX_DIST = 5f;
+    private const float MIN_DIST = 0.01f;
 
     public float Output
     {
@@ -29,6 +30,8 @@ public class Sensor : MonoBehaviour
 
         if (hit.collider == null)
             hit.distance = MAX_DIST;
+        else if (hit.distance < MIN_DIST)
+            hit.distance = MIN_DIST;
 
         this.Output = hit.distance / MAX_DIST;
         cross.transform.position = (Vector2) this.transform.position + direction * hit.distance;
