@@ -3,15 +3,17 @@ using System.Collections;
 
 public class RunnerMovement : MonoBehaviour
 {
-    private const int MAX_SPEED = 25;
-    private const int MAX_JUMP = 40;
-
-
-    public bool UseUserInput
+    public enum InputValues
     {
-        get;
-        set;
+        Horizontal = 0, JumpForce = 1
     }
+
+
+    private const int MAX_SPEED = 25;
+    private const int MAX_JUMP = 35;
+
+
+    public bool UseUserInput;
 
     public float SpeedPerc
     {
@@ -30,14 +32,16 @@ public class RunnerMovement : MonoBehaviour
 
     void Awake()
     {
+        CurInput = new double[2];
         rigidBodyComponent = GetComponent<Rigidbody2D>();
     }
 
-    private double horizontalInput, jumpForce;
 	void FixedUpdate ()
     {
 	    if (UseUserInput)
             CheckForInput();
+
+        CapInput();
 
         ApplyInput();
 
@@ -46,25 +50,40 @@ public class RunnerMovement : MonoBehaviour
 
     private void CheckForInput()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
+        CurInput[(int) InputValues.Horizontal] = Input.GetAxis("Horizontal");
         if (Input.GetButtonDown("Jump"))
-            jumpForce = 1;
+            CurInput[(int)InputValues.JumpForce] = 1;
         else
-            jumpForce = 0;
+            CurInput[(int)InputValues.JumpForce] = 0;
+    }
+
+
+    private void CapInput()
+    {
+        if (CurInput[(int)InputValues.Horizontal] > 1)
+            CurInput[(int)InputValues.Horizontal] = 1;
+        else if (CurInput[(int)InputValues.Horizontal] < -1)
+            CurInput[(int)InputValues.Horizontal] = -1;
+
+        if (CurInput[(int)InputValues.JumpForce] > 1)
+            CurInput[(int)InputValues.JumpForce] = 1;
+        else if (CurInput[(int)InputValues.JumpForce] < 0)
+            CurInput[(int)InputValues.JumpForce] = 0;
+
     }
 
     private void ApplyInput()
     {
-        SpeedPerc = (float)horizontalInput;
+        SpeedPerc = (float)CurInput[(int)InputValues.Horizontal];
 
         if (rigidBodyComponent.velocity.y == 0 || !jumping)
         {
-            if (jumpForce > 0)
+            if (CurInput[(int)InputValues.JumpForce] > 0)
                 jumping = true;
             else if (rigidBodyComponent.velocity.y == 0)
                 jumping = false;
-
-            rigidBodyComponent.velocity = new Vector2(SpeedPerc * MAX_SPEED, rigidBodyComponent.velocity.y + (float)jumpForce * MAX_JUMP);
+               
+            rigidBodyComponent.velocity = new Vector2(SpeedPerc * MAX_SPEED, rigidBodyComponent.velocity.y + (float)CurInput[(int)InputValues.JumpForce] * MAX_JUMP);
         }
     }
 }

@@ -14,7 +14,7 @@ public class Agent : MonoBehaviour
         set
         {
             genome = value;
-            genome.Parent = this;
+            genome.ParentAgent = this;
             genome.FitnessMethod = this.fitnessMethod;
         }
     }
