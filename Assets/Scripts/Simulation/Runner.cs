@@ -93,6 +93,7 @@ public class Runner : Agent
     {
         base.Restart();
 
+        selectableComponent.Select(false);
         SetOpaque(true);
         trailRenderer.sortingLayerName = "Background";
         trailRenderer.Clear();
@@ -104,7 +105,6 @@ public class Runner : Agent
         lifeTime = 0;
         this.transform.position = startPosition;
 
-        selectableComponent.Select(false);
         selectableComponent.enabled = false;
     }
 
