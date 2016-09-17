@@ -62,6 +62,7 @@ public class Runner : Agent
     void FixedUpdate()
     {
         if (!IsAlive) return;
+
         lifeTime += Time.deltaTime;
 
         if (lifeTime >= MAX_LIFE_TIME)
