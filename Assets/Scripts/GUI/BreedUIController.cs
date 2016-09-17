@@ -36,6 +36,11 @@ public class BreedUIController : MonoBehaviour
     public void Show()
     {
         BreedMenu.SetActive(true);
+        foreach (Agent agent in EvolutionController.Population)
+        {
+            Runner runner = (Runner)agent;
+            runner.Selectable = true;
+        }
     }
 
     public void Hide()

@@ -19,11 +19,28 @@ public class Runner : Agent
 
     private float lifeTime = 0;
     private SpriteRenderer spriteComponent;
+    private Selectable selectableComponent;
+
+    public bool Selectable
+    {
+        get { return selectableComponent.enabled; }
+        set
+        {
+            selectableComponent.enabled = value;
+            if (value)
+                SetOpaque(selectableComponent.Selected);
+            else
+                SetOpaque(true);
+        }
+    }
 
     void Start()
     {
         startPosition = this.transform.position;
         spriteComponent = GetComponent<SpriteRenderer>();
+        selectableComponent = GetComponent<Selectable>();
+        selectableComponent.OnSelectChanged += SelectThisAgent;
+        selectableComponent.enabled = false;
     }
 
     public override void Init()
@@ -54,10 +71,16 @@ public class Runner : Agent
     {
         if (opaque)
         {
-
+            Color color = spriteComponent.color;
+            color.a = 1f;
+            spriteComponent.color = color;
         }
         else
-            SpriteMeshType
+        {
+            Color color = spriteComponent.color;
+            color.a = 0.5f;
+            spriteComponent.color = color;
+        }
     }
 
 
@@ -65,12 +88,17 @@ public class Runner : Agent
     {
         base.Restart();
 
+        SetOpaque(true);
+
         this.Movement.enabled = true;
         this.Movement.Reset();
         
 
         lifeTime = 0;
         this.transform.position = startPosition;
+
+        selectableComponent.Select(false);
+        selectableComponent.enabled = false;
     }
 
     void FixedUpdate()
@@ -132,9 +160,10 @@ public class Runner : Agent
         }
     }
 
-    void OnMouseDown()
+
+    private void SelectThisAgent(bool selected)
     {
-        Debug.Log("Clicked " + this.name);
+        SetOpaque(selected);
     }
 
 }
