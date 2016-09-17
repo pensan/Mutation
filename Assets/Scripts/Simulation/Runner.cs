@@ -11,6 +11,8 @@ public class Runner : Agent
 
     private Sensor[] sensors;
 
+    public RunnerAppearance appearance;
+
     public RunnerMovement Movement
     {
         get;
@@ -18,7 +20,6 @@ public class Runner : Agent
     }
 
     private float lifeTime = 0;
-    private SpriteRenderer spriteComponent;
     private Selectable selectableComponent;
 
     public bool Selectable
@@ -28,9 +29,9 @@ public class Runner : Agent
         {
             selectableComponent.enabled = value;
             if (value)
-                SetOpaque(selectableComponent.Selected);
+                appearance.SetOpaque(selectableComponent.Selected);
             else
-                SetOpaque(true);
+                appearance.SetOpaque(true);
         }
     }
     private TrailRenderer trailRenderer;
@@ -38,7 +39,6 @@ public class Runner : Agent
     void Start()
     {
         startPosition = this.transform.position;
-        spriteComponent = GetComponent<SpriteRenderer>();
         selectableComponent = GetComponent<Selectable>();
         selectableComponent.OnSelectChanged += SelectThisAgent;
         selectableComponent.enabled = false;
@@ -71,24 +71,7 @@ public class Runner : Agent
             Genome.RandomizeNeuralNet(-1, 1);
         }
 
-        RunnerAppearance app = gameObject.AddComponent<RunnerAppearance>();
-        app.UpdateAppearance(Genome.neuralNet);
-    }
-
-    public void SetOpaque(bool opaque)
-    {
-        if (opaque)
-        {
-            Color color = spriteComponent.color;
-            color.a = 1f;
-            spriteComponent.color = color;
-        }
-        else
-        {
-            Color color = spriteComponent.color;
-            color.a = 0.5f;
-            spriteComponent.color = color;
-        }
+        appearance.UpdateAppearance(Genome.neuralNet);
     }
 
 
@@ -96,7 +79,9 @@ public class Runner : Agent
     {
         base.Restart();
 
-        SetOpaque(true);
+        appearance.UpdateAppearance(Genome.neuralNet);
+
+        appearance.SetOpaque(true);
         trailRenderer.sortingLayerName = "Background";
         trailRenderer.Clear();
 
@@ -171,11 +156,11 @@ public class Runner : Agent
 
     private void SelectThisAgent(bool selected)
     {
-        SetOpaque(selected);
+        appearance.SetOpaque(selected);
         if (selected)
         {
             BreedUIController.Instance.SelectedAgents.AddAgent(this);
-            trailRenderer.sortingLayerName = spriteComponent.sortingLayerName;
+            trailRenderer.sortingLayerName = appearance.GetComponent<SpriteRenderer>().sortingLayerName;
         }
         else
         {
