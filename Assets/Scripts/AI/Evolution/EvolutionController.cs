@@ -90,13 +90,14 @@ public class EvolutionController : MonoBehaviour
 
         aliveCount--;
         if (aliveCount <= 0)
-            StartCoroutine(Repopulate());
+        {
+            DetermineAlpha();
+            UIController.Instance.StartRebreeding();
+        }
     }
 
-    private IEnumerator Repopulate()
+    private void DetermineAlpha()
     {
-        yield return new WaitForSeconds(0.3f);
-
         //Determine new alpha genome
         if (alphaGenome == null || alphaGenome.Fitness < BestAgent.Genome.Fitness)
         {
@@ -108,10 +109,22 @@ public class EvolutionController : MonoBehaviour
             BestAgent.Genome = alphaGenome.DeepCopy();
             Debug.Log("Reusing alpha genome");
         }
+    }
 
+    public void AutoRepopulate()
+    {
         CrossBestSecondBest();
         //CrossBest(3, 2);
-        MutateAll();
+        MutateAll(mutatePerc, mutationProb, mutationAmount);
+
+        aliveCount = population.Length;
+    }
+
+    public void Repopulate(float mutationProb, float mutationAmount, params Agent[] crossAgents)
+    {
+        CrossAgents(crossAgents, false);
+
+        MutateAll(1f, mutationProb, mutationAmount);
 
         aliveCount = population.Length;
     }
@@ -154,19 +167,44 @@ public class EvolutionController : MonoBehaviour
         }
     }
 
+    private void CrossAgents(Agent[] agents, bool keepAgents)
+    {
+        int i = 0;
+        if (keepAgents)
+        {
+            for (; i < agents.Length; i++)
+            {
+                population[i].Genome = agents[i].Genome.DeepCopy();
+            }
+        }
+
+        int a = 0, otherIndex = a + 1;
+        for (; i < population.Length; i++)
+        {
+
+            Genome newGenome = agents[a].Genome.CrossBreed(agents[otherIndex++].Genome);
+            population[i].Genome = newGenome;
+            population[i].Restart();
+            population[i].OnAgentDied += AgentDied;
+
+            if (otherIndex > agents.Length)
+            {
+                a = (a + 1) % agents.Length - 1;
+                otherIndex = a + 1;
+            }
+        }
+    }
+
     private void CrossBestSecondBest()
     {
         for (int i = 0; i < population.Length; i++)
         {
-            if (!(population[i].Genome == BestAgent.Genome || population[i].Genome == SecondBestAgent.Genome))
+            if (randomizer.NextDouble() < crossBreedPerc)
             {
-                if (randomizer.NextDouble() < crossBreedPerc)
-                {
-                    Genome newGenome = BestAgent.Genome.CrossBreed(SecondBestAgent.Genome);
-                    //Genome newGenome, otherChild;
-                    //BestAgent.Genome.CrossBreedCross(SecondBestAgent.Genome, out newGenome, out otherChild);
-                    population[i].Genome = newGenome;
-                }
+                Genome newGenome = BestAgent.Genome.CrossBreed(SecondBestAgent.Genome);
+                //Genome newGenome, otherChild;
+                //BestAgent.Genome.CrossBreedCross(SecondBestAgent.Genome, out newGenome, out otherChild);
+                population[i].Genome = newGenome;
             }
 
             population[i].Restart();
@@ -175,7 +213,7 @@ public class EvolutionController : MonoBehaviour
     }
 
 
-    private void MutateAll()
+    private void MutateAll(float mutatePerc, float mutationProb, float mutationAmount)
     {
         for (int i = 0; i < population.Length; i++)
         {

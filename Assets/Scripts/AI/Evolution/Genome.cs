@@ -168,9 +168,7 @@ public class Genome : IComparable<Genome>
                 {
                     if (randomizer.NextDouble() <= mutateProb)
                     {
-                        double mutate = randomizer.NextDouble() * (mutateAmount * 2) - mutateAmount;
-                        Debug.Log("Mutating by: " + mutate);
-                        layer.Weights[x, y] += mutate;
+                        layer.Weights[x, y] += randomizer.NextDouble() * (mutateAmount * 2) - mutateAmount;
                     }
                 }
             }
