@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SerializeableNeuralLayer 
 {
-
+    public ActivationFunctions curentActivationFunction;
     public int nodeCount;
     public int outputCount;
 

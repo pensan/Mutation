@@ -55,7 +55,7 @@ public class Serializer : MonoBehaviour
             saveNetwork.layers[i].Weights = network.Layers[i].Weights;
             saveNetwork.layers[i].nodeCount = network.Layers[i].NodeCount;
             saveNetwork.layers[i].outputCount = network.Layers[i].OutputCount;
-
+            saveNetwork.layers[i].curentActivationFunction = network.Layers[i].CurrentActivationFunction;
         }
 
 

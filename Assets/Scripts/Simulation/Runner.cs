@@ -9,6 +9,7 @@ public class Runner : Agent
 
     private Sensor[] sensors;
 
+    private TrailRenderer trailRenderer;
     public RunnerMovement Movement
     {
         get;
@@ -16,6 +17,14 @@ public class Runner : Agent
     }
 
     private float lifeTime = 0;
+
+    void Awake()
+    {
+        trailRenderer = GetComponent<TrailRenderer>();
+
+        trailRenderer.sortingLayerName = GetComponent<SpriteRenderer>().sortingLayerName;
+        trailRenderer.sortingOrder = -10;
+    }
 
     void Start()
     {
@@ -41,7 +50,7 @@ public class Runner : Agent
             base.Genome = new Genome(neuralNet);
             Genome.RandomizeNeuralNet(-1, 1);
         }
- 
+
     }
 
 
