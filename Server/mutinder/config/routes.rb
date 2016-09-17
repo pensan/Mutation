@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   #
   scope module: 'api', path: '/api', as: 'api', defaults: {format: :json} do
 
-    resources :users
+    resources :users, only: [:create] do
+      get 'opponent(/:name)', to: 'users#opponent', on: :member
+    end
   end
 
   root to: "base#serverstatus"
