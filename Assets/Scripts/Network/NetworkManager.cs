@@ -1,57 +1,62 @@
-﻿//using UnityEngine;
-//using System.Collections;
-//using UnityEngine.Experimental.Networking;
+﻿using UnityEngine;
+using System.Collections;
 
-//public class NetworkManager : MonoBehaviour {
+#if UNITY_5_3 
+using UnityEngine.Experimental.Networking;
+#elif UNITY_5_4_OR_NEWER
+using UnityEngine.Networking;
+#endif
 
-//    string server_url   = "http://fierce-journey-76439.herokuapp.com";
-//    string post_user    = "/user";
+public class NetworkManager : MonoBehaviour {
 
-//	void Start () {
-//        Debug.Log("API server url: " + server_url);
+    string server_url   = "http://fierce-journey-76439.herokuapp.com";
+    string post_user    = "/user";
 
-//        StartCoroutine(GetServerstatus());
-//	}
+	void Start () {
+        Debug.Log("API server url: " + server_url);
+
+        StartCoroutine(GetServerstatus());
+	}
 	
-//	void Update () {
+	void Update () {
 	
-//	}
+	}
 
-//    IEnumerator GetServerstatus () {
-//        UnityWebRequest www = UnityWebRequest.Get(server_url);
-//        yield return www.Send();
-
-
-//        if(www.isError) {
-//            Debug.LogError(www.error);
-//        }
-//        else {
-
-//            // Server response was not 2XX
-//            if ( www.responseCode.ToString()[0] != 2 )
-//                return false;
-
-//            // Continue if response was 2XX
-//            Debug.Log(www.downloadHandler.text);
-
-//            StartCoroutine(PostLogin());
-//        }
-//    }
-
-//    IEnumerator PostLogin () {
-//        WWWForm form = new WWWForm();
-//        form.AddField("udid", 1);
-
-//        WWW www = new WWW(server_url + post_user, form);
-//        yield return www;
+    IEnumerator GetServerstatus () {
+        UnityWebRequest www = UnityWebRequest.Get(server_url);
+        yield return www.Send();
 
 
-//        if (!string.IsNullOrEmpty(www.error)) {
-//            Debug.Log(www.error);
-//        } else {
-//            Debug.Log(www.text);
-//        }
+        if(www.isError) {
+            Debug.LogError(www.error);
+        }
+        else {
 
-//    }
+            // Server response was not 2XX
+            if ( www.responseCode.ToString()[0] != 2 )
+                return false;
 
-//}
+            // Continue if response was 2XX
+            Debug.Log(www.downloadHandler.text);
+
+            StartCoroutine(PostLogin());
+        }
+    }
+
+    IEnumerator PostLogin () {
+        WWWForm form = new WWWForm();
+        form.AddField("udid", 1);
+
+        WWW www = new WWW(server_url + post_user, form);
+        yield return www;
+
+
+        if (!string.IsNullOrEmpty(www.error)) {
+            Debug.Log(www.error);
+        } else {
+            Debug.Log(www.text);
+        }
+
+    }
+
+}
