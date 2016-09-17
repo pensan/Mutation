@@ -52,6 +52,8 @@ public class BreedUIController : MonoBehaviour
             runner.Selectable = true;
         }
 
+        ManualBreedButton.interactable = SelectedAgents.AgentCount >= 2;
+
         CamMovement.AllowUserInput = true;
     }
 
@@ -70,6 +72,7 @@ public class BreedUIController : MonoBehaviour
     private void StartManualBreed()
     {
         EvolutionController.Repopulate(MutationProbSlider.value, MutationAmountSlider.value, SelectedAgents.GetSelectedAgents());
+        SelectedAgents.Clear();
         Hide();
     }
 

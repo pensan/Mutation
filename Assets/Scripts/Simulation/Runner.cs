@@ -39,19 +39,21 @@ public class Runner : Agent
     void Start()
     {
         startPosition = this.transform.position;
-        selectableComponent = GetComponent<Selectable>();
-        selectableComponent.OnSelectChanged += SelectThisAgent;
-        selectableComponent.enabled = false;
-
-        trailRenderer = GetComponent<TrailRenderer>();
-        trailRenderer.sortingLayerName = "Background";
-        trailRenderer.sortingOrder = -10;
     }
 
     public override void Init()
     {
         sensors = GetComponentsInChildren<Sensor>();
         Movement = GetComponent<RunnerMovement>();
+        selectableComponent = GetComponent<Selectable>();
+        selectableComponent.OnSelectChanged += SelectThisAgent;
+        selectableComponent.enabled = false;
+
+        appearance = GetComponent<RunnerAppearance>();
+
+        trailRenderer = GetComponent<TrailRenderer>();
+        trailRenderer.sortingLayerName = "Background";
+        trailRenderer.sortingOrder = -10;
 
         fitnessMethod = UpdateFitness;
 

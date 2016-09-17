@@ -55,11 +55,12 @@ public class EvolutionController : MonoBehaviour
 
     public event System.Action<Agent> OnBestChanged;
 
-    void Start()
+
+    public void CreatePopulation()
     {
         Population = new Agent[PopulationCount];
 
-        for (int i = 0; i < Population.Length-1; i++)
+        for (int i = 0; i < Population.Length - 1; i++)
         {
             Population[i] = Instantiate(DummyAgent);
             Population[i].OnAgentDied += AgentDied;
@@ -194,6 +195,8 @@ public class EvolutionController : MonoBehaviour
             for (; i < agents.Length; i++)
             {
                 Population[i].Genome = agents[i].Genome.DeepCopy();
+                Population[i].Restart();
+                Population[i].OnAgentDied += AgentDied;
             }
         }
 

@@ -69,4 +69,12 @@ public class SelectedAgentsPanel : MonoBehaviour
         return agents;
     }
 
+    public void Clear()
+    {
+        foreach (AgentPanel panel in agentPool)
+            Destroy(panel.gameObject);
+
+        agentPool.Clear();
+    }
+
 }

@@ -4,7 +4,7 @@ using System.Collections;
 public class CameraMovement : MonoBehaviour
 {
     public int CamZ = -10;
-    private Agent Target;
+    public Agent Target;
 
     public EvolutionController EvolutionController;
 
