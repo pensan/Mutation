@@ -70,6 +70,9 @@ public class Runner : Agent
             base.Genome = new Genome(neuralNet);
             Genome.RandomizeNeuralNet(-1, 1);
         }
+
+        RunnerAppearance app = gameObject.AddComponent<RunnerAppearance>();
+        app.UpdateAppearance(Genome.neuralNet);
     }
 
     public void SetOpaque(bool opaque)
