@@ -21,7 +21,7 @@ public class Genome : IComparable<Genome>
     public delegate float FitnessFunction();
     public FitnessFunction FitnessMethod;
 
-    private NeuralNetwork neuralNet;
+    public NeuralNetwork neuralNet;
 
     public Genome(NeuralNetwork neuralNet, Agent parent = null)
     {

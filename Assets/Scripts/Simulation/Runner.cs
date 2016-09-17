@@ -19,7 +19,7 @@ public class Runner : Agent
 
     private float lifeTime = 0;
 
-    void Awake()
+    void Start()
     {
         startPosition = this.transform.position;
 
@@ -27,10 +27,23 @@ public class Runner : Agent
         Movement = GetComponent<RunnerMovement>();
 
         fitnessMethod = UpdateFitness;
-        NeuralNetwork neuralNet = new NeuralNetwork(sensors.Length, 6, 4, 2);
-        neuralNet.Layers[2].ActivationMethod = MathHelper.TanHFunction;
-        base.Genome = new Genome(neuralNet);
-        Genome.RandomizeNeuralNet(-1, 1);
+
+        SerializeableNeuralNetwork loadedNetwork = Serializer.Instance.LoadNetwork();
+
+        if (loadedNetwork != null)
+        {
+            NeuralNetwork neuralNet = new NeuralNetwork(loadedNetwork);
+            neuralNet.Layers[2].CurrentActivationFunction = ActivationFunctions.TANH;
+            base.Genome = new Genome(neuralNet);
+        }
+        else
+        {
+            NeuralNetwork neuralNet = new NeuralNetwork(sensors.Length, 6, 4, 2);
+            neuralNet.Layers[2].CurrentActivationFunction = ActivationFunctions.TANH;
+            base.Genome = new Genome(neuralNet);
+            Genome.RandomizeNeuralNet(-1, 1);
+        }
+ 
     }
 
 
