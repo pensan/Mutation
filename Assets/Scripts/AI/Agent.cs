@@ -25,6 +25,10 @@ public class Agent : MonoBehaviour, IComparable<Agent>
         protected set;
     }
 
+    void Awake()
+    {
+        IsAlive = true;
+    }
 
     public event Action<Agent> OnAgentDied;
 
@@ -35,7 +39,7 @@ public class Agent : MonoBehaviour, IComparable<Agent>
     /// </summary>
     public virtual void Restart()
     {
-
+        IsAlive = true;
     }
 
     protected virtual void Die()

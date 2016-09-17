@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
+using System;
 
 public class Runner : Agent
 {
@@ -58,7 +60,6 @@ public class Runner : Agent
     {
         base.Restart();
 
-        this.enabled = true;
         this.Movement.enabled = true;
         this.Movement.Reset();
         
@@ -69,6 +70,8 @@ public class Runner : Agent
 
     void FixedUpdate()
     {
+        if (!IsAlive) return;
+
         lifeTime += Time.deltaTime;
 
         if (lifeTime >= MAX_LIFE_TIME)
@@ -113,7 +116,6 @@ public class Runner : Agent
         this.Movement.Reset();
         this.Movement.RigidBodyComponent.simulated = false;
         this.Movement.enabled = false;
-        this.enabled = false;
     }
 
 
@@ -124,4 +126,10 @@ public class Runner : Agent
             Die();
         }
     }
+
+    void OnMouseDown()
+    {
+        Debug.Log("Clicked " + this.name);
+    }
+
 }

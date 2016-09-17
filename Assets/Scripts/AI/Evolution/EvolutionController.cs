@@ -63,6 +63,8 @@ public class EvolutionController : MonoBehaviour
         population[population.Length - 1] = DummyAgent;
         population[population.Length - 1].OnAgentDied += AgentDied;
 
+        MutateAll(mutatePerc, mutationProb, mutationAmount, DummyAgent);
+
         aliveCount = population.Length;
     }
 
@@ -70,13 +72,16 @@ public class EvolutionController : MonoBehaviour
     {
         foreach (Agent agent in population)
         {
-            if (BestAgent == null || agent.Genome.Fitness >= BestAgent.Genome.Fitness)
+            if (agent.Genome != null)
             {
-                BestAgent = agent;
-            }
-            else if (SecondBestAgent == null || agent.Genome.Fitness >= SecondBestAgent.Genome.Fitness)
-            {
-                SecondBestAgent = agent;
+                if (BestAgent == null || agent.Genome.Fitness >= BestAgent.Genome.Fitness)
+                {
+                    BestAgent = agent;
+                }
+                else if (SecondBestAgent == null || agent.Genome.Fitness >= SecondBestAgent.Genome.Fitness)
+                {
+                    SecondBestAgent = agent;
+                }
             }
         }
 
@@ -92,7 +97,7 @@ public class EvolutionController : MonoBehaviour
         if (aliveCount <= 0)
         {
             DetermineAlpha();
-            UIController.Instance.StartRebreeding();
+            BreedUIController.Instance.Show();
         }
     }
 
@@ -114,7 +119,7 @@ public class EvolutionController : MonoBehaviour
     public void AutoRepopulate()
     {
         CrossBestSecondBest();
-        //CrossBest(3, 2);
+
         MutateAll(mutatePerc, mutationProb, mutationAmount);
 
         aliveCount = population.Length;
@@ -213,11 +218,15 @@ public class EvolutionController : MonoBehaviour
     }
 
 
-    private void MutateAll(float mutatePerc, float mutationProb, float mutationAmount)
+    private void MutateAll(float mutatePerc, float mutationProb, float mutationAmount, params Agent[] exceptions)
     {
+        List<Agent> exceptionList = new List<Agent>();
+        exceptionList.AddRange(exceptions);
+  
+
         for (int i = 0; i < population.Length; i++)
         {
-            if (randomizer.NextDouble() < mutatePerc)
+            if (!exceptionList.Contains(population[i]) && randomizer.NextDouble() < mutatePerc)
                 population[i].Genome.Mutate(mutationProb, mutationAmount);
         }
     }
