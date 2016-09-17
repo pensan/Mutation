@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Runner : Agent
 {
-    private const float MAX_LIFE_TIME = 10f;
+    private const float MAX_LIFE_TIME = 5f;
 
     private Vector3 startPosition;
 
@@ -25,7 +25,7 @@ public class Runner : Agent
         Movement = GetComponent<RunnerMovement>();
 
         fitnessMethod = UpdateFitness;
-        NeuralNetwork neuralNet = new NeuralNetwork(4, 5, 4, 2);
+        NeuralNetwork neuralNet = new NeuralNetwork(sensors.Length, 6, 4, 2);
         neuralNet.Layers[2].ActivationMethod = MathHelper.TanHFunction;
         base.Genome = new Genome(neuralNet);
         Genome.RandomizeNeuralNet(-1, 1);
@@ -88,7 +88,17 @@ public class Runner : Agent
 
         Debug.Log("Agent died");
 
+        this.Movement.Reset();
         this.Movement.enabled = false;
         this.enabled = false;
+    }
+
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Trap"))
+        {
+            Die();
+        }
     }
 }

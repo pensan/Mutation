@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class Agent : MonoBehaviour
+public class Agent : MonoBehaviour, IComparable<Agent>
 {
     private Genome genome;
     public Genome Genome
@@ -46,5 +46,9 @@ public class Agent : MonoBehaviour
             OnAgentDied(this);
     }
 
+    public int CompareTo(Agent other)
+    {
+        return this.Genome.CompareTo(other.Genome);
+    }
 }
 

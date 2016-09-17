@@ -28,11 +28,13 @@ public class RunnerMovement : MonoBehaviour
     }
 
     private Rigidbody2D rigidBodyComponent;
+    private Runner parent;
     private bool jumping;
 
     void Awake()
     {
         CurInput = new double[2];
+        this.parent = GetComponent<Runner>();
         rigidBodyComponent = GetComponent<Rigidbody2D>();
     }
 
@@ -84,10 +86,18 @@ public class RunnerMovement : MonoBehaviour
             curMaxSpeed /= 2;
         }
 
-        if (CurInput[(int)InputValues.Horizontal] >= 0)
-            horizontalSpeed = System.Math.Max(rigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
+        if (jumping)
+        {
+            if (CurInput[(int)InputValues.Horizontal] >= 0)
+                horizontalSpeed = System.Math.Max(rigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
+            else
+                horizontalSpeed = System.Math.Min(rigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
+        }
         else
-            horizontalSpeed = System.Math.Min(rigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
+        {
+            horizontalSpeed = (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed;
+        }
+        
 
 
         verticalSpeed = rigidBodyComponent.velocity.y;
@@ -108,15 +118,17 @@ public class RunnerMovement : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (jumping)
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            
-            foreach (ContactPoint2D point in collision.contacts)
+            if (jumping)
             {
-                if (Vector2.Dot(Vector2.up, point.normal) >= System.Math.PI / 4)
+                foreach (ContactPoint2D point in collision.contacts)
                 {
-                    jumping = false;
-                    return;
+                    if (Vector2.Dot(Vector2.up, point.normal) >= System.Math.PI / 4)
+                    {
+                        jumping = false;
+                        return;
+                    }
                 }
             }
         }

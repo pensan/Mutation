@@ -46,7 +46,7 @@ public class EvolutionController : MonoBehaviour
     private float crossBreedPerc = 1f;
     private float mutatePerc = 1f;
 
-    private float mutationProb = 0.15f;
+    private float mutationProb = 0.35f;
     private float mutationAmount = 0.5f;
 
     public event System.Action<Agent> OnBestChanged;
@@ -110,7 +110,7 @@ public class EvolutionController : MonoBehaviour
         }
 
         CrossBestSecondBest();
-        //CrossBest(3, 2);
+        //CrossBest(5, 2);
         MutateAll();
 
         aliveCount = population.Length;
@@ -162,7 +162,9 @@ public class EvolutionController : MonoBehaviour
             {
                 if (randomizer.NextDouble() < crossBreedPerc)
                 {
-                    Genome newGenome = BestAgent.Genome.CrossBreed(SecondBestAgent.Genome);
+                    //Genome newGenome = BestAgent.Genome.CrossBreed(SecondBestAgent.Genome);
+                    Genome newGenome, otherChild;
+                    BestAgent.Genome.CrossBreedCross(SecondBestAgent.Genome, out newGenome, out otherChild);
                     population[i].Genome = newGenome;
                 }
             }

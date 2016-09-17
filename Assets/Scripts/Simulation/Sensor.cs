@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Sensor : MonoBehaviour
 {
-    private int wallLayer;
+    public LayerMask LayerToSense;
 
     public SpriteRenderer cross;
 
@@ -18,7 +18,6 @@ public class Sensor : MonoBehaviour
 
 	void Start ()
     {
-        wallLayer = LayerMask.NameToLayer("Wall");
         cross.gameObject.SetActive(true);
 	}
 	
@@ -26,7 +25,7 @@ public class Sensor : MonoBehaviour
     {
         Vector2 direction = cross.transform.position - this.transform.position;
         direction.Normalize();
-        RaycastHit2D hit =  Physics2D.Raycast(this.transform.position, direction, MAX_DIST, 1 << wallLayer);
+        RaycastHit2D hit =  Physics2D.Raycast(this.transform.position, direction, MAX_DIST, LayerToSense);
 
         if (hit.collider == null)
             hit.distance = MAX_DIST;
