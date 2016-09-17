@@ -4,6 +4,7 @@
 using UnityEngine;
 #endregion
 
+[System.Serializable]
 public class TimeManager : MonoBehaviour 
 {
     private float originalFixedPhysicsTime;
@@ -13,10 +14,9 @@ public class TimeManager : MonoBehaviour
     {
         originalFixedPhysicsTime = Time.fixedDeltaTime;
         originalTimeScale = Time.timeScale;
-
-        CustomTime = 1.0f;
     }
 
+    [SerializeField]
     private float _customTime;
     public float CustomTime
     {
@@ -28,16 +28,21 @@ public class TimeManager : MonoBehaviour
         set
         {
             _customTime = value;
-            Time.timeScale = _customTime;
 
-            if (_customTime > 0.0f)
+            if (Application.isPlaying)
             {
-                Time.fixedDeltaTime = originalFixedPhysicsTime / _customTime;
+                Time.timeScale = _customTime;
+
+                if (_customTime > 0.0f)
+                {
+                    Time.fixedDeltaTime = originalFixedPhysicsTime / _customTime;
+                }
+                else
+                {
+                    Time.fixedDeltaTime = 0.0f;
+                }
             }
-            else
-            {
-                Time.fixedDeltaTime = 0.0f;
-            }
+   
         }
     }
 
