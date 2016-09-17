@@ -44,7 +44,7 @@ public class Runner : Agent
         selectableComponent.enabled = false;
 
         trailRenderer = GetComponent<TrailRenderer>();
-        trailRenderer.sortingLayerName = spriteComponent.sortingLayerName;
+        trailRenderer.sortingLayerName = "Background";
         trailRenderer.sortingOrder = -10;
     }
 
@@ -94,6 +94,7 @@ public class Runner : Agent
         base.Restart();
 
         SetOpaque(true);
+        trailRenderer.sortingLayerName = "Background";
         trailRenderer.Clear();
 
         this.Movement.enabled = true;
@@ -170,6 +171,7 @@ public class Runner : Agent
     private void SelectThisAgent(bool selected)
     {
         SetOpaque(selected);
+        trailRenderer.sortingLayerName = spriteComponent.sortingLayerName;
     }
 
 }
