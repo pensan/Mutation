@@ -9,7 +9,13 @@ public class SelectedAgentsPanel : MonoBehaviour
 
     private LinkedList<AgentPanel> agentPool;
 
+    public int AgentCount
+    {
+        get { return agentPool.Count; }
+    }
 
+    public event System.Action OnAgentAdded;
+    public event System.Action OnAgentRemoved;
 
     void Awake ()
     {
@@ -24,6 +30,9 @@ public class SelectedAgentsPanel : MonoBehaviour
         copy.Agent = newAgent;
         agentPool.AddLast(copy);
         copy.gameObject.SetActive(true);
+
+        if (OnAgentAdded != null)
+            OnAgentAdded();
     }
 
     public void RemoveAgent(Agent agent)
@@ -41,7 +50,11 @@ public class SelectedAgentsPanel : MonoBehaviour
         }
 
         if (curPanel != null)
+        {
             Destroy(curPanel.Value.gameObject);
+            if (OnAgentRemoved != null)
+                OnAgentRemoved();
+        }
         else
             Debug.LogWarning("Tried to remove runner from selected runners, that wasn't in agentPool.");
     }

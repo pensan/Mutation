@@ -35,7 +35,8 @@ public class BreedUIController : MonoBehaviour
         AutoBreedButton.onClick.AddListener(StartAutoBreed);
         ManualBreedButton.onClick.AddListener(StartManualBreed);
         SelectedAgents = GetComponentInChildren<SelectedAgentsPanel>();
-
+        SelectedAgents.OnAgentAdded += SelectedAgentsChanged;
+        SelectedAgents.OnAgentRemoved += SelectedAgentsChanged;
 
         BreedMenu.SetActive(false);
 
@@ -70,6 +71,11 @@ public class BreedUIController : MonoBehaviour
     {
         EvolutionController.Repopulate(MutationProbSlider.value, MutationAmountSlider.value, SelectedAgents.GetSelectedAgents());
         Hide();
+    }
+
+    private void SelectedAgentsChanged()
+    {
+        ManualBreedButton.interactable = SelectedAgents.AgentCount >= 2;
     }
 
 }
