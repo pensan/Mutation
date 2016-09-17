@@ -19,6 +19,12 @@ public class Agent : MonoBehaviour
         }
     }
 
+    public bool IsAlive
+    {
+        get;
+        protected set;
+    }
+
 
     public event Action<Agent> OnAgentDied;
 
@@ -30,6 +36,14 @@ public class Agent : MonoBehaviour
     public virtual void Restart()
     {
 
+    }
+
+    protected virtual void Die()
+    {
+        IsAlive = false;
+
+        if (OnAgentDied != null)
+            OnAgentDied(this);
     }
 
 }

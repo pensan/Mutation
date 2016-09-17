@@ -74,16 +74,51 @@ public class RunnerMovement : MonoBehaviour
 
     private void ApplyInput()
     {
+        float horizontalSpeed, verticalSpeed;
+
         SpeedPerc = (float)CurInput[(int)InputValues.Horizontal];
 
-        if (rigidBodyComponent.velocity.y == 0 || !jumping)
+        float curMaxSpeed = MAX_SPEED;
+        if (jumping)
         {
-            if (CurInput[(int)InputValues.JumpForce] > 0)
-                jumping = true;
-            else if (rigidBodyComponent.velocity.y == 0)
-                jumping = false;
-               
-            rigidBodyComponent.velocity = new Vector2(SpeedPerc * MAX_SPEED, rigidBodyComponent.velocity.y + (float)CurInput[(int)InputValues.JumpForce] * MAX_JUMP);
+            curMaxSpeed /= 2;
+        }
+
+        if (CurInput[(int)InputValues.Horizontal] >= 0)
+            horizontalSpeed = System.Math.Max(rigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
+        else
+            horizontalSpeed = System.Math.Min(rigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
+
+
+        verticalSpeed = rigidBodyComponent.velocity.y;
+        if (!jumping && CurInput[(int) InputValues.JumpForce] > 0)
+        {
+            verticalSpeed = (float) CurInput[(int)InputValues.JumpForce] * MAX_JUMP;
+            jumping = true;
+        }
+
+        rigidBodyComponent.velocity = new Vector2(horizontalSpeed, verticalSpeed);
+    }
+
+
+    public void Reset()
+    {
+        this.rigidBodyComponent.velocity = Vector2.zero;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (jumping)
+        {
+            
+            foreach (ContactPoint2D point in collision.contacts)
+            {
+                if (Vector2.Dot(Vector2.up, point.normal) >= System.Math.PI / 4)
+                {
+                    jumping = false;
+                    return;
+                }
+            }
         }
     }
 }
