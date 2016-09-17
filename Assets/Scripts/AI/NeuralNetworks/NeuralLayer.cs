@@ -1,15 +1,30 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
+using System.Runtime.Serialization;
 
 public class NeuralLayer
 {
     private static Random r = new Random();
 
-
     public delegate double ActivationFunction(double xValue);
 
-    public ActivationFunction ActivationMethod = MathHelper.SigmoidFunction;
+    public ActivationFunction ActivationMethod = MathHelper.GetActivationFunction(ActivationFunctions.SIGMOID);
 
+    private ActivationFunctions currentActivationFunction;
+    public ActivationFunctions CurrentActivationFunction
+    {
+        get
+        {
+            return currentActivationFunction;
+        }
+
+        set
+        {
+            currentActivationFunction = value;
+            ActivationMethod = MathHelper.GetActivationFunction(currentActivationFunction);
+        }
+    }
 
     public int NodeCount
     {
@@ -28,8 +43,16 @@ public class NeuralLayer
         private set;
     }
 
+    public NeuralLayer(SerializeableNeuralLayer loadedLayer)
+    {
+        this.NodeCount = loadedLayer.nodeCount;
+        this.OutputCount = loadedLayer.outputCount;
 
-	public NeuralLayer(int nodeCount, int outputCount)
+        Weights = loadedLayer.Weights;
+    }
+
+
+    public NeuralLayer(int nodeCount, int outputCount)
     {
         this.NodeCount = nodeCount;
         this.OutputCount = outputCount;

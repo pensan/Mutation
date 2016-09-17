@@ -13,6 +13,5 @@ public class TimeManagerInspector : Editor
         TimeManager timeManger = (TimeManager)target;
 
         timeManger.CustomTime = EditorGUILayout.Slider(timeManger.CustomTime, 1f, 10f);
-
     }     
 }

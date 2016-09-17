@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections;
 
+[System.Serializable]
 public class NeuralNetwork
 {
+    public NeuralLayer[] Layers;
 
-    public NeuralLayer[] Layers
+    public int[] Topology;
+
+    public NeuralNetwork(SerializeableNeuralNetwork loadedNetwork)
     {
-        get;
-        private set;
+        this.Topology = loadedNetwork.topology;
+
+        Layers = new NeuralLayer[loadedNetwork.topology.Length - 1];
+
+        for (int i = 0; i < Layers.Length; i++)
+        {
+            Layers[i] = new NeuralLayer(loadedNetwork.layers[i]);
+        }
     }
 
-    public int[] Topology
-    {
-        get;
-        private set;
-    }
 
     public NeuralNetwork(params int[] topology)
     {
@@ -29,7 +34,6 @@ public class NeuralNetwork
         }
     }
 
-
     public double[] CalculateYValues(double[] xValues)
     {
         if (xValues.Length != Layers[0].NodeCount)
@@ -40,12 +44,16 @@ public class NeuralNetwork
             output = layer.CalculateYValues(output);
 
         return output;
+        
     }
 
     public void FillWithRandomWeights(double rangeStart, double rangeEnd)
     {
-        foreach (NeuralLayer layer in Layers)
-            layer.FillWithRandomWeights(rangeStart, rangeEnd);
+        if (Layers != null)
+        {
+            foreach (NeuralLayer layer in Layers)
+                layer.FillWithRandomWeights(rangeStart, rangeEnd);
+        }
     }
 
     public NeuralNetwork GetTopologyCopy()
