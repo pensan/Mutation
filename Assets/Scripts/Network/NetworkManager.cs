@@ -1,57 +1,76 @@
-﻿//using UnityEngine;
-//using System.Collections;
-//using UnityEngine.Experimental.Networking;
+﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
-//public class NetworkManager : MonoBehaviour {
+#if UNITY_5_3 
+using UnityEngine.Experimental.Networking;
+#elif UNITY_5_4_OR_NEWER
+using UnityEngine.Networking;
+#endif
 
-//    string server_url   = "http://fierce-journey-76439.herokuapp.com";
-//    string post_user    = "/user";
+public class NetworkManager : MonoBehaviour {
 
-//	void Start () {
-//        Debug.Log("API server url: " + server_url);
+    string server_url   = "http://fierce-journey-76439.herokuapp.com";
+    string post_user    = "/user";
+    GameObject GUI;
 
-//        StartCoroutine(GetServerstatus());
-//	}
+	void Start () {
+        Debug.Log("API server url: " + server_url);
+
+        GUI = GameObject.FindGameObjectWithTag("GUI");
+
+        StartCoroutine(GetServerstatus());
+	}
 	
-//	void Update () {
-	
-//	}
+    /// <summary>
+    /// Restarts the game by reloading the current scene
+    /// </summary>
+    public void Restart() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
-//    IEnumerator GetServerstatus () {
-//        UnityWebRequest www = UnityWebRequest.Get(server_url);
-//        yield return www.Send();
-
-
-//        if(www.isError) {
-//            Debug.LogError(www.error);
-//        }
-//        else {
-
-//            // Server response was not 2XX
-//            if ( www.responseCode.ToString()[0] != 2 )
-//                return false;
-
-//            // Continue if response was 2XX
-//            Debug.Log(www.downloadHandler.text);
-
-//            StartCoroutine(PostLogin());
-//        }
-//    }
-
-//    IEnumerator PostLogin () {
-//        WWWForm form = new WWWForm();
-//        form.AddField("udid", 1);
-
-//        WWW www = new WWW(server_url + post_user, form);
-//        yield return www;
+    /// <summary>
+    /// Tests the connection to the server
+    /// </summary>
+    IEnumerator GetServerstatus () {
+        UnityWebRequest www = UnityWebRequest.Get(server_url);
+        yield return www.Send();
 
 
-//        if (!string.IsNullOrEmpty(www.error)) {
-//            Debug.Log(www.error);
-//        } else {
-//            Debug.Log(www.text);
-//        }
+        if(www.isError) {
+            Debug.LogError(www.error + ": " + server_url);
+        }
+        else {
+            // Server response was not 2XX
+            if ( www.responseCode.ToString()[0] != '2' ) {
 
-//    }
+                Transform abc = GUI.transform.Find("ConnectionError");
+                abc.gameObject.SetActive(true);
 
-//}
+                return false;
+            }
+            // Continue if response was 2XX
+            StartCoroutine(PostLogin());
+        }
+    }
+
+    /// <summary>
+    /// Sends the UUID to the server and fetches the user data
+    /// </summary>
+    IEnumerator PostLogin () {
+        WWWForm form = new WWWForm();
+
+        form.AddField("uuid", SystemInfo.deviceUniqueIdentifier);
+
+        WWW www = new WWW(server_url + post_user, form);
+        yield return www;
+
+        if (!string.IsNullOrEmpty(www.error)) {
+            Debug.LogError(www.error + ": " + server_url + post_user);
+        } else {
+            Debug.Log(www.text);
+        }
+
+    }
+
+}
