@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 #if UNITY_5_3 
 using UnityEngine.Experimental.Networking;
@@ -21,17 +22,23 @@ public class NetworkManager : MonoBehaviour {
         StartCoroutine(GetServerstatus());
 	}
 	
-	void Update () {
-	
-	}
+    /// <summary>
+    /// Restarts the game by reloading the current scene
+    /// </summary>
+    public void Restart() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
+    /// <summary>
+    /// Tests the connection to the server
+    /// </summary>
     IEnumerator GetServerstatus () {
         UnityWebRequest www = UnityWebRequest.Get(server_url);
         yield return www.Send();
 
 
         if(www.isError) {
-            Debug.LogError(www.error);
+            Debug.LogError(www.error + ": " + server_url);
         }
         else {
             // Server response was not 2XX
@@ -47,18 +54,19 @@ public class NetworkManager : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Sends the UUID to the server and fetches the user data
+    /// </summary>
     IEnumerator PostLogin () {
-        Debug.Log("postLogin");
-
         WWWForm form = new WWWForm();
 
-        form.AddField("udid", SystemInfo.deviceUniqueIdentifier);
+        form.AddField("uuid", SystemInfo.deviceUniqueIdentifier);
 
         WWW www = new WWW(server_url + post_user, form);
         yield return www;
 
         if (!string.IsNullOrEmpty(www.error)) {
-            Debug.Log(www.error);
+            Debug.LogError(www.error + ": " + server_url + post_user);
         } else {
             Debug.Log(www.text);
         }
