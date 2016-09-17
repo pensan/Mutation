@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
     resources :users, only: [:create] do
       get 'opponent(/:name)', to: 'users#opponent', on: :member
+      post '', to: 'users#update', on: :member
     end
   end
 

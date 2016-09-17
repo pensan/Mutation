@@ -23,6 +23,20 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  # POST /api/users/1
+  #
+  def update
+    user = User.find(params[:id])
+    @status = false
+
+    if user.update(user_params)
+      @status = true
+      @user = user
+    else
+      @errors = user.errors.full_messages
+    end
+  end
+
   # GET /api/users/1/opponent(/player_xyz)
   #
   def opponent
@@ -48,14 +62,13 @@ class Api::UsersController < ApplicationController
       @opponent = User.where.not(id: user.id).sample
       @status = true
     end
-
   end
 
   private
   # Never trust parameters from the scary internet, only allow the white list through.
   #
   def user_params
-    params.require(:user).permit(:uuid)
+    params.require(:user).permit(:uuid, :neuronal_network)
   end
 
 end
