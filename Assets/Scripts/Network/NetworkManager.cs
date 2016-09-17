@@ -30,6 +30,14 @@ public class NetworkManager : MonoBehaviour {
     }
 
     /// <summary>
+    /// Starts a challenge with another user
+    /// </summary>
+    public void StartChallenge() {
+        
+    }
+
+
+    /// <summary>
     /// Tests the connection to the server
     /// </summary>
     IEnumerator GetServerstatus () {
