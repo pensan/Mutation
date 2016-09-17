@@ -10,7 +10,7 @@
 abort('The Rails environment is NOT running in development mode!') unless Rails.env.development?
 
 
-ActiveRecord::Base.connection.execute('TRUNCATE TABLE users')
+ActiveRecord::Base.connection.execute('TRUNCATE TABLE users; ALTER SEQUENCE users_id_seq RESTART;')
 
 
 # users #######################################################################
