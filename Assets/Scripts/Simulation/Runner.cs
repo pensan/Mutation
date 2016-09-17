@@ -19,11 +19,16 @@ public class Runner : Agent
 
     private float lifeTime = 0;
     private SpriteRenderer spriteComponent;
+    private TrailRenderer trailRenderer;
 
     void Start()
     {
         startPosition = this.transform.position;
         spriteComponent = GetComponent<SpriteRenderer>();
+
+        trailRenderer = GetComponent<TrailRenderer>();
+        trailRenderer.sortingLayerName = spriteComponent.sortingLayerName;
+        trailRenderer.sortingOrder = -10;
     }
 
     public override void Init()
@@ -50,20 +55,22 @@ public class Runner : Agent
         }
     }
 
-    public void SetOpaque(bool opaque)
-    {
-        if (opaque)
-        {
+    //public void SetOpaque(bool opaque)
+    //{
+    //    if (opaque)
+    //    {
 
-        }
-        else
-            SpriteMeshType
-    }
+    //    }
+    //    else
+    //        SpriteMeshType
+    //}
 
 
     public override void Restart()
     {
         base.Restart();
+
+        trailRenderer.Clear();
 
         this.Movement.enabled = true;
         this.Movement.Reset();
