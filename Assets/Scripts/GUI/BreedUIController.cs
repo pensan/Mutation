@@ -12,11 +12,19 @@ public class BreedUIController : MonoBehaviour
     }
 
     public EvolutionController EvolutionController;
+    public SelectedAgentsPanel SelectedAgents
+    {
+        get;
+        private set;
+    }
+
+    public CameraMovement CamMovement;
 
     public GameObject BreedMenu;
     public Button AutoBreedButton;
     public Button ManualBreedButton;
-    public Slider MutationSlider;
+    public Slider MutationAmountSlider;
+    public Slider MutationProbSlider;
 
     private int runnerLayer;
 
@@ -26,6 +34,7 @@ public class BreedUIController : MonoBehaviour
 
         AutoBreedButton.onClick.AddListener(StartAutoBreed);
         ManualBreedButton.onClick.AddListener(StartManualBreed);
+        SelectedAgents = GetComponentInChildren<SelectedAgentsPanel>();
 
 
         BreedMenu.SetActive(false);
@@ -41,41 +50,26 @@ public class BreedUIController : MonoBehaviour
             Runner runner = (Runner)agent;
             runner.Selectable = true;
         }
+
+        CamMovement.AllowUserInput = true;
     }
 
     public void Hide()
     {
         BreedMenu.SetActive(false);
+        CamMovement.AllowUserInput = false;
     }
 
     private void StartAutoBreed()
     {
-        EvolutionController.AutoRepopulate();
+        EvolutionController.AutoRepopulate(MutationProbSlider.value, MutationAmountSlider.value);
         Hide();
     }
 
     private void StartManualBreed()
     {
-        
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            RaycastHit hit = new RaycastHit();
-            bool hitOccured = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50f, 1 << runnerLayer);
-            if (hitOccured)
-            {
-                Debug.Log("Selected runner: " + hit.collider.gameObject);
-            }
-            else
-            {
-                //Debug.Log("No hit");
-            }
-        }
-
-
+        EvolutionController.Repopulate(MutationProbSlider.value, MutationAmountSlider.value, SelectedAgents.GetSelectedAgents());
+        Hide();
     }
 
 }

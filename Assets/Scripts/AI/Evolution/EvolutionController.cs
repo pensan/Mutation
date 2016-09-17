@@ -122,6 +122,16 @@ public class EvolutionController : MonoBehaviour
 
     public void AutoRepopulate()
     {
+        AutoRepopulate(mutatePerc, mutationProb, mutationAmount);
+    }
+
+    public void AutoRepopulate(float mutationProb, float mutationAmount)
+    {
+        AutoRepopulate(mutatePerc, mutationProb, mutationAmount);
+    }
+
+    public void AutoRepopulate(float mutationPerc, float mutationProb, float mutationAmount)
+    {
         CrossBestSecondBest();
 
         MutateAll(mutatePerc, mutationProb, mutationAmount);
@@ -196,7 +206,7 @@ public class EvolutionController : MonoBehaviour
             Population[i].Restart();
             Population[i].OnAgentDied += AgentDied;
 
-            if (otherIndex > agents.Length)
+            if (otherIndex >= agents.Length)
             {
                 a = (a + 1) % agents.Length - 1;
                 otherIndex = a + 1;
