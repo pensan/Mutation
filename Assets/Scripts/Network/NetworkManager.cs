@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json.Linq;
 
-#if UNITY_5_3 
+#if UNITY_5_3
 using UnityEngine.Experimental.Networking;
 #elif UNITY_5_4_OR_NEWER
 using UnityEngine.Networking;
@@ -12,7 +13,10 @@ public class NetworkManager : MonoBehaviour {
 
     string server_url   = "http://mutinder.herokuapp.com";
     string post_user    = "/api/users";
+    string get_user     = "/api/users";
+    string get_opponent = "/api/users/{0}/opponent/{1}";
     GameObject GUI;
+    int player_id;
 
 	void Start () {
         Debug.Log("API server url: " + server_url);
@@ -33,9 +37,8 @@ public class NetworkManager : MonoBehaviour {
     /// Starts a challenge with another user
     /// </summary>
     public void StartChallenge() {
-        
+        StartCoroutine(GetOpponent());
     }
-
 
     /// <summary>
     /// Tests the connection to the server
@@ -43,7 +46,6 @@ public class NetworkManager : MonoBehaviour {
     IEnumerator GetServerstatus () {
         UnityWebRequest www = UnityWebRequest.Get(server_url);
         yield return www.Send();
-
 
         if(www.isError) {
             Debug.LogError(www.error + ": " + server_url);
@@ -59,8 +61,7 @@ public class NetworkManager : MonoBehaviour {
             {
                 // Continue if response was 2XX
                 StartCoroutine(PostLogin());
-            }
-                
+            }                
         }
     }
 
@@ -79,8 +80,41 @@ public class NetworkManager : MonoBehaviour {
             Debug.LogError(www.error + ": " + server_url + post_user);
         } else {
             Debug.Log(www.text);
+            JObject parsed = JObject.Parse(www.text);
+            player_id = (int)parsed["data"]["user"]["id"];
         }
 
     }
+
+    /// <summary>
+    /// Returns an opponent
+    /// </summary>
+    IEnumerator GetOpponent(string opponent_id="")
+    {
+        string get_op = string.Format(get_opponent, player_id, opponent_id);
+        UnityWebRequest www = UnityWebRequest.Get(server_url + get_op);
+        yield return www.Send();
+
+        if (www.isError)
+        {
+            Debug.LogError(www.error + ": " + server_url + get_op);
+        }
+        else
+        {
+            // Server response was not 2XX
+            if (www.responseCode.ToString()[0] != '2')
+            {
+
+                Transform abc = GUI.transform.Find("ConnectionError");
+                abc.gameObject.SetActive(true);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                JObject parsed = JObject.Parse(www.downloadHandler.text);
+            }
+        }
+    }
+
 
 }
