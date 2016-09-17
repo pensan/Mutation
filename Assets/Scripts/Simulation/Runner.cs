@@ -33,6 +33,7 @@ public class Runner : Agent
                 SetOpaque(true);
         }
     }
+    private TrailRenderer trailRenderer;
 
     void Start()
     {
@@ -41,6 +42,10 @@ public class Runner : Agent
         selectableComponent = GetComponent<Selectable>();
         selectableComponent.OnSelectChanged += SelectThisAgent;
         selectableComponent.enabled = false;
+
+        trailRenderer = GetComponent<TrailRenderer>();
+        trailRenderer.sortingLayerName = spriteComponent.sortingLayerName;
+        trailRenderer.sortingOrder = -10;
     }
 
     public override void Init()
@@ -89,6 +94,7 @@ public class Runner : Agent
         base.Restart();
 
         SetOpaque(true);
+        trailRenderer.Clear();
 
         this.Movement.enabled = true;
         this.Movement.Reset();
