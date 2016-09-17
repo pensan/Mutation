@@ -151,8 +151,6 @@ public class Runner : Agent
     {
         base.Die();
 
-        Debug.Log("Agent died");
-
         this.Movement.Reset();
         this.Movement.RigidBodyComponent.isKinematic = true;
         this.Movement.enabled = false;
@@ -171,7 +169,16 @@ public class Runner : Agent
     private void SelectThisAgent(bool selected)
     {
         SetOpaque(selected);
-        trailRenderer.sortingLayerName = spriteComponent.sortingLayerName;
+        if (selected)
+        {
+            BreedUIController.Instance.SelectedAgents.AddAgent(this);
+            trailRenderer.sortingLayerName = spriteComponent.sortingLayerName;
+        }
+        else
+        {
+            trailRenderer.sortingLayerName = "Background";
+            BreedUIController.Instance.SelectedAgents.RemoveAgent(this);
+        }
     }
 
 }
