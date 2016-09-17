@@ -80,7 +80,7 @@ public class Runner : Agent
         base.Restart();
 
         selectableComponent.Select(false);
-        SetOpaque(true);
+        appearance.SetOpaque(true);
         appearance.UpdateAppearance(Genome.neuralNet);
 
         appearance.SetOpaque(true);
