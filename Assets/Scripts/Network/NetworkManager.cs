@@ -11,9 +11,12 @@ public class NetworkManager : MonoBehaviour {
 
     string server_url   = "http://fierce-journey-76439.herokuapp.com";
     string post_user    = "/user";
+    GameObject GUI;
 
 	void Start () {
         Debug.Log("API server url: " + server_url);
+
+        GUI = GameObject.FindGameObjectWithTag("GUI");
 
         StartCoroutine(GetServerstatus());
 	}
@@ -31,25 +34,28 @@ public class NetworkManager : MonoBehaviour {
             Debug.LogError(www.error);
         }
         else {
-
             // Server response was not 2XX
-            if ( www.responseCode.ToString()[0] != 2 )
+            if ( www.responseCode.ToString()[0] != '2' ) {
+
+                Transform abc = GUI.transform.Find("ConnectionError");
+                abc.gameObject.SetActive(true);
+
                 return false;
-
+            }
             // Continue if response was 2XX
-            Debug.Log(www.downloadHandler.text);
-
             StartCoroutine(PostLogin());
         }
     }
 
     IEnumerator PostLogin () {
+        Debug.Log("postLogin");
+
         WWWForm form = new WWWForm();
-        form.AddField("udid", 1);
+
+        form.AddField("udid", SystemInfo.deviceUniqueIdentifier);
 
         WWW www = new WWW(server_url + post_user, form);
         yield return www;
-
 
         if (!string.IsNullOrEmpty(www.error)) {
             Debug.Log(www.error);
