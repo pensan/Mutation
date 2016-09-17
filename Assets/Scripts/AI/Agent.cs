@@ -34,6 +34,11 @@ public class Agent : MonoBehaviour, IComparable<Agent>
 
     protected Genome.FitnessFunction fitnessMethod;
 
+    public virtual void Init()
+    {
+
+    }
+
     /// <summary>
     /// Resets all variables to starting position.
     /// </summary>

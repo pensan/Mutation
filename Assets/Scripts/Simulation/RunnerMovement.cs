@@ -118,7 +118,7 @@ public class RunnerMovement : MonoBehaviour
     public void Reset()
     {
         this.RigidBodyComponent.velocity = Vector2.zero;
-        this.RigidBodyComponent.simulated = true;
+        this.RigidBodyComponent.isKinematic = false;
     }
 
     void OnCollisionEnter2D(Collision2D collision)

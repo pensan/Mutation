@@ -18,11 +18,16 @@ public class Runner : Agent
     }
 
     private float lifeTime = 0;
+    private SpriteRenderer spriteComponent;
 
     void Start()
     {
         startPosition = this.transform.position;
+        spriteComponent = GetComponent<SpriteRenderer>();
+    }
 
+    public override void Init()
+    {
         sensors = GetComponentsInChildren<Sensor>();
         Movement = GetComponent<RunnerMovement>();
 
@@ -43,7 +48,16 @@ public class Runner : Agent
             base.Genome = new Genome(neuralNet);
             Genome.RandomizeNeuralNet(-1, 1);
         }
- 
+    }
+
+    public void SetOpaque(bool opaque)
+    {
+        if (opaque)
+        {
+
+        }
+        else
+            SpriteMeshType
     }
 
 
@@ -105,7 +119,7 @@ public class Runner : Agent
         Debug.Log("Agent died");
 
         this.Movement.Reset();
-        this.Movement.RigidBodyComponent.simulated = false;
+        this.Movement.RigidBodyComponent.isKinematic = true;
         this.Movement.enabled = false;
     }
 
