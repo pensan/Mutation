@@ -10,8 +10,8 @@ using UnityEngine.Networking;
 
 public class NetworkManager : MonoBehaviour {
 
-    string server_url   = "http://fierce-journey-76439.herokuapp.com";
-    string post_user    = "/user";
+    string server_url   = "http://mutinder.herokuapp.com";
+    string post_user    = "/api/users";
     GameObject GUI;
 
 	void Start () {
@@ -62,7 +62,7 @@ public class NetworkManager : MonoBehaviour {
     IEnumerator PostLogin () {
         WWWForm form = new WWWForm();
 
-        form.AddField("uuid", SystemInfo.deviceUniqueIdentifier);
+        form.AddField("user[uuid]", SystemInfo.deviceUniqueIdentifier);
 
         WWW www = new WWW(server_url + post_user, form);
         yield return www;
