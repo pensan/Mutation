@@ -46,11 +46,13 @@ public class NetworkManager : MonoBehaviour {
 
                 Transform abc = GUI.transform.Find("ConnectionError");
                 abc.gameObject.SetActive(true);
-
-                return false;
             }
-            // Continue if response was 2XX
-            StartCoroutine(PostLogin());
+            else
+            {
+                // Continue if response was 2XX
+                StartCoroutine(PostLogin());
+            }
+                
         }
     }
 

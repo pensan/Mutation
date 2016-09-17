@@ -1,8 +1,9 @@
 ﻿using System;
+using UnityEngine;
 
 public class Genome : IComparable<Genome>
 {
-    private static Random randomizer = new Random();
+    private static System.Random randomizer = new System.Random();
 
     public Agent ParentAgent
     {
@@ -167,7 +168,9 @@ public class Genome : IComparable<Genome>
                 {
                     if (randomizer.NextDouble() <= mutateProb)
                     {
-                        layer.Weights[x, y] += randomizer.NextDouble() * (mutateAmount * 2) - mutateAmount;
+                        double mutate = randomizer.NextDouble() * (mutateAmount * 2) - mutateAmount;
+                        Debug.Log("Mutating by: " + mutate);
+                        layer.Weights[x, y] += mutate;
                     }
                 }
             }

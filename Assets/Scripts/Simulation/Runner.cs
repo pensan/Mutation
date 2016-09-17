@@ -89,6 +89,7 @@ public class Runner : Agent
         Debug.Log("Agent died");
 
         this.Movement.Reset();
+        this.Movement.RigidBodyComponent.simulated = false;
         this.Movement.enabled = false;
         this.enabled = false;
     }

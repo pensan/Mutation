@@ -27,7 +27,11 @@ public class RunnerMovement : MonoBehaviour
         set;
     }
 
-    private Rigidbody2D rigidBodyComponent;
+    public Rigidbody2D RigidBodyComponent
+    {
+        get;
+        private set;
+    }
     private Runner parent;
     private bool jumping;
 
@@ -35,7 +39,7 @@ public class RunnerMovement : MonoBehaviour
     {
         CurInput = new double[2];
         this.parent = GetComponent<Runner>();
-        rigidBodyComponent = GetComponent<Rigidbody2D>();
+        RigidBodyComponent = GetComponent<Rigidbody2D>();
     }
 
 	void FixedUpdate ()
@@ -89,9 +93,9 @@ public class RunnerMovement : MonoBehaviour
         if (jumping)
         {
             if (CurInput[(int)InputValues.Horizontal] >= 0)
-                horizontalSpeed = System.Math.Max(rigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
+                horizontalSpeed = System.Math.Max(RigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
             else
-                horizontalSpeed = System.Math.Min(rigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
+                horizontalSpeed = System.Math.Min(RigidBodyComponent.velocity.x, (float)CurInput[(int)InputValues.Horizontal] * curMaxSpeed);
         }
         else
         {
@@ -100,20 +104,21 @@ public class RunnerMovement : MonoBehaviour
         
 
 
-        verticalSpeed = rigidBodyComponent.velocity.y;
+        verticalSpeed = RigidBodyComponent.velocity.y;
         if (!jumping && CurInput[(int) InputValues.JumpForce] > 0)
         {
             verticalSpeed = (float) CurInput[(int)InputValues.JumpForce] * MAX_JUMP;
             jumping = true;
         }
 
-        rigidBodyComponent.velocity = new Vector2(horizontalSpeed, verticalSpeed);
+        RigidBodyComponent.velocity = new Vector2(horizontalSpeed, verticalSpeed);
     }
 
 
     public void Reset()
     {
-        this.rigidBodyComponent.velocity = Vector2.zero;
+        this.RigidBodyComponent.velocity = Vector2.zero;
+        this.RigidBodyComponent.simulated = true;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
