@@ -3,6 +3,7 @@ using System.Collections;
 
 public class LevelController : MonoBehaviour
 {
+    public static LevelController Instance;
 
     public enum EvolutionType
     {
@@ -15,6 +16,12 @@ public class LevelController : MonoBehaviour
     public bool LoadGenome = true;
     public bool FollowBestAgent = true;
 
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         ModifyDummyAgent();
@@ -23,7 +30,6 @@ public class LevelController : MonoBehaviour
 
         SetCamera();
     }
-
 
     private void SetCamera()
     {
@@ -59,7 +65,7 @@ public class LevelController : MonoBehaviour
                     evoController.OnAllAgentsDied += evoController.AutoRepopulate;
                     break;
                 case EvolutionType.User:
-                    evoController.OnAllAgentsDied += ShowBreedMenu;
+                    evoController.OnAllAgentsDied += OnAllAgentsDiedHandler;
                     break;
             }
         }
@@ -85,7 +91,7 @@ public class LevelController : MonoBehaviour
                 evoController.OnAllAgentsDied -= evoController.AutoRepopulate;
                 break;
             case EvolutionType.User:
-                evoController.OnAllAgentsDied -= ShowBreedMenu;
+                evoController.OnAllAgentsDied -= OnAllAgentsDiedHandler;
                 break;
         }
     }
@@ -96,8 +102,23 @@ public class LevelController : MonoBehaviour
         DummyAgent.StartPosition = Vector3.zero;
     }
 
-    private void ShowBreedMenu()
+    private void OnAllAgentsDiedHandler()
     {
-        GUIController.Instance.CurrentMenu = GUIController.Instance.BreedMenu;
+        if (EvoType == EvolutionType.User)
+        {
+            GUIController.Instance.CurrentMenu = GUIController.Instance.BreedMenu;
+        }
+        else
+        {
+            StartCoroutine(DelayedAutoRepopulate());
+        }
+    }
+
+    IEnumerator DelayedAutoRepopulate()
+    {
+        yield return new WaitForEndOfFrame();
+
+        GameStateManager.Instance.EvolutionController.AutoRepopulate();
+        GameStateManager.Instance.CamMovement.SetCamPosInstant(GameStateManager.Instance.DummyAgent.StartPosition);
     }
 }

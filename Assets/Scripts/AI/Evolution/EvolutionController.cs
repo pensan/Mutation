@@ -186,6 +186,9 @@ public class EvolutionController : MonoBehaviour
 
     public void AutoRepopulate(float mutationProb, float mutationAmount)
     {
+        this.mutationProb = mutationProb;
+        this.mutationAmount = mutationAmount;
+
         AutoRepopulate(mutatePerc, mutationProb, mutationAmount);
     }
 
@@ -293,7 +296,6 @@ public class EvolutionController : MonoBehaviour
     {
         List<Agent> exceptionList = new List<Agent>();
         exceptionList.AddRange(exceptions);
-  
 
         for (int i = 0; i < Population.Length; i++)
         {
