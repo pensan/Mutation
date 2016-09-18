@@ -28,8 +28,8 @@ public class RunnerAppearance : MonoBehaviour
     {
         this.network = network;
 
-        float colorValue = Mathf.Abs((float)GetSummedWeight(2, 1));
-        Color tintColor = Color.HSVToRGB(colorValue, 1, 1);
+        float colorValue = Mathf.Abs((float)GetSummedWeight(2, 1)) + Mathf.Abs((float)GetSummedWeight(2, 3));
+        Color tintColor = Color.HSVToRGB(((colorValue * 255) % 255) / 255, 1, 0.5f);
 
         List<RunnerAppearanceLimb> currentLimbs = new List<RunnerAppearanceLimb>();
 

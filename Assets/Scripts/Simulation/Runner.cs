@@ -122,11 +122,6 @@ public class Runner : Agent
         base.Init();
     }
 
-    protected override void SetGenome(Genome genome)
-    {
-        base.SetGenome(genome);
-        Appearance.UpdateAppearance(gameObject, Genome.NeuralNet);
-    }
 
     public override void RandomizeGenome()
     {
@@ -145,6 +140,9 @@ public class Runner : Agent
         this.Selectable = false;
         selectableComponent.Select(false);
         Appearance.SetOpaque(true);
+
+        if (Genome != null)
+            Appearance.UpdateAppearance(gameObject, Genome.NeuralNet);
 
         trailRenderer.sortingLayerName = "Background";
         trailRenderer.Clear();
