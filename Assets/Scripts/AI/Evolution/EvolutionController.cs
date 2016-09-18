@@ -73,10 +73,12 @@ public class EvolutionController : MonoBehaviour
             Population[i] = seed.CreateInstance();
             Population[i].OnAgentDied += AgentDied;
             Population[i].Init();
+            Population[i].Genome = seed.Genome.DeepCopy();
         }
         Population[Population.Length - 1] = seed;
         Population[Population.Length - 1].OnAgentDied += AgentDied;
-        Population[Population.Length - 1].Init();
+        seed.Restart();
+        ((Runner)seed).GenerationCount = 0;
 
         MutateAll(mutatePerc, mutationProb, mutationAmount, seed);
 
@@ -193,7 +195,7 @@ public class EvolutionController : MonoBehaviour
 
         MutateAll(mutatePerc, mutationProb, mutationAmount);
 
-        aliveCount = Population.Length;
+        PopulationStart();
     }
 
     public void Repopulate(float mutationProb, float mutationAmount, params Agent[] crossAgents)
@@ -202,6 +204,17 @@ public class EvolutionController : MonoBehaviour
 
         MutateAll(1f, mutationProb, mutationAmount);
 
+        PopulationStart();
+    }
+
+    private void PopulationStart()
+    {
+        foreach (Agent agent in Population)
+        {
+            agent.Restart();
+            agent.OnAgentDied += AgentDied;
+            ((Runner)agent).GenerationCount++;
+        }
         aliveCount = Population.Length;
     }
 
@@ -235,12 +248,6 @@ public class EvolutionController : MonoBehaviour
         //Fill remaining with random children
         for (; k < Population.Length; k++)
             Population[k].Genome.RandomizeNeuralNet(-1, 1);
-
-        foreach (Agent agent in Population)
-        {
-            agent.Restart();
-            agent.OnAgentDied += AgentDied;
-        }
     }
 
     private void CrossAgents(Agent[] agents, bool keepAgents)
@@ -249,11 +256,7 @@ public class EvolutionController : MonoBehaviour
         if (keepAgents)
         {
             for (; i < agents.Length; i++)
-            {
                 Population[i].Genome = agents[i].Genome.DeepCopy();
-                Population[i].Restart();
-                Population[i].OnAgentDied += AgentDied;
-            }
         }
 
         int a = 0, otherIndex = a + 1;
@@ -262,8 +265,6 @@ public class EvolutionController : MonoBehaviour
 
             Genome newGenome = agents[a].Genome.CrossBreed(agents[otherIndex++].Genome);
             Population[i].Genome = newGenome;
-            Population[i].Restart();
-            Population[i].OnAgentDied += AgentDied;
 
             if (otherIndex >= agents.Length)
             {
@@ -284,9 +285,6 @@ public class EvolutionController : MonoBehaviour
                 //BestAgent.Genome.CrossBreedCross(SecondBestAgent.Genome, out newGenome, out otherChild);
                 Population[i].Genome = newGenome;
             }
-
-            Population[i].Restart();
-            Population[i].OnAgentDied += AgentDied;
         }
     }
 

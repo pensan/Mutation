@@ -23,7 +23,7 @@ public class SelectedAgentsPanel : MonoBehaviour
         DummyAgent.gameObject.SetActive(false);
     }
 
-    public void AddAgent(Agent newAgent)
+    public void AddAgent(Runner newAgent)
     {
         AgentPanel copy = Instantiate(DummyAgent);
         copy.transform.SetParent(ContentPanel, true);

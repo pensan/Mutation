@@ -184,9 +184,10 @@ GameObject:
   - 114: {fileID: 114000010865764272}
   - 114: {fileID: 114000011255245072}
   - 114: {fileID: 114000013775663256}
-  - 61: {fileID: 61000012613375856}
   - 50: {fileID: 50000012639507104}
   - 96: {fileID: 96000010083554030}
+  - 58: {fileID: 58000013452631222}
+  - 114: {fileID: 114000010608652052}
   m_Layer: 9
   m_Name: Agent
   m_TagString: Untagged
@@ -526,7 +527,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014019896432}
-  m_LocalRotation: {x: -0, y: -0, z: 0.13047019, w: 0.9914522}
+  m_LocalRotation: {x: -0, y: -0, z: 0.1304702, w: 0.9914523}
   m_LocalPosition: {x: -0.02, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 14.685}
@@ -663,8 +664,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &61000012613375856
-BoxCollider2D:
+--- !u!58 &58000013452631222
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -676,7 +677,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Radius: 0.45
 --- !u!96 &96000010083554030
 TrailRenderer:
   m_ObjectHideFlags: 1
@@ -742,6 +743,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   cross: {fileID: 212000013741610190}
+--- !u!114 &114000010608652052
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011992331954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a22595318342f064aad871299daf9a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000010865764272
 MonoBehaviour:
   m_ObjectHideFlags: 1

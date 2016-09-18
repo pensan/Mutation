@@ -38,20 +38,20 @@ public class LevelController : MonoBehaviour
     {
         Agent DummyAgent = GameStateManager.Instance.DummyAgent;
         DummyAgent.StartPosition = StartPosition.position;
+        if (!DummyAgent.IsInitialized)
+            DummyAgent.Init();
+
         if (LoadGenome)
-            DummyAgent.GenomeCreationMethod = Agent.GenomeCreation.Load;
+            DummyAgent.LoadCurrentGenome();
         else
-            DummyAgent.GenomeCreationMethod = Agent.GenomeCreation.Random;
+            DummyAgent.RandomizeGenome();
     }
 
     private void StartEvolution()
     {
         EvolutionController evoController = GameStateManager.Instance.EvolutionController;
-        if (GameStateManager.Instance.IsMultiplayer)
-        {
 
-        }
-        else
+        if (!GameStateManager.Instance.IsMultiplayer)
         {
             switch (EvoType)
             {
@@ -63,6 +63,7 @@ public class LevelController : MonoBehaviour
                     break;
             }
         }
+        
         
         GameStateManager.Instance.StartEvolution();
     }
@@ -93,7 +94,6 @@ public class LevelController : MonoBehaviour
     {
         Agent DummyAgent = GameStateManager.Instance.DummyAgent;
         DummyAgent.StartPosition = Vector3.zero;
-        DummyAgent.GenomeCreationMethod = Agent.GenomeCreation.None;
     }
 
     private void ShowBreedMenu()

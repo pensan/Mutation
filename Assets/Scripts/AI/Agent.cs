@@ -21,10 +21,15 @@ public class Agent : MonoBehaviour, IComparable<Agent>
         }
         set
         {
-            genome = value;
-            genome.ParentAgent = this;
-            genome.FitnessMethod = this.fitnessMethod;
+            SetGenome(value);
         }
+    }
+
+    protected virtual void SetGenome(Genome newGenome)
+    {
+        genome = newGenome;
+        genome.ParentAgent = this;
+        genome.FitnessMethod = this.fitnessMethod;
     }
 
     public bool IsAlive
@@ -33,42 +38,28 @@ public class Agent : MonoBehaviour, IComparable<Agent>
         protected set;
     }
 
+    private bool isInitialized = false;
+    public bool IsInitialized
+    {
+        get { return isInitialized; }
+        private set
+        {
+            isInitialized = value;
+        }
+    }
+
     void Awake()
     {
         IsAlive = true;
     }
 
     public event Action<Agent> OnAgentDied;
-    protected Action CreateGenome;
-    private GenomeCreation genomeCreation = GenomeCreation.None;
-    public GenomeCreation GenomeCreationMethod
-    {
-        get { return genomeCreation; }
-        set
-        {
-            genomeCreation = value;
 
-            switch (genomeCreation)
-            {
-                case GenomeCreation.Load:
-                    CreateGenome = LoadCurrentGenome;
-                    break;
-                case GenomeCreation.Random:
-                    CreateGenome = RandomizeGenome;
-                    break;
-                case GenomeCreation.None:
-                    CreateGenome = null;
-                    break;
-            }
-        }
-
-    }
     protected Genome.FitnessFunction fitnessMethod;
 
     public virtual Agent CreateInstance()
     {
         Agent newAgent = Instantiate(this);
-        newAgent.GenomeCreationMethod = this.GenomeCreationMethod;
         newAgent.StartPosition = this.StartPosition;
         return newAgent;
     }
@@ -77,6 +68,8 @@ public class Agent : MonoBehaviour, IComparable<Agent>
     {
 
         Restart();
+
+        isInitialized = true;
     }
 
     public virtual void LoadCurrentGenome()

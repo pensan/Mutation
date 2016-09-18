@@ -24,6 +24,12 @@ public class GameStateManager : MonoBehaviour
         private set;
     }
 
+    public Camera Camera
+    {
+        get;
+        private set;
+    }
+
     public Scene CurLevel
     {
         get;
@@ -51,6 +57,7 @@ public class GameStateManager : MonoBehaviour
     {
         SceneManager.LoadScene("GUI", LoadSceneMode.Additive);
         LoadMainMenu();
+        Camera = CamMovement.GetComponent<Camera>();
 
         Instance = this;
 

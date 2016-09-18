@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class Runner : Agent
 {
     private Sensor[] sensors;
 
-    public RunnerAppearance appearance;
+    public RunnerAppearance Appearance
+    {
+        get;
+        private set;
+    }
 
     public RunnerMovement Movement
     {
@@ -18,19 +23,72 @@ public class Runner : Agent
     private float lifeTime = 0;
     private Selectable selectableComponent;
 
+    public static readonly string[] FirstNamePool = new string[]
+    {
+        "Quirgle", "Sqacknu", "Herpes", "Sporn", "Paranta", "Qarantu", "Vin", "Polanka",
+        "Beed", "Korus", "Burlas", "Jokata"
+    };
+
+    private static List<string> UnusedNames = new List<string>();
+    static Runner()
+    {
+        UnusedNames.AddRange(FirstNamePool);
+    }
+    public static string GetRandomFirstName()
+    {
+        if (UnusedNames.Count == 0)
+            UnusedNames.AddRange(FirstNamePool);
+
+        System.Random r = new System.Random();
+        int index = r.Next(UnusedNames.Count);
+        string name = UnusedNames[index];
+        UnusedNames.RemoveAt(index);
+        return name;
+    }
+
+
+    public string FirstName
+    {
+        get;
+        set;
+    }
+
+    public string GenerationName
+    {
+        get;
+        private set;
+    }
+
+    private int generationCount;
+    public int GenerationCount
+    {
+        get
+        {
+            return generationCount;
+        }
+        set
+        {
+            generationCount = value;
+            RegenerateGenerationName();
+        }
+    }
+
     public bool Selectable
     {
         get { return selectableComponent.enabled; }
         set
         {
             selectableComponent.enabled = value;
+            dragComponenet.enabled = value;
+
             if (value)
-                appearance.SetOpaque(selectableComponent.Selected);
+                Appearance.SetOpaque(selectableComponent.Selected);
             else
-                appearance.SetOpaque(true);
+                Appearance.SetOpaque(true);
         }
     }
     private TrailRenderer trailRenderer;
+    private Dragable dragComponenet;
 
 
     public override void Init()
@@ -41,18 +99,27 @@ public class Runner : Agent
         selectableComponent.OnSelectChanged += SelectThisAgent;
         selectableComponent.enabled = false;
 
-        appearance = GetComponentInChildren<RunnerAppearance>();
+        dragComponenet = GetComponent<Dragable>();
+        dragComponenet.enabled = false;
+        dragComponenet.OnDrag += DragThisAgent;
+
+        Appearance = GetComponentInChildren<RunnerAppearance>();
 
         trailRenderer = GetComponent<TrailRenderer>();
         trailRenderer.sortingOrder = -10;
 
         fitnessMethod = UpdateFitness;
 
-        base.CreateGenome();
-
-        appearance.UpdateAppearance(Genome.NeuralNet);
+        GenerationCount = 0;
+        this.FirstName = GetRandomFirstName();
 
         base.Init();
+    }
+
+    protected override void SetGenome(Genome genome)
+    {
+        base.SetGenome(genome);
+        Appearance.UpdateAppearance(Genome.NeuralNet);
     }
 
     public override void RandomizeGenome()
@@ -70,10 +137,8 @@ public class Runner : Agent
         base.Restart();
 
         selectableComponent.Select(false);
-        appearance.SetOpaque(true);
-        appearance.UpdateAppearance(Genome.NeuralNet);
+        Appearance.SetOpaque(true);
 
-        appearance.SetOpaque(true);
         trailRenderer.sortingLayerName = "Background";
         trailRenderer.Clear();
 
@@ -142,11 +207,11 @@ public class Runner : Agent
 
     private void SelectThisAgent(bool selected)
     {
-        appearance.SetOpaque(selected);
+        Appearance.SetOpaque(selected);
         if (selected)
         {
             GUIController.Instance.BreedMenu.SelectedAgents.AddAgent(this);
-            trailRenderer.sortingLayerName = appearance.body.sortingLayerName;
+            trailRenderer.sortingLayerName = Appearance.body.sortingLayerName;
         }
         else
         {
@@ -155,4 +220,35 @@ public class Runner : Agent
         }
     }
 
+    private void DragThisAgent()
+    {
+        Vector3 newPos = GameStateManager.Instance.Camera.ScreenToWorldPoint(Input.mousePosition);
+        newPos.z = transform.position.z;
+        this.transform.position = newPos;
+    }
+
+
+    private void RegenerateGenerationName()
+    {
+        GenerationName = GenerationCount > 0 ? "Jr. " + ToRoman(GenerationCount - 1) : "";
+    }
+
+    private static string ToRoman(int number)
+    {
+        if (number > 3999) return "times alot";
+        if (number < 1) return string.Empty;
+        if (number >= 1000) return "M" + ToRoman(number - 1000);
+        if (number >= 900) return "CM" + ToRoman(number - 900);
+        if (number >= 500) return "D" + ToRoman(number - 500);
+        if (number >= 400) return "CD" + ToRoman(number - 400);
+        if (number >= 100) return "C" + ToRoman(number - 100);
+        if (number >= 90) return "XC" + ToRoman(number - 90);
+        if (number >= 50) return "L" + ToRoman(number - 50);
+        if (number >= 40) return "XL" + ToRoman(number - 40);
+        if (number >= 10) return "X" + ToRoman(number - 10);
+        if (number >= 9) return "IX" + ToRoman(number - 9);
+        if (number >= 5) return "V" + ToRoman(number - 5);
+        if (number >= 4) return "IV" + ToRoman(number - 4);
+        else return "I" + ToRoman(number - 1);
+    }
 }
