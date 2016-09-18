@@ -573,7 +573,7 @@ Prefab:
     - target: {fileID: 114000011255245072, guid: c003057658e35e74fadb45385c0bfb83,
         type: 2}
       propertyPath: UseUserInput
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 50000012639507104, guid: c003057658e35e74fadb45385c0bfb83,
         type: 2}
