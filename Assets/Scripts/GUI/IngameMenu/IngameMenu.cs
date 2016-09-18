@@ -15,7 +15,10 @@ public class IngameMenu : MenuScreen
         BackToMain.onClick.AddListener(delegate() 
         {
             if (GameStateManager.Instance.IsTraining)
+            {
                 Serializer.SaveNetwork(GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet);
+                GameStateManager.Instance.NetworkManager.SaveNeuralNet(GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet);
+            }
             GameStateManager.Instance.LoadMainMenu();
         });
 
@@ -27,6 +30,7 @@ public class IngameMenu : MenuScreen
         base.Show();
 
         KillSwitch.gameObject.SetActive(!GameStateManager.Instance.IsMultiplayer);
+        AutoBreedToggle.gameObject.SetActive(!GameStateManager.Instance.IsMultiplayer);
     }
 
 

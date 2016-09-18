@@ -194,11 +194,11 @@ public class Runner : Agent
 
     protected override void Die()
     {
-        base.Die();
-
         this.Movement.Reset();
         this.Movement.RigidBodyComponent.isKinematic = true;
         this.Movement.enabled = false;
+
+        base.Die();
     }
 
 

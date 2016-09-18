@@ -14,6 +14,7 @@ public class NetworkManager : MonoBehaviour
 
     string server_url   = "http://mutinder.herokuapp.com";
     string post_user    = "/api/users";
+    string post_nn      = "/api/users/{0}";
     string get_user     = "/api/users";
     string get_opponent = "/api/users/{0}/opponent/{1}";
     GameObject GUI;
@@ -85,6 +86,36 @@ public class NetworkManager : MonoBehaviour
             Debug.Log(www.text);
             JObject parsed = JObject.Parse(www.text);
             player_id = (int)parsed["data"]["user"]["id"];
+        }
+
+    }
+
+
+    public void SaveNeuralNet(NeuralNetwork net)
+    {
+        StartCoroutine(PostNeuralNet(net));
+    }
+
+    /// <summary>
+    /// Sends the NeuralNetwork to the server with current user data
+    /// </summary>
+    IEnumerator PostNeuralNet(NeuralNetwork net)
+    {
+        WWWForm form = new WWWForm();
+
+        form.AddField("user[neuronal_network]", Serializer.ToJsonString(Serializer.ToSerializable(net)));
+
+        WWW www = new WWW(server_url + post_nn, form);
+        yield return www;
+
+        if (!string.IsNullOrEmpty(www.error))
+        {
+            Debug.LogError(www.error + ": " + server_url + post_user);
+        }
+        else
+        {
+            Debug.Log(www.text);
+            Debug.Log("Successfully posted network.");
         }
 
     }

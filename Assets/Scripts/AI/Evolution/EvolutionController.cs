@@ -52,7 +52,7 @@ public class EvolutionController : MonoBehaviour
         private set;
     }
 
-    private float crossBreedPerc = 0.3f;
+    private float crossBreedPerc = 1f;
     private float mutatePerc = 1f;
 
     private float mutationProb = 0.25f;

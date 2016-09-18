@@ -55,22 +55,7 @@ public class LevelController : MonoBehaviour
 
     private void StartEvolution()
     {
-        EvolutionController evoController = GameStateManager.Instance.EvolutionController;
-
-        if (!GameStateManager.Instance.IsMultiplayer)
-        {
-            switch (EvoType)
-            {
-                case EvolutionType.Automatic:
-                    evoController.OnAllAgentsDied += evoController.AutoRepopulate;
-                    break;
-                case EvolutionType.User:
-                    evoController.OnAllAgentsDied += OnAllAgentsDiedHandler;
-                    break;
-            }
-        }
-        
-        
+        GameStateManager.Instance.EvolutionController.OnAllAgentsDied += OnAllAgentsDiedHandler;
         GameStateManager.Instance.StartEvolution();
     }
 
@@ -83,17 +68,7 @@ public class LevelController : MonoBehaviour
 
     private void CleanUpEvolutionController()
     {
-        EvolutionController evoController = GameStateManager.Instance.EvolutionController;
-
-        switch (EvoType)
-        {
-            case EvolutionType.Automatic:
-                evoController.OnAllAgentsDied -= evoController.AutoRepopulate;
-                break;
-            case EvolutionType.User:
-                evoController.OnAllAgentsDied -= OnAllAgentsDiedHandler;
-                break;
-        }
+        GameStateManager.Instance.EvolutionController.OnAllAgentsDied -= OnAllAgentsDiedHandler;
     }
 
     private void CleanUpDummyAgent()
@@ -104,21 +79,15 @@ public class LevelController : MonoBehaviour
 
     private void OnAllAgentsDiedHandler()
     {
-        if (EvoType == EvolutionType.User)
+        switch (EvoType)
         {
-            GUIController.Instance.CurrentMenu = GUIController.Instance.BreedMenu;
-        }
-        else
-        {
-            StartCoroutine(DelayedAutoRepopulate());
+            case EvolutionType.Automatic:
+                GameStateManager.Instance.EvolutionController.AutoRepopulate();
+                break;
+            case EvolutionType.User:
+                GUIController.Instance.CurrentMenu = GUIController.Instance.BreedMenu;
+                break;
         }
     }
 
-    IEnumerator DelayedAutoRepopulate()
-    {
-        yield return new WaitForEndOfFrame();
-
-        GameStateManager.Instance.EvolutionController.AutoRepopulate();
-        GameStateManager.Instance.CamMovement.SetCamPosInstant(GameStateManager.Instance.DummyAgent.StartPosition);
-    }
 }
