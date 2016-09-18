@@ -1711,6 +1711,7 @@ MonoBehaviour:
   BreedButton: {fileID: 700772237}
   ChallengeButton: {fileID: 156938559}
   ExitButton: {fileID: 1665389086}
+  LevelIndex: 2
 --- !u!1 &940710857
 GameObject:
   m_ObjectHideFlags: 0

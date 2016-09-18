@@ -8,12 +8,13 @@ public class MainMenu : MenuScreen
     public Button ChallengeButton;
     public Button ExitButton;
 
+    public int LevelIndex = 1;
 
     void Awake()
     {
         BreedButton.onClick.AddListener(delegate ()
         {
-            GameStateManager.Instance.LoadSingleplayerLevel(1);
+            GameStateManager.Instance.LoadSingleplayerLevel(LevelIndex);
         });
         ChallengeButton.onClick.AddListener(delegate ()
         {
