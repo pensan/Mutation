@@ -50,7 +50,7 @@ public class Runner : Agent
 
         base.CreateGenome();
 
-        appearance.UpdateAppearance(Genome.neuralNet);
+        appearance.UpdateAppearance(Genome.NeuralNet);
 
         base.Init();
     }
@@ -71,7 +71,7 @@ public class Runner : Agent
 
         selectableComponent.Select(false);
         appearance.SetOpaque(true);
-        appearance.UpdateAppearance(Genome.neuralNet);
+        appearance.UpdateAppearance(Genome.NeuralNet);
 
         appearance.SetOpaque(true);
         trailRenderer.sortingLayerName = "Background";

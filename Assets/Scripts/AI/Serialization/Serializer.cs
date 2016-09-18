@@ -2,47 +2,22 @@
 
 #region INCLUDES
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 #endregion
 
-public class Serializer : MonoBehaviour 
+public static class Serializer 
 {
-    public EvolutionController evolutionController;
 
-    public static Serializer Instance;
+    private static string filename = "neuralNet.txt";
+    private static string resourcesPath = Path.Combine(Application.dataPath, "Resources");
+    private static string fullFilePath  = Path.Combine(resourcesPath, filename);
 
-    private string filename = "neuralNet.txt";
-    private string resourcesPath;
-    private string fullFilePath;
-    /// <summary>
-    /// Used for initialisation and creating references
-    /// </summary>
-    void Awake () 
-	{
-        resourcesPath = Path.Combine(Application.dataPath, "Resources");
-        fullFilePath = Path.Combine(resourcesPath, filename);
-        Instance = this;
-	}
-	
-	/// <summary>
-	/// Used for setting up MonoBehaviour
-	/// </summary>
-	void Start () 
-	{
-	
-	}
 
-	void OnDestroy () 
-	{
-        SaveNetwork();
-	}
-
-    void SaveNetwork()
+    public static void SaveNetwork(NeuralNetwork network)
     {
-        NeuralNetwork network = evolutionController.BestAgent.Genome.neuralNet;
-
         SerializeableNeuralNetwork saveNetwork = new SerializeableNeuralNetwork();
         saveNetwork.topology = network.Topology;
 
@@ -68,9 +43,16 @@ public class Serializer : MonoBehaviour
         AssetDatabase.Refresh();
 
         Debug.Log(json);
+        Debug.Log("Saved network.");
     }
 
-    public SerializeableNeuralNetwork LoadNetwork()
+    public static SerializeableNeuralNetwork LoadNetworkFromServerResponse(string data)
+    {
+        JObject parsed = JObject.Parse(data);
+        return JsonConvert.DeserializeObject<SerializeableNeuralNetwork>(parsed["data"].ToString());
+    }
+
+    public static SerializeableNeuralNetwork LoadNetwork()
     {
         if (File.Exists(fullFilePath))
         {
@@ -83,7 +65,7 @@ public class Serializer : MonoBehaviour
         }
     }
 
-    private string FilePath()
+    private static string FilePath()
     {
         return Path.Combine(resourcesPath, filename);
     }

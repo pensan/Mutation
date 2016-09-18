@@ -81,7 +81,7 @@ public class Agent : MonoBehaviour, IComparable<Agent>
 
     public virtual void LoadCurrentGenome()
     {
-        SerializeableNeuralNetwork loadedNetwork = Serializer.Instance.LoadNetwork();
+        SerializeableNeuralNetwork loadedNetwork = Serializer.LoadNetwork();
 
         if (loadedNetwork != null)
         {

@@ -46,7 +46,11 @@ public class EvolutionController : MonoBehaviour
         }
     }
 
-    private Genome alphaGenome = null;
+    public Genome AlphaGenome
+    {
+        get;
+        private set;
+    }
 
     private float crossBreedPerc = 0.3f;
     private float mutatePerc = 1f;
@@ -106,7 +110,7 @@ public class EvolutionController : MonoBehaviour
 
         BestAgent = null;
         SecondBestAgent = null;
-        alphaGenome = null;
+        AlphaGenome = null;
     }
 
 
@@ -161,14 +165,14 @@ public class EvolutionController : MonoBehaviour
     private void DetermineAlpha()
     {
         //Determine new alpha genome
-        if (alphaGenome == null || alphaGenome.Fitness < BestAgent.Genome.Fitness)
+        if (AlphaGenome == null || AlphaGenome.Fitness < BestAgent.Genome.Fitness)
         {
-            alphaGenome = BestAgent.Genome.DeepCopy();
+            AlphaGenome = BestAgent.Genome.DeepCopy();
             Debug.Log("New alpha genome");
         }
         else
         {
-            BestAgent.Genome = alphaGenome.DeepCopy();
+            BestAgent.Genome = AlphaGenome.DeepCopy();
             Debug.Log("Reusing alpha genome");
         }
     }

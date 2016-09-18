@@ -30,7 +30,7 @@ public class CameraMovement : MonoBehaviour
             else
             {
                 EvolutionController.OnBestChanged -= SetTarget;
-                this.transform.position = new Vector3(0, 0, CamZ);
+                SetCamPosInstant(new Vector3(0, 0, CamZ));
             }
         }
     }
@@ -57,6 +57,7 @@ public class CameraMovement : MonoBehaviour
     {
         camPos.z = CamZ;
         this.transform.position = camPos;
+        targetCamPos = this.transform.position;
     }
 
     private void CheckUserInput()

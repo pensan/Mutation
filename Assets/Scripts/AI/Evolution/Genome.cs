@@ -21,12 +21,16 @@ public class Genome : IComparable<Genome>
     public delegate float FitnessFunction();
     public FitnessFunction FitnessMethod;
 
-    public NeuralNetwork neuralNet;
+    public NeuralNetwork NeuralNet
+    {
+        get;
+        private set;
+    }
 
     public Genome(NeuralNetwork neuralNet, Agent parent = null)
     {
         this.ParentAgent = parent;
-        this.neuralNet = neuralNet;
+        this.NeuralNet = neuralNet;
         Fitness = 0;
     }
 
@@ -40,13 +44,13 @@ public class Genome : IComparable<Genome>
 
     public double[] CalculateOutputs(double[] inputs)
     {
-        return neuralNet.CalculateYValues(inputs);
+        return NeuralNet.CalculateYValues(inputs);
     }
 
 
     public Genome CrossBreed(Genome other)
     {
-        NeuralNetwork newNeuralNet = this.neuralNet.GetTopologyCopy();
+        NeuralNetwork newNeuralNet = this.NeuralNet.GetTopologyCopy();
 
         for (int l = 0; l < newNeuralNet.Layers.Length; l++)
         {
@@ -56,9 +60,9 @@ public class Genome : IComparable<Genome>
                 {
                     NeuralNetwork sourceNet;
                     if (randomizer.NextDouble() >= 0.40)
-                        sourceNet = this.neuralNet;
+                        sourceNet = this.NeuralNet;
                     else
-                        sourceNet = other.neuralNet;
+                        sourceNet = other.NeuralNet;
 
                     newNeuralNet.Layers[l].Weights[x, y] = sourceNet.Layers[l].Weights[x, y];
                 }
@@ -70,7 +74,7 @@ public class Genome : IComparable<Genome>
 
     public Genome CrossBreedSimilarity(Genome other, float differenceThreshold, float mutateProb, float mutateAmount)
     {
-        NeuralNetwork newNeuralNet = this.neuralNet.GetTopologyCopy();
+        NeuralNetwork newNeuralNet = this.NeuralNet.GetTopologyCopy();
 
         for (int l = 0; l < newNeuralNet.Layers.Length; l++)
         {
@@ -79,15 +83,15 @@ public class Genome : IComparable<Genome>
                 for (int y = 0; y < newNeuralNet.Layers[l].Weights.GetLength(1); y++)
                 {
                     double smaller, bigger;
-                    if (this.neuralNet.Layers[l].Weights[x, y] < other.neuralNet.Layers[l].Weights[x, y])
+                    if (this.NeuralNet.Layers[l].Weights[x, y] < other.NeuralNet.Layers[l].Weights[x, y])
                     {
-                        smaller = neuralNet.Layers[l].Weights[x, y];
-                        bigger = other.neuralNet.Layers[l].Weights[x, y];
+                        smaller = NeuralNet.Layers[l].Weights[x, y];
+                        bigger = other.NeuralNet.Layers[l].Weights[x, y];
                     }
                     else
                     {
-                        bigger = neuralNet.Layers[l].Weights[x, y];
-                        smaller = other.neuralNet.Layers[l].Weights[x, y];
+                        bigger = NeuralNet.Layers[l].Weights[x, y];
+                        smaller = other.NeuralNet.Layers[l].Weights[x, y];
                     }
                     double diff = bigger - smaller;
                     if (diff <= differenceThreshold)
@@ -97,9 +101,9 @@ public class Genome : IComparable<Genome>
                     {
                         NeuralNetwork sourceNet;
                         if (randomizer.NextDouble() >= 0.40)
-                            sourceNet = this.neuralNet;
+                            sourceNet = this.NeuralNet;
                         else
-                            sourceNet = other.neuralNet;
+                            sourceNet = other.NeuralNet;
 
                         newNeuralNet.Layers[l].Weights[x, y] =  sourceNet.Layers[l].Weights[x, y] + randomizer.NextDouble() * (mutateAmount * 2) - mutateAmount;
                     }
@@ -113,8 +117,8 @@ public class Genome : IComparable<Genome>
 
     public void CrossBreedCross(Genome other, out Genome child1, out Genome child2)
     {
-        NeuralNetwork netChild1 = this.neuralNet.GetTopologyCopy();
-        NeuralNetwork netChild2 = this.neuralNet.GetTopologyCopy();
+        NeuralNetwork netChild1 = this.NeuralNet.GetTopologyCopy();
+        NeuralNetwork netChild2 = this.NeuralNet.GetTopologyCopy();
         int weightAmount = 0;
         foreach (NeuralLayer layer in netChild1.Layers)
             weightAmount += layer.Weights.Length;
@@ -123,13 +127,13 @@ public class Genome : IComparable<Genome>
         NeuralNetwork first, second;
         if (randomizer.NextDouble() > 0.5)
         {
-            first = this.neuralNet;
-            second = other.neuralNet;
+            first = this.NeuralNet;
+            second = other.NeuralNet;
         }
         else
         {
-            first = other.neuralNet;
-            second = this.neuralNet;
+            first = other.NeuralNet;
+            second = this.NeuralNet;
         }
 
         int k = 0;
@@ -160,7 +164,7 @@ public class Genome : IComparable<Genome>
 
     public void Mutate(float mutateProb, float mutateAmount)
     {
-        foreach (NeuralLayer layer in neuralNet.Layers)
+        foreach (NeuralLayer layer in NeuralNet.Layers)
         {
             for (int x = 0; x < layer.Weights.GetLength(0); x++)
             {
@@ -182,12 +186,12 @@ public class Genome : IComparable<Genome>
 
     public void RandomizeNeuralNet(double rangeStart, double rangeEnd)
     {
-        this.neuralNet.FillWithRandomWeights(rangeStart, rangeEnd);
+        this.NeuralNet.FillWithRandomWeights(rangeStart, rangeEnd);
     }
 
     public Genome DeepCopy()
     {
-        Genome newGenome = new Genome(this.neuralNet.DeepCopy());
+        Genome newGenome = new Genome(this.NeuralNet.DeepCopy());
         newGenome.Fitness = this.Fitness;
         return newGenome;
     }

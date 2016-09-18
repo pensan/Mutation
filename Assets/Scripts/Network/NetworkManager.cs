@@ -9,7 +9,8 @@ using UnityEngine.Experimental.Networking;
 using UnityEngine.Networking;
 #endif
 
-public class NetworkManager : MonoBehaviour {
+public class NetworkManager : MonoBehaviour
+{
 
     string server_url   = "http://mutinder.herokuapp.com";
     string post_user    = "/api/users";
@@ -18,41 +19,39 @@ public class NetworkManager : MonoBehaviour {
     GameObject GUI;
     int player_id;
 
-	void Start () {
+	void Start ()
+    {
         Debug.Log("API server url: " + server_url);
-
-        GUI = GameObject.FindGameObjectWithTag("GUI");
 
         StartCoroutine(GetServerstatus());
 	}
-	
-    /// <summary>
-    /// Restarts the game by reloading the current scene
-    /// </summary>
-    public void Restart() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 
     /// <summary>
     /// Starts a challenge with another user
     /// </summary>
-    public void StartChallenge() {
-        StartCoroutine(GetOpponent());
+    public NeuralNetwork GetChallenger(string opponentName = "")
+    {
+        return new NeuralNetwork(Serializer.LoadNetwork()); //Temporary while server response is not working
+        //return GetOpponent(opponentName);
     }
 
     /// <summary>
     /// Tests the connection to the server
     /// </summary>
-    IEnumerator GetServerstatus () {
+    IEnumerator GetServerstatus ()
+    {
         UnityWebRequest www = UnityWebRequest.Get(server_url);
         yield return www.Send();
 
-        if(www.isError) {
+        if(www.isError)
+        {
             Debug.LogError(www.error + ": " + server_url);
         }
-        else {
+        else
+        {
             // Server response was not 2XX
-            if ( www.responseCode.ToString()[0] != '2' ) {
+            if ( www.responseCode.ToString()[0] != '2' )
+            {
 
                 Transform abc = GUI.transform.Find("ConnectionError");
                 abc.gameObject.SetActive(true);
@@ -68,7 +67,8 @@ public class NetworkManager : MonoBehaviour {
     /// <summary>
     /// Sends the UUID to the server and fetches the user data
     /// </summary>
-    IEnumerator PostLogin () {
+    IEnumerator PostLogin ()
+    {
         WWWForm form = new WWWForm();
 
         form.AddField("user[uuid]", SystemInfo.deviceUniqueIdentifier);
@@ -76,9 +76,12 @@ public class NetworkManager : MonoBehaviour {
         WWW www = new WWW(server_url + post_user, form);
         yield return www;
 
-        if (!string.IsNullOrEmpty(www.error)) {
+        if (!string.IsNullOrEmpty(www.error))
+        {
             Debug.LogError(www.error + ": " + server_url + post_user);
-        } else {
+        }
+        else
+        {
             Debug.Log(www.text);
             JObject parsed = JObject.Parse(www.text);
             player_id = (int)parsed["data"]["user"]["id"];
@@ -89,11 +92,11 @@ public class NetworkManager : MonoBehaviour {
     /// <summary>
     /// Returns an opponent
     /// </summary>
-    IEnumerator GetOpponent(string opponent_id="")
+    NeuralNetwork GetOpponent(string opponent_id="")
     {
         string get_op = string.Format(get_opponent, player_id, opponent_id);
         UnityWebRequest www = UnityWebRequest.Get(server_url + get_op);
-        yield return www.Send();
+        www.Send();
 
         if (www.isError)
         {
@@ -105,15 +108,14 @@ public class NetworkManager : MonoBehaviour {
             if (www.responseCode.ToString()[0] != '2')
             {
 
-                Transform abc = GUI.transform.Find("ConnectionError");
-                abc.gameObject.SetActive(true);
+                Debug.LogError("Connection Error!");
             }
             else
             {
-                Debug.Log(www.downloadHandler.text);
-                JObject parsed = JObject.Parse(www.downloadHandler.text);
+                return new NeuralNetwork(Serializer.LoadNetworkFromServerResponse(www.downloadHandler.text));
             }
         }
+        return null;
     }
 
 

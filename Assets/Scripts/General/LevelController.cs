@@ -17,20 +17,22 @@ public class LevelController : MonoBehaviour
 
     void Start()
     {
+        ModifyDummyAgent();
+
+        StartEvolution();
+
+        SetCamera();
+    }
+
+
+    private void SetCamera()
+    {
         CameraMovement camMovement = GameStateManager.Instance.CamMovement;
         camMovement.AllowUserInput = false;
         camMovement.FollowBestAgent = FollowBestAgent;
         if (FollowBestAgent)
             camMovement.SetCamPosInstant(StartPosition.position);
-        else
-            camMovement.SetCamPosInstant(Vector3.zero);
-
-
-        ModifyDummyAgent();
-
-        StartEvolution();
     }
-
 
     private void ModifyDummyAgent()
     {
@@ -45,16 +47,23 @@ public class LevelController : MonoBehaviour
     private void StartEvolution()
     {
         EvolutionController evoController = GameStateManager.Instance.EvolutionController;
-        
-        switch (EvoType)
+        if (GameStateManager.Instance.IsMultiplayer)
         {
-            case EvolutionType.Automatic:
-                evoController.OnAllAgentsDied += evoController.AutoRepopulate;
-                break;
-            case EvolutionType.User:
-                evoController.OnAllAgentsDied += ShowBreedMenu;
-                break;
+
         }
+        else
+        {
+            switch (EvoType)
+            {
+                case EvolutionType.Automatic:
+                    evoController.OnAllAgentsDied += evoController.AutoRepopulate;
+                    break;
+                case EvolutionType.User:
+                    evoController.OnAllAgentsDied += ShowBreedMenu;
+                    break;
+            }
+        }
+        
         GameStateManager.Instance.StartEvolution();
     }
 

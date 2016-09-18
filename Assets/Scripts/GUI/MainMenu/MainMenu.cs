@@ -13,7 +13,11 @@ public class MainMenu : MenuScreen
     {
         BreedButton.onClick.AddListener(delegate ()
         {
-            GameStateManager.Instance.LoadLevel(1);
+            GameStateManager.Instance.LoadSingleplayerLevel(1);
+        });
+        ChallengeButton.onClick.AddListener(delegate ()
+        {
+            GameStateManager.Instance.LoadMultiplayerLevel(1);
         });
         ExitButton.onClick.AddListener(delegate ()
         {
