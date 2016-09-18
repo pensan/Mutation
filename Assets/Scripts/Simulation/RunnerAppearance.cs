@@ -28,7 +28,8 @@ public class RunnerAppearance : MonoBehaviour
     {
         this.network = network;
 
-        Color tintColor = Color.HSVToRGB(UnityEngine.Random.Range(0.0f, 1.0f), 1, 1);
+        float colorValue = Mathf.Abs((float)GetSummedWeight(2, 1));
+        Color tintColor = Color.HSVToRGB(colorValue, 1, 1);
 
         List<RunnerAppearanceLimb> currentLimbs = new List<RunnerAppearanceLimb>();
 
@@ -44,57 +45,33 @@ public class RunnerAppearance : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-        foreach (Transform slot in slots)
+
+        for (int i = 0; i < network.Layers[1].Weights.GetLength(0); i++)
         {
-            GameObject go = Instantiate(bodyPartsPrefabs[UnityEngine.Random.Range(0, bodyPartsPrefabs.Count)]);
-            go.transform.SetParent(slot.transform, false);
-            go.transform.localScale *= 5.0f;
-            go.transform.localPosition = Vector2.zero;
-            go.transform.localRotation = Quaternion.identity;
-
-            FixedJoint2D joint = go.GetComponent<RunnerAppearanceLimb>().masterJoint;
-            if (joint != null)
+            if (i < slots.Count)
             {
-                joint.connectedBody = masterRigidBody;
-            }
+                double summedWeight = GetSummedWeight(1, i);
 
-            foreach (SpriteRenderer spr in go.GetComponentsInChildren<SpriteRenderer>())
-            {
-                spr.color = tintColor;
-            }
+                GameObject go = Instantiate(GetSpriteForNode(summedWeight, bodyPartsPrefabs));
 
+                go.transform.SetParent(slots[i].transform, false);
+                go.transform.localScale *= 5.0f;
+                go.transform.localPosition = Vector2.zero;
+                go.transform.localRotation = Quaternion.identity;
+
+                FixedJoint2D joint = go.GetComponent<RunnerAppearanceLimb>().masterJoint;
+                if (joint != null)
+                {
+                    joint.connectedBody = masterRigidBody;
+                }
+
+                foreach (SpriteRenderer spr in go.GetComponentsInChildren<SpriteRenderer>())
+                {
+                    spr.color = tintColor;
+                }
+
+            }
         }
-
-
-        //for (int i = 0; i < network.Layers[1].Weights.GetLength(0); i++ )
-        //{
-        //    if (i < slots.Count)
-        //    {
-        //        double summedWeight = GetSummedWeight(1, i);
-
-        //        GameObject go = Instantiate(GetSpriteForNode(summedWeight, bodyPartsPrefabs));
-        //        Debug.Log("Update appearance for " + runner.name + " with " + slots.Count + " slots setting slot " + i);
-
-        //        currentLimbs.Add(go);
-        //        go.transform.parent = slots[i];
-
-        //        HingeJoint2D joint = go.GetComponent<RunnerAppearanceLimb>().masterJoint;
-        //        if (joint != null)
-        //        {
-        //            joint.connectedBody = masterRigidBody;
-        //        }
-
-        //        foreach (SpriteRenderer spr in go.GetComponentsInChildren<SpriteRenderer>())
-        //        {
-        //            spr.color = tintColor;
-        //        }
-
-        //        go.transform.localPosition = Vector3.zero;
-        //        go.transform.localRotation = Quaternion.identity;
-
-        //        go.GetComponentInChildren<SpriteRenderer>().color = tintColor;
-        //    }
-        //}
 
         body.color = tintColor;
     }
