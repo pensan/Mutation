@@ -565,6 +565,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114000012473293468, guid: c003057658e35e74fadb45385c0bfb83,
+        type: 2}
+      propertyPath: masterRigidBody
+      value: 
+      objectReference: {fileID: 2128247713}
+    - target: {fileID: 114000011255245072, guid: c003057658e35e74fadb45385c0bfb83,
+        type: 2}
+      propertyPath: UseUserInput
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c003057658e35e74fadb45385c0bfb83, type: 2}
   m_IsPrefabParent: 0
+--- !u!50 &2128247713 stripped
+Rigidbody2D:
+  m_PrefabParentObject: {fileID: 50000012639507104, guid: c003057658e35e74fadb45385c0bfb83,
+    type: 2}
+  m_PrefabInternal: {fileID: 2128247712}
