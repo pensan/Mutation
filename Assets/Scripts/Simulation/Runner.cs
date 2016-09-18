@@ -159,7 +159,7 @@ public class Runner : Agent
         selectableComponent.enabled = false;
 
         foreach (Sensor s in sensors)
-            s.enabled = false;
+            s.enabled = true;
     }
 
     void FixedUpdate()

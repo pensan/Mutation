@@ -76,8 +76,8 @@ public class GameStateManager : MonoBehaviour
 
     public void LoadMultiplayerLevel(int index, string opponentName = "")
     {
-        IEnumerator enumer = NetworkManager.GetOpponent(challengerNetwork, opponentName);
-        while (enumer.MoveNext()) { }
+        StartCoroutine(NetworkManager.GetOpponent(challengerNetwork, opponentName));
+        
         if (challengerNetwork != null)
         {
             IsMultiplayer = true;

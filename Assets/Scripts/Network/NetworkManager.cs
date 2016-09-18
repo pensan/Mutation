@@ -136,6 +136,7 @@ public class NetworkManager : MonoBehaviour
             }
             else
             {
+                Debug.Log(www.downloadHandler.text);
                 net = new NeuralNetwork(Serializer.LoadNetworkFromServerResponse(www.downloadHandler.text));
             }
         }
