@@ -35,6 +35,18 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
+    private Rect ScreenBounds;
+    private RectTransform bounds;
+    public RectTransform Bounds
+    {
+        get { return bounds; }
+        set
+        {
+            bounds = value;
+            ScreenBounds = new Rect(bounds.position, Camera.main.WorldToScreenPoint(new Vector2(bounds.rect.width, bounds.rect.height)));
+        }
+    }
+
 
     private void SetTarget(Agent bestGenome)
     {
@@ -51,6 +63,24 @@ public class CameraMovement : MonoBehaviour
 
         targetCamPos.z = CamZ;
         this.transform.position = Vector3.Lerp(this.transform.position, targetCamPos, CamSpeed * Time.deltaTime);
+
+        /*if (Bounds != null)
+        {
+            float rightDiff = (this.transform.position.x + Screen.width / 2) - (ScreenBounds.position.x + ScreenBounds.width / 2);
+            float leftDiff = (this.transform.position.x - Screen.width / 2) + (ScreenBounds.position.x - ScreenBounds.width / 2);
+            float upDiff = (this.transform.position.y + Screen.height / 2) - (ScreenBounds.position.y + ScreenBounds.height / 2);
+            float downDiff = (this.transform.position.y - Screen.height / 2) + (ScreenBounds.position.y - ScreenBounds.height / 2);
+
+            if (rightDiff > 0)
+                this.transform.position = new Vector3(this.transform.position.x - rightDiff, this.transform.position.y, this.transform.position.z);
+            else if (leftDiff < 0)
+                this.transform.position = new Vector3(this.transform.position.x - leftDiff, this.transform.position.y, this.transform.position.z);
+
+            if (upDiff > 0)
+                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - upDiff, this.transform.position.z);
+            else if (downDiff < 0)
+                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - downDiff, this.transform.position.z);
+        }*/
     }
 
     public void SetCamPosInstant(Vector3 camPos)

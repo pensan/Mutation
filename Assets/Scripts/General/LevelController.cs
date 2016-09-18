@@ -13,6 +13,7 @@ public class LevelController : MonoBehaviour
     public EvolutionType EvoType = EvolutionType.User;
 
     public Transform StartPosition;
+    public RectTransform CameraBounds;
     public bool LoadGenome = true;
     public bool FollowBestAgent = true;
 
@@ -34,6 +35,7 @@ public class LevelController : MonoBehaviour
     private void SetCamera()
     {
         CameraMovement camMovement = GameStateManager.Instance.CamMovement;
+        camMovement.Bounds = CameraBounds;
         camMovement.AllowUserInput = false;
         camMovement.FollowBestAgent = FollowBestAgent;
         if (FollowBestAgent)
