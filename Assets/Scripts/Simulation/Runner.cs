@@ -112,7 +112,7 @@ public class Runner : Agent
         Appearance = GetComponentInChildren<RunnerAppearance>();
 
         trailRenderer = GetComponentInChildren<TrailRenderer>();
-        trailRenderer.sortingOrder = -10;
+        trailRenderer.sortingOrder = 0;
 
         fitnessMethod = UpdateFitness;
 

@@ -10,7 +10,7 @@ public class RunnerMovement : MonoBehaviour
 
 
     private const int MAX_SPEED = 25;
-    private const int MAX_JUMP = 35;
+    private const int MAX_JUMP = 75;
 
 
     public bool UseUserInput;
@@ -129,7 +129,7 @@ public class RunnerMovement : MonoBehaviour
             {
                 foreach (ContactPoint2D point in collision.contacts)
                 {
-                    if (Vector2.Dot(Vector2.up, point.normal) >= System.Math.PI / 4)
+                    if (Vector2.Dot(Vector2.up, point.normal) >= System.Math.PI / 6)
                     {
                         jumping = false;
                         return;

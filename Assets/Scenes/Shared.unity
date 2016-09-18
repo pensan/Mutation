@@ -573,7 +573,26 @@ Prefab:
     - target: {fileID: 114000011255245072, guid: c003057658e35e74fadb45385c0bfb83,
         type: 2}
       propertyPath: UseUserInput
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 50000012639507104, guid: c003057658e35e74fadb45385c0bfb83,
+        type: 2}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 50000012639507104, guid: c003057658e35e74fadb45385c0bfb83,
+        type: 2}
+      propertyPath: m_GravityScale
+      value: 9.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 50000011533692362, guid: c003057658e35e74fadb45385c0bfb83,
+        type: 2}
+      propertyPath: m_Mass
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011186161702, guid: c003057658e35e74fadb45385c0bfb83, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c003057658e35e74fadb45385c0bfb83, type: 2}
