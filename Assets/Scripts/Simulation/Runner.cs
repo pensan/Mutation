@@ -125,7 +125,7 @@ public class Runner : Agent
     protected override void SetGenome(Genome genome)
     {
         base.SetGenome(genome);
-        Appearance.UpdateAppearance(Genome.NeuralNet);
+        Appearance.UpdateAppearance(gameObject, Genome.NeuralNet);
     }
 
     public override void RandomizeGenome()
