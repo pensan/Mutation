@@ -7,19 +7,38 @@ public class CameraMovement : MonoBehaviour
     public Agent Target;
 
     public EvolutionController EvolutionController;
-
     public float CamSpeed = 5f;
 
-    public float UserInputSpeed = 5f;
+    public float UserInputSpeed = 50f;
 
     public bool AllowUserInput;
 
-    void Start()
+    private bool followBestAgent = false;
+    public bool FollowBestAgent
     {
-        EvolutionController.OnBestChanged += delegate (Agent bestGenome)
+        get
         {
-            this.Target = bestGenome;
-        };
+            return followBestAgent;
+        }
+        set
+        {
+            followBestAgent = value;
+            if (value)
+            {
+                EvolutionController.OnBestChanged += SetTarget;
+            }
+            else
+            {
+                EvolutionController.OnBestChanged -= SetTarget;
+                this.transform.position = new Vector3(0, 0, CamZ);
+            }
+        }
+    }
+
+
+    private void SetTarget(Agent bestGenome)
+    {
+        this.Target = bestGenome;
     }
 
     private Vector3 targetCamPos;

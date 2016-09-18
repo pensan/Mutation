@@ -5,10 +5,6 @@ using System;
 
 public class Runner : Agent
 {
-    private const float MAX_LIFE_TIME = 5f;
-
-    private Vector3 startPosition;
-
     private Sensor[] sensors;
 
     public RunnerAppearance appearance;
@@ -36,10 +32,6 @@ public class Runner : Agent
     }
     private TrailRenderer trailRenderer;
 
-    void Start()
-    {
-        startPosition = this.transform.position;
-    }
 
     public override void Init()
     {
@@ -49,33 +41,29 @@ public class Runner : Agent
         selectableComponent.OnSelectChanged += SelectThisAgent;
         selectableComponent.enabled = false;
 
-        appearance = GetComponent<RunnerAppearance>();
+        appearance = GetComponentInChildren<RunnerAppearance>();
 
         trailRenderer = GetComponent<TrailRenderer>();
-        trailRenderer.sortingLayerName = "Background";
         trailRenderer.sortingOrder = -10;
 
         fitnessMethod = UpdateFitness;
 
-        SerializeableNeuralNetwork loadedNetwork = Serializer.Instance.LoadNetwork();
-
-        if (loadedNetwork != null)
-        {
-            NeuralNetwork neuralNet = new NeuralNetwork(loadedNetwork);
-            neuralNet.Layers[2].CurrentActivationFunction = ActivationFunctions.TANH;
-            base.Genome = new Genome(neuralNet);
-        }
-        else
-        {
-            NeuralNetwork neuralNet = new NeuralNetwork(sensors.Length, 6, 4, 2);
-            neuralNet.Layers[2].CurrentActivationFunction = ActivationFunctions.TANH;
-            base.Genome = new Genome(neuralNet);
-            Genome.RandomizeNeuralNet(-1, 1);
-        }
+        base.CreateGenome();
 
         appearance.UpdateAppearance(Genome.neuralNet);
+
+        base.Init();
     }
 
+    public override void RandomizeGenome()
+    {
+        base.RandomizeGenome();
+
+        NeuralNetwork neuralNet = new NeuralNetwork(sensors.Length, 6, 4, 2);
+        neuralNet.Layers[2].CurrentActivationFunction = ActivationFunctions.TANH;
+        this.Genome = new Genome(neuralNet);
+        Genome.RandomizeNeuralNet(-1, 1);
+    }
 
     public override void Restart()
     {
@@ -94,7 +82,7 @@ public class Runner : Agent
         
 
         lifeTime = 0;
-        this.transform.position = startPosition;
+        this.transform.position = StartPosition;
 
         selectableComponent.enabled = false;
     }
@@ -104,11 +92,6 @@ public class Runner : Agent
         if (!IsAlive) return;
 
         lifeTime += Time.deltaTime;
-
-        if (lifeTime >= MAX_LIFE_TIME)
-        {
-            Die();
-        }
 
         if (!Movement.UseUserInput)
             CalculateInputs();
@@ -134,7 +117,7 @@ public class Runner : Agent
 
     private float UpdateFitness()
     {
-        return transform.position.x - startPosition.x;
+        return transform.position.x - StartPosition.x;
     }
 
 
@@ -162,13 +145,13 @@ public class Runner : Agent
         appearance.SetOpaque(selected);
         if (selected)
         {
-            BreedUIController.Instance.SelectedAgents.AddAgent(this);
-            trailRenderer.sortingLayerName = appearance.GetComponent<SpriteRenderer>().sortingLayerName;
+            GUIController.Instance.BreedMenu.SelectedAgents.AddAgent(this);
+            trailRenderer.sortingLayerName = appearance.body.sortingLayerName;
         }
         else
         {
             trailRenderer.sortingLayerName = "Background";
-            BreedUIController.Instance.SelectedAgents.RemoveAgent(this);
+            GUIController.Instance.BreedMenu.SelectedAgents.RemoveAgent(this);
         }
     }
 

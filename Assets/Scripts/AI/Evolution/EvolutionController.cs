@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 public class EvolutionController : MonoBehaviour
 {
     private static System.Random randomizer = new System.Random();
 
-    public Agent DummyAgent;
     public int PopulationCount = 5;
 
     public Agent[] Population
@@ -14,6 +14,7 @@ public class EvolutionController : MonoBehaviour
         get;
         private set;
     }
+
     private int aliveCount;
 
     private Agent bestGenome;
@@ -54,26 +55,74 @@ public class EvolutionController : MonoBehaviour
     private float mutationAmount = 0.5f;
 
     public event System.Action<Agent> OnBestChanged;
+    public event System.Action OnAllAgentsDied;
 
 
-    public void CreatePopulation()
+    public void CreatePopulation(Agent seed)
     {
+        KillEvolution(seed);
+
         Population = new Agent[PopulationCount];
 
         for (int i = 0; i < Population.Length - 1; i++)
         {
-            Population[i] = Instantiate(DummyAgent);
+            Population[i] = seed.CreateInstance();
             Population[i].OnAgentDied += AgentDied;
             Population[i].Init();
         }
-        Population[Population.Length - 1] = DummyAgent;
+        Population[Population.Length - 1] = seed;
         Population[Population.Length - 1].OnAgentDied += AgentDied;
         Population[Population.Length - 1].Init();
 
-        MutateAll(mutatePerc, mutationProb, mutationAmount, DummyAgent);
+        MutateAll(mutatePerc, mutationProb, mutationAmount, seed);
 
         aliveCount = Population.Length;
     }
+
+    //Muhahahaha
+    public void KillEvolution(params Agent[] destroyExclusion)
+    {
+        if (Population != null)
+        {
+            foreach (Agent agent in Population)
+            {
+                agent.OnAgentDied -= AgentDied;
+                bool destroy = true;
+                foreach (Agent excludedAgent in destroyExclusion)
+                {
+                    if (excludedAgent == agent)
+                    {
+                        destroy = false;
+                        break;
+                    }
+                }
+
+                if(destroy)
+                    Destroy(agent.gameObject);
+            }
+
+            Population = null;
+        }
+
+        BestAgent = null;
+        SecondBestAgent = null;
+        alphaGenome = null;
+    }
+
+
+    public void KillAll()
+    {
+        if (Population != null)
+        {
+            foreach (Agent agent in Population)
+            {
+                if (agent.IsAlive)
+                    agent.Kill();
+            }
+        }
+    }
+
+
 
     void FixedUpdate()
     {
@@ -102,9 +151,12 @@ public class EvolutionController : MonoBehaviour
         if (aliveCount <= 0)
         {
             DetermineAlpha();
-            BreedUIController.Instance.Show();
+
+            if (OnAllAgentsDied != null)
+                OnAllAgentsDied();
         }
     }
+
 
     private void DetermineAlpha()
     {

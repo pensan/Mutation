@@ -2,25 +2,15 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class BreedUIController : MonoBehaviour
+public class BreedMenu : MenuScreen
 {
 
-    public static BreedUIController Instance
-    {
-        get;
-        private set;
-    }
-
-    public EvolutionController EvolutionController;
     public SelectedAgentsPanel SelectedAgents
     {
         get;
         private set;
     }
 
-    public CameraMovement CamMovement;
-
-    public GameObject BreedMenu;
     public Button AutoBreedButton;
     public Button ManualBreedButton;
     public Slider MutationAmountSlider;
@@ -30,23 +20,20 @@ public class BreedUIController : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
-
         AutoBreedButton.onClick.AddListener(StartAutoBreed);
         ManualBreedButton.onClick.AddListener(StartManualBreed);
         SelectedAgents = GetComponentInChildren<SelectedAgentsPanel>();
         SelectedAgents.OnAgentAdded += SelectedAgentsChanged;
         SelectedAgents.OnAgentRemoved += SelectedAgentsChanged;
 
-        BreedMenu.SetActive(false);
-
         runnerLayer = LayerMask.NameToLayer("Runner");
     }
 
-    public void Show()
+    public override void Show()
     {
-        BreedMenu.SetActive(true);
-        foreach (Agent agent in EvolutionController.Population)
+        base.Show();
+
+        foreach (Agent agent in GameStateManager.Instance.EvolutionController.Population)
         {
             Runner runner = (Runner)agent;
             runner.Selectable = true;
@@ -54,26 +41,32 @@ public class BreedUIController : MonoBehaviour
 
         ManualBreedButton.interactable = SelectedAgents.AgentCount >= 2;
 
-        CamMovement.AllowUserInput = true;
+        GameStateManager.Instance.CamMovement.AllowUserInput = true;
     }
 
-    public void Hide()
+    public override void Hide()
     {
-        BreedMenu.SetActive(false);
-        CamMovement.AllowUserInput = false;
+        base.Hide();
+        GameStateManager.Instance.CamMovement.AllowUserInput = false;
     }
 
     private void StartAutoBreed()
     {
-        EvolutionController.AutoRepopulate(MutationProbSlider.value, MutationAmountSlider.value);
-        Hide();
+        GameStateManager.Instance.EvolutionController.AutoRepopulate(MutationProbSlider.value, MutationAmountSlider.value);
+        NewBreedStarted();
     }
 
     private void StartManualBreed()
     {
-        EvolutionController.Repopulate(MutationProbSlider.value, MutationAmountSlider.value, SelectedAgents.GetSelectedAgents());
+        GameStateManager.Instance.EvolutionController.Repopulate(MutationProbSlider.value, MutationAmountSlider.value, SelectedAgents.GetSelectedAgents());
+        NewBreedStarted();
+    }
+
+    private void NewBreedStarted()
+    {
+        GUIController.Instance.CurrentMenu = GUIController.Instance.IngameMenu;
         SelectedAgents.Clear();
-        Hide();
+        GameStateManager.Instance.CamMovement.SetCamPosInstant(GameStateManager.Instance.DummyAgent.StartPosition);
     }
 
     private void SelectedAgentsChanged()

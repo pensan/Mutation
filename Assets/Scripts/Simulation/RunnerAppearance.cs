@@ -46,7 +46,7 @@ public class RunnerAppearance : MonoBehaviour
 
                 go.GetComponentInChildren<SpriteRenderer>().color = tintColor;
 
-                Debug.Log(GetSummedWeight(1, i));
+                //Debug.Log(GetSummedWeight(1, i));
             }
 
         }
@@ -77,11 +77,15 @@ public class RunnerAppearance : MonoBehaviour
     {
         if (opaque)
         {
-            
+            Color color = body.color;
+            color.a = 1f;
+            body.color = color;
         }
         else
         {
-
+            Color color = body.color;
+            color.a = 0.5f;
+            body.color = color;
         }
     }
 }
