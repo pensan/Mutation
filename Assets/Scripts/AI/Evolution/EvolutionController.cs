@@ -192,7 +192,7 @@ public class EvolutionController : MonoBehaviour
         AutoRepopulate(mutatePerc, mutationProb, mutationAmount);
     }
 
-    public void AutoRepopulate(float mutationPerc, float mutationProb, float mutationAmount)
+    public void AutoRepopulate(float mutatePerc, float mutationProb, float mutationAmount)
     {
         CrossBestSecondBest();
 
