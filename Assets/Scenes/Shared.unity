@@ -395,8 +395,8 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 1
+  field of view: 40
+  orthographic: 0
   orthographic size: 15
   m_Depth: -1
   m_CullingMask:
@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e1f33cbe2c71c4181abd6a9c554935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CamZ: -10
+  CamZ: -50
   Target: {fileID: 0}
   EvolutionController: {fileID: 2073617980}
   CamSpeed: 5
