@@ -1,6 +1,8 @@
 ﻿// REDOX Game Labs 2016
 
 #region INCLUDES
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 #endregion
@@ -17,50 +19,94 @@ public class RunnerAppearance : MonoBehaviour
 
     private NeuralNetwork network;
 
-    private List<GameObject> currentLimbs = new List<GameObject>();
+    public void UpdateAppearance(GameObject runner, NeuralNetwork network)
+    {
+        StartCoroutine(SetAppearanceCo(runner, network));
+    }
 
-    public void UpdateAppearance(NeuralNetwork network)
+    private IEnumerator SetAppearanceCo(GameObject runner, NeuralNetwork network)
     {
         this.network = network;
 
-        Color tintColor = new Color(Random.Range(0.5f, 1.0f), Random.Range(0.5f, 1.0f), Random.Range(0.5f, 1.0f));
+        Color tintColor = Color.HSVToRGB(UnityEngine.Random.Range(0.0f, 1.0f), 1, 1);
 
-        for (int i = currentLimbs.Count - 1; i > 0; i--)
+        List<RunnerAppearanceLimb> currentLimbs = new List<RunnerAppearanceLimb>();
+
+        foreach (Transform slot in slots)
         {
-            Destroy(currentLimbs[i]);
+            currentLimbs.AddRange(slot.GetComponentsInChildren<RunnerAppearanceLimb>());
         }
 
-        currentLimbs.Clear();
-
-        for (int i = 0; i < network.Layers[1].Weights.GetLength(0); i++ )
+        for (int i = currentLimbs.Count - 1; i >= 0; i--)
         {
-            if (i < slots.Count)
+            Destroy(currentLimbs[i].gameObject);
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        foreach (Transform slot in slots)
+        {
+            GameObject go = Instantiate(bodyPartsPrefabs[UnityEngine.Random.Range(0, bodyPartsPrefabs.Count)]);
+            go.transform.SetParent(slot.transform, false);
+            go.transform.localScale *= 5.0f;
+            go.transform.localPosition = Vector2.zero;
+            go.transform.localRotation = Quaternion.identity;
+
+            FixedJoint2D joint = go.GetComponent<RunnerAppearanceLimb>().masterJoint;
+            if (joint != null)
             {
-                double summedWeight = GetSummedWeight(1, i);
-
-                GameObject go = Instantiate(GetSpriteForNode(summedWeight, ref bodyPartsPrefabs));
-
-                currentLimbs.Add(go);
-                go.transform.parent = slots[i];
-
-                HingeJoint2D joint = go.GetComponent<RunnerAppearanceLimb>().masterJoint;
-                if (joint != null)
-                {
-                    joint.connectedBody = masterRigidBody;
-                }
-
-                go.transform.localPosition = Vector3.zero;
-                go.transform.localRotation = Quaternion.identity;
-
-                go.GetComponentInChildren<SpriteRenderer>().color = tintColor;
+                joint.connectedBody = masterRigidBody;
             }
+
+            foreach (SpriteRenderer spr in go.GetComponentsInChildren<SpriteRenderer>())
+            {
+                spr.color = tintColor;
+            }
+
         }
+
+
+        //for (int i = 0; i < network.Layers[1].Weights.GetLength(0); i++ )
+        //{
+        //    if (i < slots.Count)
+        //    {
+        //        double summedWeight = GetSummedWeight(1, i);
+
+        //        GameObject go = Instantiate(GetSpriteForNode(summedWeight, bodyPartsPrefabs));
+        //        Debug.Log("Update appearance for " + runner.name + " with " + slots.Count + " slots setting slot " + i);
+
+        //        currentLimbs.Add(go);
+        //        go.transform.parent = slots[i];
+
+        //        HingeJoint2D joint = go.GetComponent<RunnerAppearanceLimb>().masterJoint;
+        //        if (joint != null)
+        //        {
+        //            joint.connectedBody = masterRigidBody;
+        //        }
+
+        //        foreach (SpriteRenderer spr in go.GetComponentsInChildren<SpriteRenderer>())
+        //        {
+        //            spr.color = tintColor;
+        //        }
+
+        //        go.transform.localPosition = Vector3.zero;
+        //        go.transform.localRotation = Quaternion.identity;
+
+        //        go.GetComponentInChildren<SpriteRenderer>().color = tintColor;
+        //    }
+        //}
 
         body.color = tintColor;
-
     }
 
-    private GameObject GetSpriteForNode(double summedWeight, ref List<GameObject> bodyParts)
+    void Update()
+    {
+        transform.Rotate(new Vector3(0.0f, 0.0f, -masterRigidBody.velocity.x * 0.25f));
+
+        transform.position = masterRigidBody.transform.position;
+    }
+
+    private GameObject GetSpriteForNode(double summedWeight, List<GameObject> bodyParts)
     {
         return bodyPartsPrefabs[Mathf.FloorToInt(Mathf.Abs((float)(summedWeight * bodyParts.Count))) % bodyParts.Count];
     }
