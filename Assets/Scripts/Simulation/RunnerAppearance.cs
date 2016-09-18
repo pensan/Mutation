@@ -13,6 +13,8 @@ public class RunnerAppearance : MonoBehaviour
 
     public SpriteRenderer body;
 
+    public Rigidbody2D masterRigidBody;
+
     private NeuralNetwork network;
 
     private List<GameObject> currentLimbs = new List<GameObject>();
@@ -41,17 +43,21 @@ public class RunnerAppearance : MonoBehaviour
                 currentLimbs.Add(go);
                 go.transform.parent = slots[i];
 
+                HingeJoint2D joint = go.GetComponent<RunnerAppearanceLimb>().masterJoint;
+                if (joint != null)
+                {
+                    joint.connectedBody = masterRigidBody;
+                }
+
                 go.transform.localPosition = Vector3.zero;
                 go.transform.localRotation = Quaternion.identity;
 
                 go.GetComponentInChildren<SpriteRenderer>().color = tintColor;
-
-                //Debug.Log(GetSummedWeight(1, i));
             }
-
         }
 
         body.color = tintColor;
+
     }
 
     private GameObject GetSpriteForNode(double summedWeight, ref List<GameObject> bodyParts)
