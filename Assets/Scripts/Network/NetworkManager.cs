@@ -27,14 +27,6 @@ public class NetworkManager : MonoBehaviour
         StartCoroutine(GetServerstatus());
 	}
 
-    /// <summary>
-    /// Starts a challenge with another user
-    /// </summary>
-    public NeuralNetwork GetChallenger(string opponentName = "")
-    {
-        return new NeuralNetwork(Serializer.LoadNetwork()); //Temporary while server response is not working
-        //return GetOpponent(opponentName);
-    }
 
     /// <summary>
     /// Tests the connection to the server
@@ -105,12 +97,12 @@ public class NetworkManager : MonoBehaviour
 
         form.AddField("user[neuronal_network]", Serializer.ToJsonString(Serializer.ToSerializable(net)));
 
-        WWW www = new WWW(server_url + post_nn, form);
+        WWW www = new WWW(string.Format(server_url + post_nn, player_id), form);
         yield return www;
 
         if (!string.IsNullOrEmpty(www.error))
         {
-            Debug.LogError(www.error + ": " + server_url + post_user);
+            Debug.LogError(www.error + ": " + www.url);
         }
         else
         {
@@ -123,30 +115,30 @@ public class NetworkManager : MonoBehaviour
     /// <summary>
     /// Returns an opponent
     /// </summary>
-    NeuralNetwork GetOpponent(string opponent_id="")
+    public IEnumerator GetOpponent(NeuralNetwork net, string opponent_id="")
     {
         string get_op = string.Format(get_opponent, player_id, opponent_id);
         UnityWebRequest www = UnityWebRequest.Get(server_url + get_op);
-        www.Send();
+        yield return www.Send();
 
         if (www.isError)
         {
             Debug.LogError(www.error + ": " + server_url + get_op);
+            net = null;
         }
         else
         {
             // Server response was not 2XX
             if (www.responseCode.ToString()[0] != '2')
             {
-
                 Debug.LogError("Connection Error!");
+                net = null;
             }
             else
             {
-                return new NeuralNetwork(Serializer.LoadNetworkFromServerResponse(www.downloadHandler.text));
+                net = new NeuralNetwork(Serializer.LoadNetworkFromServerResponse(www.downloadHandler.text));
             }
         }
-        return null;
     }
 
 

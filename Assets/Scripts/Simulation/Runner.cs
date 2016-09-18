@@ -142,6 +142,7 @@ public class Runner : Agent
     {
         base.Restart();
 
+        this.Selectable = false;
         selectableComponent.Select(false);
         Appearance.SetOpaque(true);
 
@@ -156,6 +157,9 @@ public class Runner : Agent
         this.transform.position = StartPosition;
 
         selectableComponent.enabled = false;
+
+        foreach (Sensor s in sensors)
+            s.enabled = false;
     }
 
     void FixedUpdate()
@@ -197,6 +201,8 @@ public class Runner : Agent
         this.Movement.Reset();
         this.Movement.RigidBodyComponent.isKinematic = true;
         this.Movement.enabled = false;
+        foreach (Sensor s in sensors)
+            s.enabled = false;
 
         base.Die();
     }
