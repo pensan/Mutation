@@ -185,7 +185,6 @@ GameObject:
   - 114: {fileID: 114000011255245072}
   - 114: {fileID: 114000013775663256}
   - 50: {fileID: 50000012639507104}
-  - 96: {fileID: 96000010083554030}
   - 58: {fileID: 58000013452631222}
   - 114: {fileID: 114000010608652052}
   m_Layer: 9
@@ -237,6 +236,22 @@ GameObject:
   - 4: {fileID: 4000010303530530}
   m_Layer: 9
   m_Name: Slot_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1000012413759024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000012799334104}
+  - 96: {fileID: 96000011382458174}
+  m_Layer: 9
+  m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -367,7 +382,7 @@ Transform:
   m_Children:
   - {fileID: 4000013765733570}
   m_Father: {fileID: 4000013723027310}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &4000010081076048
 Transform:
   m_ObjectHideFlags: 1
@@ -439,7 +454,7 @@ Transform:
   m_Children:
   - {fileID: 4000012743119196}
   m_Father: {fileID: 4000013723027310}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &4000010957057624
 Transform:
   m_ObjectHideFlags: 1
@@ -453,7 +468,7 @@ Transform:
   m_Children:
   - {fileID: 4000010570895522}
   m_Father: {fileID: 4000013723027310}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!4 &4000011132364172
 Transform:
   m_ObjectHideFlags: 1
@@ -467,7 +482,7 @@ Transform:
   m_Children:
   - {fileID: 4000011748185426}
   m_Father: {fileID: 4000013723027310}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!4 &4000011387756048
 Transform:
   m_ObjectHideFlags: 1
@@ -481,7 +496,7 @@ Transform:
   m_Children:
   - {fileID: 4000013506252922}
   m_Father: {fileID: 4000013723027310}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!4 &4000011444489626
 Transform:
   m_ObjectHideFlags: 1
@@ -547,7 +562,7 @@ Transform:
   m_Children:
   - {fileID: 4000010429487676}
   m_Father: {fileID: 4000013723027310}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &4000012743119196
 Transform:
   m_ObjectHideFlags: 1
@@ -573,6 +588,19 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000013968621550}
+  m_Father: {fileID: 4000013723027310}
+  m_RootOrder: 1
+--- !u!4 &4000012799334104
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012413759024}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
   m_Father: {fileID: 4000013723027310}
   m_RootOrder: 0
 --- !u!4 &4000013483113914
@@ -612,6 +640,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 4000012799334104}
   - {fileID: 4000012790655322}
   - {fileID: 4000010042631832}
   - {fileID: 4000012513729022}
@@ -678,12 +707,12 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.45
---- !u!96 &96000010083554030
+--- !u!96 &96000011382458174
 TrailRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011992331954}
+  m_GameObject: {fileID: 1000012413759024}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -766,7 +795,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
-  appearance: {fileID: 114000012473293468}
 --- !u!114 &114000011255245072
 MonoBehaviour:
   m_ObjectHideFlags: 1

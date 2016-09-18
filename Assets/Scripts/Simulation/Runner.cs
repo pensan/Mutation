@@ -82,9 +82,15 @@ public class Runner : Agent
             dragComponenet.enabled = value;
 
             if (value)
+            {
+                trailRenderer.transform.SetParent(GameStateManager.Instance.transform, true);
                 Appearance.SetOpaque(selectableComponent.Selected);
+            }
             else
+            {
+                trailRenderer.transform.SetParent(this.transform, true);
                 Appearance.SetOpaque(true);
+            }
         }
     }
     private TrailRenderer trailRenderer;
@@ -105,7 +111,7 @@ public class Runner : Agent
 
         Appearance = GetComponentInChildren<RunnerAppearance>();
 
-        trailRenderer = GetComponent<TrailRenderer>();
+        trailRenderer = GetComponentInChildren<TrailRenderer>();
         trailRenderer.sortingOrder = -10;
 
         fitnessMethod = UpdateFitness;
@@ -225,6 +231,7 @@ public class Runner : Agent
         Vector3 newPos = GameStateManager.Instance.Camera.ScreenToWorldPoint(Input.mousePosition);
         newPos.z = transform.position.z;
         this.transform.position = newPos;
+        this.selectableComponent.Select(false);
     }
 
 
