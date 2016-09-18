@@ -59,9 +59,7 @@ class Api::UsersController < ApplicationController
 
     else
       # Get a random opponent but with an non empty neuronal network
-      @opponent = User.where("neuronal_network::text <> '{}'").where.not(id: user.id).sample
-
-      # User.where("neuronal_network is not null").where.not(id: 1).sample
+      @opponent = User.where("neuronal_network is not null").where.not(id: user.id).sample
       @status = true
     end
   end

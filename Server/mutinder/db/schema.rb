@@ -16,11 +16,11 @@ ActiveRecord::Schema.define(version: 20160917144309) do
   enable_extension "plpgsql"
 
   create_table "users", force: :cascade do |t|
-    t.string   "username",         default: "",   null: false
-    t.string   "uuid",             default: "",   null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.json     "neuronal_network", default: "{}", null: false
+    t.string   "username",         default: "", null: false
+    t.string   "uuid",             default: "", null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.json     "neuronal_network"
     t.index ["username"], name: "index_users_on_username", using: :btree
     t.index ["uuid"], name: "index_users_on_uuid", unique: true, using: :btree
   end
