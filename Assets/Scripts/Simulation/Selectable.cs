@@ -28,6 +28,7 @@ public class Selectable : MonoBehaviour
 
     void OnMouseDown()
     {
-        Selected = !Selected;
+        if (isActiveAndEnabled)
+            Selected = !Selected;
     }
 }

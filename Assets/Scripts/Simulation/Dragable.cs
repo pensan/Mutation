@@ -12,18 +12,22 @@ public class Dragable : MonoBehaviour
 
 	void OnMouseDown()
     {
-        startPosition = Input.mousePosition;
+        if (this.isActiveAndEnabled)
+            startPosition = Input.mousePosition;
     }
 
     void OnMouseDrag()
     {
-        if (!dragging && (Input.mousePosition - startPosition).magnitude >= DragThreshold)
+        if (this.isActiveAndEnabled)
         {
-            dragging = true;
-        }
+            if (!dragging && (Input.mousePosition - startPosition).magnitude >= DragThreshold)
+            {
+                dragging = true;
+            }
 
-        if (dragging && OnDrag != null)
+            if (dragging && OnDrag != null)
                 OnDrag();
+        }  
     }
 
     void OnMouseUp()
