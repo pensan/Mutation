@@ -16,7 +16,9 @@ public class IngameMenu : MenuScreen
         {
             if (GameStateManager.Instance.IsTraining)
             {
-                Serializer.SaveNetwork(GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet);
+                NeuralNetwork saveNet = GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet;
+                if (saveNet == null) saveNet = GameStateManager.Instance.EvolutionController.BestAgent.Genome.NeuralNet;
+                Serializer.SaveNetwork(saveNet);
                 GameStateManager.Instance.NetworkManager.SaveNeuralNet(GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet);
             }
             GameStateManager.Instance.LoadMainMenu();
