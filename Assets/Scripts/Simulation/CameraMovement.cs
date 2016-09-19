@@ -35,16 +35,10 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    private Rect ScreenBounds;
-    private RectTransform bounds;
-    public RectTransform Bounds
+    public RectTransform MovementBounds
     {
-        get { return bounds; }
-        set
-        {
-            bounds = value;
-            ScreenBounds = new Rect(bounds.position, Camera.main.WorldToScreenPoint(new Vector2(bounds.rect.width, bounds.rect.height)));
-        }
+        get;
+        set;
     }
 
 
@@ -64,23 +58,38 @@ public class CameraMovement : MonoBehaviour
         targetCamPos.z = CamZ;
         this.transform.position = Vector3.Lerp(this.transform.position, targetCamPos, CamSpeed * Time.deltaTime);
 
-        /*if (Bounds != null)
+        if (MovementBounds != null)
         {
-            float rightDiff = (this.transform.position.x + Screen.width / 2) - (ScreenBounds.position.x + ScreenBounds.width / 2);
-            float leftDiff = (this.transform.position.x - Screen.width / 2) + (ScreenBounds.position.x - ScreenBounds.width / 2);
-            float upDiff = (this.transform.position.y + Screen.height / 2) - (ScreenBounds.position.y + ScreenBounds.height / 2);
-            float downDiff = (this.transform.position.y - Screen.height / 2) + (ScreenBounds.position.y - ScreenBounds.height / 2);
+            float vertExtent = Camera.main.orthographicSize;
+            float horzExtent = vertExtent * Screen.width / Screen.height;
+
+            float rightDiff = (this.transform.position.x + horzExtent) - (MovementBounds.position.x + MovementBounds.rect.width / 2);
+            float leftDiff = (this.transform.position.x - horzExtent) - (MovementBounds.position.x - MovementBounds.rect.width / 2);
+            float upDiff = (this.transform.position.y + vertExtent) - (MovementBounds.position.y + MovementBounds.rect.height / 2);
+            float downDiff = (this.transform.position.y - vertExtent) - (MovementBounds.position.y - MovementBounds.rect.height / 2);
 
             if (rightDiff > 0)
+            {
                 this.transform.position = new Vector3(this.transform.position.x - rightDiff, this.transform.position.y, this.transform.position.z);
+                targetCamPos.x = this.transform.position.x;
+            }
             else if (leftDiff < 0)
+            {
                 this.transform.position = new Vector3(this.transform.position.x - leftDiff, this.transform.position.y, this.transform.position.z);
+                targetCamPos.x = this.transform.position.x;
+            }
 
             if (upDiff > 0)
+            {
                 this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - upDiff, this.transform.position.z);
+                targetCamPos.y = this.transform.position.y;
+            }
             else if (downDiff < 0)
+            {
                 this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - downDiff, this.transform.position.z);
-        }*/
+                targetCamPos.y = this.transform.position.y;
+            }
+        }
     }
 
     public void SetCamPosInstant(Vector3 camPos)

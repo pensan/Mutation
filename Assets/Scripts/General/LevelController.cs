@@ -37,7 +37,7 @@ public class LevelController : MonoBehaviour
     private void SetCamera()
     {
         CameraMovement camMovement = GameStateManager.Instance.CamMovement;
-        camMovement.Bounds = CameraBounds;
+        camMovement.MovementBounds = CameraBounds;
         camMovement.AllowUserInput = false;
         camMovement.FollowBestAgent = FollowBestAgent;
         if (FollowBestAgent)
