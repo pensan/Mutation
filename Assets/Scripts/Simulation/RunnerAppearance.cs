@@ -52,7 +52,7 @@ public class RunnerAppearance : MonoBehaviour
                 GameObject go = Instantiate(GetSpriteForNode(summedWeight, bodyPartsPrefabs));
 
                 go.transform.SetParent(slots[i].transform, false);
-                go.transform.localScale *= 5.0f;
+                go.transform.localScale *= 1.5f;
                 go.transform.localPosition = Vector2.zero;
                 go.transform.localRotation = Quaternion.identity;
 
@@ -77,7 +77,7 @@ public class RunnerAppearance : MonoBehaviour
 
     void Update()
     {
-        transform.Rotate(new Vector3(0.0f, 0.0f, -masterRigidBody.velocity.x * 0.25f));
+        transform.Rotate(new Vector3(0.0f, 0.0f, -masterRigidBody.velocity.x * 25 * Time.deltaTime));
         transform.position = masterRigidBody.transform.position;
 
         foreach (RunnerAppearanceLimb limb in limbs)
