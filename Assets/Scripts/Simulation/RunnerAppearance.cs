@@ -102,7 +102,6 @@ public class RunnerAppearance : MonoBehaviour
         return summedWeight / weightCount;
     }
 
-    //TODO: implement for all body parts + body
     public void SetOpaque(bool opaque)
     {
         if (opaque)
