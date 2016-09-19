@@ -9,7 +9,6 @@ using UnityEngine;
 
 public class RunnerAppearance : MonoBehaviour 
 {
-    public List<Sprite> bodies;
     public List<GameObject> bodyPartsPrefabs;
     public List<Transform> slots;
 
@@ -18,6 +17,8 @@ public class RunnerAppearance : MonoBehaviour
     public Rigidbody2D masterRigidBody;
 
     private NeuralNetwork network;
+
+    private List<RunnerAppearanceLimb> limbs = new List<RunnerAppearanceLimb>();
 
     public void UpdateAppearance(NeuralNetwork network)
     {
@@ -31,7 +32,7 @@ public class RunnerAppearance : MonoBehaviour
         float colorValue = Mathf.Abs((float)GetSummedWeight(2, 1)) + Mathf.Abs((float)GetSummedWeight(2, 3));
         Color tintColor = Color.HSVToRGB(((colorValue * 255) % 255) / 255, 1, 0.5f);
 
-        List<RunnerAppearanceLimb> currentLimbs = new List<RunnerAppearanceLimb>();
+        /*List<RunnerAppearanceLimb> currentLimbs = new List<RunnerAppearanceLimb>();
 
         foreach (Transform slot in slots)
         {
@@ -41,7 +42,15 @@ public class RunnerAppearance : MonoBehaviour
         for (int i = currentLimbs.Count - 1; i >= 0; i--)
         {
             Destroy(currentLimbs[i].gameObject);
+        }*/
+
+        //Destroy previous limbs
+        foreach (RunnerAppearanceLimb limb in limbs)
+        {
+            Destroy(limb.gameObject);
         }
+
+        limbs.Clear();
 
         yield return new WaitForEndOfFrame();
 
@@ -59,17 +68,19 @@ public class RunnerAppearance : MonoBehaviour
                 go.transform.localPosition = Vector2.zero;
                 go.transform.localRotation = Quaternion.identity;
 
-                FixedJoint2D joint = go.GetComponent<RunnerAppearanceLimb>().masterJoint;
+                RunnerAppearanceLimb limb = go.GetComponent<RunnerAppearanceLimb>();
+                FixedJoint2D joint = limb.masterJoint;
                 if (joint != null)
                 {
                     joint.connectedBody = masterRigidBody;
                 }
 
-                foreach (SpriteRenderer spr in go.GetComponentsInChildren<SpriteRenderer>())
+                foreach (SpriteRenderer spr in limb.SpriteRenderers)
                 {
                     spr.color = tintColor;
                 }
 
+                limbs.Add(limb);
             }
         }
 
@@ -115,5 +126,9 @@ public class RunnerAppearance : MonoBehaviour
             color.a = 0.5f;
             body.color = color;
         }
+
+        if (limbs != null)
+            foreach (RunnerAppearanceLimb limb in limbs)
+                limb.SetOpaque(opaque);
     }
 }
