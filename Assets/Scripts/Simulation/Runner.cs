@@ -14,8 +14,22 @@ public class Runner : Agent
         }
         set
         {
-            SetGenome(value);
+            base.Genome = value;
             Appearance.UpdateAppearance(value.NeuralNet);
+        }
+    }
+
+    public override int GenerationCount
+    {
+        get
+        {
+            return base.GenerationCount;
+        }
+
+        set
+        {
+            base.GenerationCount = value;
+            RegenerateGenerationName();
         }
     }
 
@@ -74,20 +88,6 @@ public class Runner : Agent
         private set;
     }
 
-    private int generationCount;
-    public int GenerationCount
-    {
-        get
-        {
-            return generationCount;
-        }
-        set
-        {
-            generationCount = value;
-            RegenerateGenerationName();
-        }
-    }
-
     public bool Selectable
     {
         get { return selectableComponent.enabled; }
@@ -103,7 +103,7 @@ public class Runner : Agent
             }
             else
             {
-                trailRenderer.transform.SetParent(this.transform, true);
+                //trailRenderer.transform.SetParent(this.transform, true);
                 Appearance.SetOpaque(true);
             }
         }

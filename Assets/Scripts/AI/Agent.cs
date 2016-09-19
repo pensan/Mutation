@@ -21,15 +21,23 @@ public class Agent : MonoBehaviour, IComparable<Agent>
         }
         set
         {
-            SetGenome(value);
+            genome = value;
+            genome.ParentAgent = this;
+            genome.FitnessMethod = this.fitnessMethod;
         }
     }
 
-    protected virtual void SetGenome(Genome newGenome)
+    private int generationCount;
+    public virtual int GenerationCount
     {
-        genome = newGenome;
-        genome.ParentAgent = this;
-        genome.FitnessMethod = this.fitnessMethod;
+        get
+        {
+            return generationCount;
+        }
+        set
+        {
+            generationCount = value;
+        }
     }
 
     public bool IsAlive
