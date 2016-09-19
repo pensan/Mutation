@@ -78,7 +78,7 @@ public class EvolutionController : MonoBehaviour
         Population[Population.Length - 1] = seed;
         Population[Population.Length - 1].OnAgentDied += AgentDied;
         seed.Restart();
-        ((Runner)seed).GenerationCount = 0;
+        seed.GenerationCount = 0;
 
         MutateAll(mutatePerc, mutationProb, mutationAmount, seed);
 
@@ -208,7 +208,7 @@ public class EvolutionController : MonoBehaviour
         {
             agent.Restart();
             agent.OnAgentDied += AgentDied;
-            ((Runner)agent).GenerationCount++;
+            agent.GenerationCount++;
         }
 
         LevelController.Instance.StartTimeoutTimer();

@@ -4,12 +4,17 @@ using System.Collections;
 public class CoroutineWithData
 {
     public Coroutine coroutine { get; private set; }
-    public System.Object data;
+    public object data;
     private IEnumerator target;
-    public CoroutineWithData(MonoBehaviour owner, IEnumerator target)
+    public event System.Action<object> OnFinish;
+
+    public CoroutineWithData(MonoBehaviour owner, IEnumerator target, System.Action<object> OnFinishMethod = null)
     {
         this.target = target;
         this.coroutine = owner.StartCoroutine(Run());
+
+        if (OnFinishMethod != null)
+            OnFinish += OnFinishMethod;
     }
 
     private IEnumerator Run()
@@ -19,5 +24,8 @@ public class CoroutineWithData
             data = target.Current;
             yield return data;
         }
+
+        if (OnFinish != null)
+            OnFinish(data);
     }
 }

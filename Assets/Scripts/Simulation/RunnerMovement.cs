@@ -31,13 +31,11 @@ public class RunnerMovement : MonoBehaviour
         get;
         private set;
     }
-    private Runner parent;
     private bool jumping;
 
     void Awake()
     {
         CurInput = new double[2];
-        this.parent = GetComponent<Runner>();
         RigidBodyComponent = GetComponent<Rigidbody2D>();
     }
 

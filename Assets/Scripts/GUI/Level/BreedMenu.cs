@@ -13,16 +13,12 @@ public class BreedMenu : MenuScreen
 
     public Button ManualBreedButton;
 
-    private int runnerLayer;
-
     void Awake()
     {
         ManualBreedButton.onClick.AddListener(StartManualBreed);
         SelectedAgents = GetComponentInChildren<SelectedAgentsPanel>();
         SelectedAgents.OnAgentAdded += SelectedAgentsChanged;
         SelectedAgents.OnAgentRemoved += SelectedAgentsChanged;
-
-        runnerLayer = LayerMask.NameToLayer("Runner");
     }
 
     public override void Show()

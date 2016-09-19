@@ -17,7 +17,6 @@ public class NetworkManager : MonoBehaviour
     string post_nn      = "/api/users/{0}";
     string get_user     = "/api/users";
     string get_opponent = "/api/users/{0}/opponent/{1}";
-    GameObject GUI;
     int player_id;
 
 	void Start ()
@@ -45,9 +44,7 @@ public class NetworkManager : MonoBehaviour
             // Server response was not 2XX
             if ( www.responseCode.ToString()[0] != '2' )
             {
-
-                Transform abc = GUI.transform.Find("ConnectionError");
-                abc.gameObject.SetActive(true);
+                Debug.LogError("ConnectionError!");
             }
             else
             {
@@ -115,7 +112,7 @@ public class NetworkManager : MonoBehaviour
     /// <summary>
     /// Returns an opponent
     /// </summary>
-    public IEnumerator GetOpponent(NeuralNetwork net, string opponent_id="")
+    public IEnumerator GetOpponent(string opponent_id="")
     {
         string get_op = string.Format(get_opponent, player_id, opponent_id);
         UnityWebRequest www = UnityWebRequest.Get(server_url + get_op);
@@ -124,7 +121,6 @@ public class NetworkManager : MonoBehaviour
         if (www.isError)
         {
             Debug.LogError(www.error + ": " + server_url + get_op);
-            net = null;
         }
         else
         {
@@ -132,12 +128,11 @@ public class NetworkManager : MonoBehaviour
             if (www.responseCode.ToString()[0] != '2')
             {
                 Debug.LogError("Connection Error!");
-                net = null;
             }
             else
             {
                 Debug.Log(www.downloadHandler.text);
-                net = new NeuralNetwork(Serializer.LoadNetworkFromServerResponse(www.downloadHandler.text));
+                yield return new NeuralNetwork(Serializer.LoadNetworkFromServerResponse(www.downloadHandler.text));
             }
         }
     }

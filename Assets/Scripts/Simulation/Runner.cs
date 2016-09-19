@@ -15,7 +15,8 @@ public class Runner : Agent
         set
         {
             base.Genome = value;
-            Appearance.UpdateAppearance(value.NeuralNet);
+            if (Appearance != null)
+                Appearance.UpdateAppearance(value.NeuralNet);
         }
     }
 
@@ -103,7 +104,7 @@ public class Runner : Agent
             }
             else
             {
-                //trailRenderer.transform.SetParent(this.transform, true);
+                trailRenderer.transform.SetParent(this.transform, true);
                 Appearance.SetOpaque(true);
             }
         }
@@ -245,8 +246,9 @@ public class Runner : Agent
 
     private void DragThisAgent()
     {
-        Vector3 newPos = GameStateManager.Instance.Camera.ScreenToWorldPoint(Input.mousePosition);
-        newPos.z = transform.position.z;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); ;
+        Vector3 newPos = ray.origin + ray.direction * (this.transform.position.z - Camera.main.transform.position.z);
+        newPos.z = transform.position.z; //Not neccesary, just making sure. (Please don't judge me)
         this.transform.position = newPos;
         this.selectableComponent.Select(false);
     }

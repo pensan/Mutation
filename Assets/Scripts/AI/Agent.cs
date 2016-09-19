@@ -68,6 +68,7 @@ public class Agent : MonoBehaviour, IComparable<Agent>
     public virtual Agent CreateInstance()
     {
         Agent newAgent = Instantiate(this);
+        newAgent.IsInitialized = false;
         newAgent.StartPosition = this.StartPosition;
         return newAgent;
     }

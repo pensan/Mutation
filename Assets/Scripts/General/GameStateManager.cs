@@ -24,12 +24,6 @@ public class GameStateManager : MonoBehaviour
         private set;
     }
 
-    public Camera Camera
-    {
-        get;
-        private set;
-    }
-
     public Scene CurLevel
     {
         get;
@@ -57,7 +51,6 @@ public class GameStateManager : MonoBehaviour
     {
         SceneManager.LoadScene("GUI", LoadSceneMode.Additive);
         LoadMainMenu();
-        Camera = CamMovement.GetComponent<Camera>();
 
         Instance = this;
 
@@ -76,22 +69,23 @@ public class GameStateManager : MonoBehaviour
 
     public void LoadMultiplayerLevel(int index, string opponentName = "")
     {
-        StartCoroutine(NetworkManager.GetOpponent(challengerNetwork, opponentName));
-        
-        if (challengerNetwork != null)
+        new CoroutineWithData(this, NetworkManager.GetOpponent(opponentName), delegate (object serverData) 
         {
-            IsMultiplayer = true;
-            IsTraining = false;
+            challengerNetwork = serverData as NeuralNetwork;
+            if (challengerNetwork == null)
+            {
+                Debug.LogError("Failed to start multiplayer: challengerNetwork was null!");
+            }
+            else
+            {
+                IsMultiplayer = true;
+                IsTraining = false;
 
-            MultiplayerEvoController = Instantiate(EvolutionController);
+                MultiplayerEvoController = Instantiate(EvolutionController);
 
-            LoadLevel(index);
-        }
-        else
-        {
-            //TODO: Error message
-        }
-
+                LoadLevel(index);
+            }
+        });
     }
 
     private void LoadLevel(int index)

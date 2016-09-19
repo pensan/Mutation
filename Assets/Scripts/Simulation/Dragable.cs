@@ -4,7 +4,7 @@ using System.Collections;
 public class Dragable : MonoBehaviour
 {
 
-    public float DragThreshold = 50;
+    public float DragThreshold = 20;
     public event System.Action OnDrag;
 
     private bool dragging = false;

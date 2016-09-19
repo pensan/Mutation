@@ -18,7 +18,7 @@ public class MainMenu : MenuScreen
         });
         ChallengeButton.onClick.AddListener(delegate ()
         {
-            GameStateManager.Instance.LoadMultiplayerLevel(1);
+            GameStateManager.Instance.LoadMultiplayerLevel(LevelIndex);
         });
         ExitButton.onClick.AddListener(delegate ()
         {
