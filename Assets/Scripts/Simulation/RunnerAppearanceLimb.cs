@@ -16,6 +16,8 @@ public class RunnerAppearanceLimb : MonoBehaviour
         private set;
     }
 
+    private Vector3 startLocalPosition;
+
     void Awake()
     {
         SpriteRenderers = new List<SpriteRenderer>();
@@ -27,6 +29,8 @@ public class RunnerAppearanceLimb : MonoBehaviour
         SpriteRenderer[] childRenderers = GetComponentsInChildren<SpriteRenderer>();
         if (childRenderers != null)
             SpriteRenderers.AddRange(childRenderers);
+
+        startLocalPosition = this.transform.localPosition;
     }
 
     public void SetOpaque(bool opaque)
@@ -39,4 +43,8 @@ public class RunnerAppearanceLimb : MonoBehaviour
         }
     }
 
+    public void UpdatePosition()
+    {
+        this.transform.localPosition = startLocalPosition;
+    }
 }

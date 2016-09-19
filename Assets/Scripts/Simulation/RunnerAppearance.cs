@@ -32,18 +32,6 @@ public class RunnerAppearance : MonoBehaviour
         float colorValue = Mathf.Abs((float)GetSummedWeight(2, 1)) + Mathf.Abs((float)GetSummedWeight(2, 3));
         Color tintColor = Color.HSVToRGB(((colorValue * 255) % 255) / 255, 1, 0.5f);
 
-        /*List<RunnerAppearanceLimb> currentLimbs = new List<RunnerAppearanceLimb>();
-
-        foreach (Transform slot in slots)
-        {
-            currentLimbs.AddRange(slot.GetComponentsInChildren<RunnerAppearanceLimb>());
-        }
-
-        for (int i = currentLimbs.Count - 1; i >= 0; i--)
-        {
-            Destroy(currentLimbs[i].gameObject);
-        }*/
-
         //Destroy previous limbs
         foreach (RunnerAppearanceLimb limb in limbs)
         {
@@ -91,6 +79,9 @@ public class RunnerAppearance : MonoBehaviour
     {
         transform.Rotate(new Vector3(0.0f, 0.0f, -masterRigidBody.velocity.x * 0.25f));
         transform.position = masterRigidBody.transform.position;
+
+        foreach (RunnerAppearanceLimb limb in limbs)
+            limb.UpdatePosition();
     }
 
     private GameObject GetSpriteForNode(double summedWeight, List<GameObject> bodyParts)

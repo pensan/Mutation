@@ -551,6 +551,12 @@ Prefab:
       propertyPath: m_Radius
       value: 0.6
       objectReference: {fileID: 0}
+    - target: {fileID: 114000010865764272, guid: c003057658e35e74fadb45385c0bfb83,
+        type: 2}
+      propertyPath: runnerAppearancePrefab
+      value: 
+      objectReference: {fileID: 1000012881264464, guid: ed8e636140a04224bb6c2d8636eb6ef1,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c003057658e35e74fadb45385c0bfb83, type: 2}
   m_IsPrefabParent: 0

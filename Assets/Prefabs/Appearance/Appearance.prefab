@@ -370,7 +370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa96bff81b707a749bcc977d4f13f46a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodies: []
   bodyPartsPrefabs:
   - {fileID: 1000010947368928, guid: 6bed1bc3fc5d5694993d4dbb3cdf0d0f, type: 2}
   - {fileID: 1000011482599478, guid: 69a4eb6013b7c1347b0292a281dcd1a8, type: 2}
