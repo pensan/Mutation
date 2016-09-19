@@ -19,12 +19,12 @@ public class RunnerAppearance : MonoBehaviour
 
     private NeuralNetwork network;
 
-    public void UpdateAppearance(GameObject runner, NeuralNetwork network)
+    public void UpdateAppearance(NeuralNetwork network)
     {
-        StartCoroutine(SetAppearanceCo(runner, network));
+        StartCoroutine(SetAppearanceCo(network));
     }
 
-    private IEnumerator SetAppearanceCo(GameObject runner, NeuralNetwork network)
+    private IEnumerator SetAppearanceCo(NeuralNetwork network)
     {
         this.network = network;
 
@@ -79,7 +79,6 @@ public class RunnerAppearance : MonoBehaviour
     void Update()
     {
         transform.Rotate(new Vector3(0.0f, 0.0f, -masterRigidBody.velocity.x * 0.25f));
-
         transform.position = masterRigidBody.transform.position;
     }
 

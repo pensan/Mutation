@@ -47,7 +47,6 @@ public static class Serializer
 
         AssetDatabase.Refresh();
 
-        Debug.Log(json);
         Debug.Log("Saved network.");
     }
 

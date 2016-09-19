@@ -12,8 +12,8 @@ public class Agent : MonoBehaviour, IComparable<Agent>
         Random, Load, None
     }
 
-    private Genome genome;
-    public Genome Genome
+    protected Genome genome;
+    public virtual Genome Genome
     {
         get
         {

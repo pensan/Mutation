@@ -6,7 +6,22 @@ using System;
 
 public class Runner : Agent
 {
+    public override Genome Genome
+    {
+        get
+        {
+            return genome;
+        }
+        set
+        {
+            SetGenome(value);
+            Appearance.UpdateAppearance(value.NeuralNet);
+        }
+    }
+
     private Sensor[] sensors;
+
+    public GameObject runnerAppearancePrefab;
 
     public RunnerAppearance Appearance
     {
@@ -96,7 +111,6 @@ public class Runner : Agent
     private TrailRenderer trailRenderer;
     private Dragable dragComponenet;
 
-
     public override void Init()
     {
         sensors = GetComponentsInChildren<Sensor>();
@@ -109,7 +123,9 @@ public class Runner : Agent
         dragComponenet.enabled = false;
         dragComponenet.OnDrag += DragThisAgent;
 
-        Appearance = GetComponentInChildren<RunnerAppearance>();
+ 
+        Appearance = Instantiate(runnerAppearancePrefab).GetComponent<RunnerAppearance>();
+        Appearance.masterRigidBody = GetComponent<Rigidbody2D>();
 
         trailRenderer = GetComponentInChildren<TrailRenderer>();
         trailRenderer.sortingOrder = 0;
@@ -140,9 +156,6 @@ public class Runner : Agent
         this.Selectable = false;
         selectableComponent.Select(false);
         Appearance.SetOpaque(true);
-
-        if (Genome != null)
-            Appearance.UpdateAppearance(gameObject, Genome.NeuralNet);
 
         trailRenderer.sortingLayerName = "Background";
         trailRenderer.Clear();
@@ -242,6 +255,12 @@ public class Runner : Agent
     private void RegenerateGenerationName()
     {
         GenerationName = GenerationCount > 0 ? "Jr. " + ToRoman(GenerationCount - 1) : "";
+    }
+    
+    void OnDestroy()
+    {
+        if(Appearance != null)
+            Destroy(Appearance.gameObject);
     }
 
     private static string ToRoman(int number)
