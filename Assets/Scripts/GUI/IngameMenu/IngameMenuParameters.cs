@@ -33,11 +33,11 @@ public class IngameMenuParameters : MenuScreen
 
     }
 
-    private void TimeoutSliderChanged(float arg0)
+    private void TimeoutSliderChanged(float time)
     {
-        timeoutSliderTitle.text = string.Format("Timeout: {0} seconds", arg0.ToString("0"));
+        timeoutSliderTitle.text = string.Format("Rebreed after: {0} seconds", time.ToString("0"));
 
-        LevelController.Instance.autoTimeoutTime = arg0;
+        LevelController.Instance.autoTimeoutTime = time;
     }
 
     public override void Show()

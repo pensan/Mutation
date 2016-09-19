@@ -15,14 +15,10 @@ public class IngameMenu : MenuScreen
         {
             if (GameStateManager.Instance.IsTraining)
             {
-                // @SAMUEL: I've added this null check as a quickfix, since it threw null ref errors when going back to main menu.
-                if (GameStateManager.Instance.EvolutionController.AlphaGenome != null)
-                {
-                    NeuralNetwork saveNet = GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet;
-                    if (saveNet == null) saveNet = GameStateManager.Instance.EvolutionController.BestAgent.Genome.NeuralNet;
-                    Serializer.SaveNetwork(saveNet);
-                    GameStateManager.Instance.NetworkManager.SaveNeuralNet(GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet);
-                }
+                Genome saveGenome = GameStateManager.Instance.EvolutionController.AlphaGenome;
+                if (saveGenome == null) saveGenome = GameStateManager.Instance.EvolutionController.BestAgent.Genome;
+                Serializer.SaveNetwork(saveGenome.NeuralNet);
+                GameStateManager.Instance.NetworkManager.SaveNeuralNet(saveGenome.NeuralNet);
             }
             GameStateManager.Instance.LoadMainMenu();
         });
