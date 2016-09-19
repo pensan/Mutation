@@ -4,7 +4,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 #endregion
 
@@ -12,9 +11,8 @@ public static class Serializer
 {
 
     private static string filename = "neuralNet.txt";
-    private static string resourcesPath = Path.Combine(Application.dataPath, "Resources");
+    private static string resourcesPath = Path.Combine(Application.persistentDataPath, "NeuralNet");
     private static string fullFilePath  = Path.Combine(resourcesPath, filename);
-
 
     public static SerializeableNeuralNetwork ToSerializable(NeuralNetwork net)
     {
@@ -44,8 +42,6 @@ public static class Serializer
         Directory.CreateDirectory(resourcesPath);
 
         File.WriteAllText(fullFilePath, json);
-
-        AssetDatabase.Refresh();
 
         Debug.Log("Saved network.");
     }

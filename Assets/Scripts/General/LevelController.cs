@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class LevelController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class LevelController : MonoBehaviour
     public bool LoadGenome = true;
     public bool FollowBestAgent = true;
 
+    public float autoTimeoutTime = -1.0f;
 
     void Awake()
     {
@@ -81,6 +83,7 @@ public class LevelController : MonoBehaviour
 
     private void OnAllAgentsDiedHandler()
     {
+        StopCoroutine("TimeoutCo");
         switch (EvoType)
         {
             case EvolutionType.Automatic:
@@ -92,4 +95,24 @@ public class LevelController : MonoBehaviour
         }
     }
 
+    internal void StartTimeoutTimer()
+    {
+        if (autoTimeoutTime > 0.0f)
+        {
+            StopCoroutine("TimeoutCo");
+            StartCoroutine("TimeoutCo");
+        }
+    }
+
+    private IEnumerator TimeoutCo()
+    {
+        float timer = 0.0f;
+        while (timer < autoTimeoutTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        GameStateManager.Instance.EvolutionController.KillAll();
+    }
 }

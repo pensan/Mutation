@@ -10,7 +10,7 @@ public class RunnerMovement : MonoBehaviour
 
 
     private const int MAX_SPEED = 25;
-    private const int MAX_JUMP = 40;
+    private const int MAX_JUMP = 60;
 
     public bool UseUserInput;
 

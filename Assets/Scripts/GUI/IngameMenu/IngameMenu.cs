@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class IngameMenu : MenuScreen
 {
-    public LevelController levelController;
     public Button KillSwitch;
     public Button BackToMain;
-    public Toggle AutoBreedToggle;
 
     void Awake()
     {
@@ -16,28 +15,33 @@ public class IngameMenu : MenuScreen
         {
             if (GameStateManager.Instance.IsTraining)
             {
-                NeuralNetwork saveNet = GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet;
-                if (saveNet == null) saveNet = GameStateManager.Instance.EvolutionController.BestAgent.Genome.NeuralNet;
-                Serializer.SaveNetwork(saveNet);
-                GameStateManager.Instance.NetworkManager.SaveNeuralNet(GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet);
+                // @SAMUEL: I've added this null check as a quickfix, since it threw null ref errors when going back to main menu.
+                if (GameStateManager.Instance.EvolutionController.AlphaGenome != null)
+                {
+                    NeuralNetwork saveNet = GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet;
+                    if (saveNet == null) saveNet = GameStateManager.Instance.EvolutionController.BestAgent.Genome.NeuralNet;
+                    Serializer.SaveNetwork(saveNet);
+                    GameStateManager.Instance.NetworkManager.SaveNeuralNet(GameStateManager.Instance.EvolutionController.AlphaGenome.NeuralNet);
+                }
             }
             GameStateManager.Instance.LoadMainMenu();
         });
 
-        AutoBreedToggle.onValueChanged.AddListener(AutoBreedToggleChanged);
     }
 
     public override void Show()
     {
         base.Show();
 
+        GUIController.Instance.IngameMenuParameters.Show();
+
         KillSwitch.gameObject.SetActive(!GameStateManager.Instance.IsMultiplayer);
-        AutoBreedToggle.gameObject.SetActive(!GameStateManager.Instance.IsMultiplayer);
     }
 
-
-    public void AutoBreedToggleChanged(bool v)
+    public override void Hide()
     {
-        LevelController.Instance.EvoType = v ? LevelController.EvolutionType.Automatic : LevelController.EvolutionType.User;
+        base.Hide();
+
+        GUIController.Instance.IngameMenuParameters.Hide();
     }
 }

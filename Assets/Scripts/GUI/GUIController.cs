@@ -26,6 +26,12 @@ public class GUIController : MonoBehaviour
         private set;
     }
 
+    public IngameMenuParameters IngameMenuParameters
+    {
+        get;
+        private set;
+    }
+
     public static GUIController Instance
     {
         get;
@@ -54,11 +60,14 @@ public class GUIController : MonoBehaviour
         MainMenu = GetComponentInChildren<MainMenu>(true);
         BreedMenu = GetComponentInChildren<BreedMenu>(true);
         IngameMenu = GetComponentInChildren<IngameMenu>(true);
+        IngameMenuParameters = GetComponentInChildren<IngameMenuParameters>(true);
+
 
         MenuScreens = new List<MenuScreen>();
         MenuScreens.Add(MainMenu);
         MenuScreens.Add(BreedMenu);
         MenuScreens.Add(IngameMenu);
+        MenuScreens.Add(IngameMenuParameters);
 
         foreach (MenuScreen menu in MenuScreens)
             menu.Hide();

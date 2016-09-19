@@ -1,5 +1,7 @@
 ﻿// REDOX Game Labs 2016
 
+#if UNITYY_EDITOR
+
 #region INCLUDES
 using UnityEngine;
 using UnityEditor;
@@ -15,3 +17,5 @@ public class TimeManagerInspector : Editor
         timeManger.CustomTime = EditorGUILayout.Slider(timeManger.CustomTime, 1f, 10f);
     }     
 }
+
+#endif

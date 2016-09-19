@@ -11,16 +11,12 @@ public class BreedMenu : MenuScreen
         private set;
     }
 
-    public Button AutoBreedButton;
     public Button ManualBreedButton;
-    public Slider MutationAmountSlider;
-    public Slider MutationProbSlider;
 
     private int runnerLayer;
 
     void Awake()
     {
-        AutoBreedButton.onClick.AddListener(StartAutoBreed);
         ManualBreedButton.onClick.AddListener(StartManualBreed);
         SelectedAgents = GetComponentInChildren<SelectedAgentsPanel>();
         SelectedAgents.OnAgentAdded += SelectedAgentsChanged;
@@ -41,6 +37,8 @@ public class BreedMenu : MenuScreen
 
         ManualBreedButton.interactable = SelectedAgents.AgentCount >= 2;
 
+        GUIController.Instance.IngameMenuParameters.Show();
+
         GameStateManager.Instance.CamMovement.AllowUserInput = true;
     }
 
@@ -48,17 +46,14 @@ public class BreedMenu : MenuScreen
     {
         base.Hide();
         GameStateManager.Instance.CamMovement.AllowUserInput = false;
-    }
 
-    private void StartAutoBreed()
-    {
-        GameStateManager.Instance.EvolutionController.AutoRepopulate(MutationProbSlider.value, MutationAmountSlider.value);
-        NewBreedStarted();
+        if (LevelController.Instance != null && LevelController.Instance.EvoType != LevelController.EvolutionType.Automatic)
+            GUIController.Instance.IngameMenuParameters.Hide();
     }
 
     private void StartManualBreed()
     {
-        GameStateManager.Instance.EvolutionController.Repopulate(MutationProbSlider.value, MutationAmountSlider.value, SelectedAgents.GetSelectedAgents());
+        GameStateManager.Instance.EvolutionController.Repopulate(SelectedAgents.GetSelectedAgents());
         NewBreedStarted();
     }
 

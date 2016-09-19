@@ -9,6 +9,9 @@ public class EvolutionController : MonoBehaviour
 
     public int PopulationCount = 5;
 
+    public float mutationProb = 0.25f;
+    public float mutationAmount = 0.5f;
+
     public Agent[] Population
     {
         get;
@@ -54,9 +57,6 @@ public class EvolutionController : MonoBehaviour
 
     private float crossBreedPerc = 1f;
     private float mutatePerc = 1f;
-
-    private float mutationProb = 0.25f;
-    private float mutationAmount = 0.5f;
 
     public event System.Action<Agent> OnBestChanged;
     public event System.Action OnAllAgentsDied;
@@ -181,18 +181,10 @@ public class EvolutionController : MonoBehaviour
 
     public void AutoRepopulate()
     {
-        AutoRepopulate(mutatePerc, mutationProb, mutationAmount);
+        AutoRepopulate(mutatePerc);
     }
 
-    public void AutoRepopulate(float mutationProb, float mutationAmount)
-    {
-        this.mutationProb = mutationProb;
-        this.mutationAmount = mutationAmount;
-
-        AutoRepopulate(mutatePerc, mutationProb, mutationAmount);
-    }
-
-    public void AutoRepopulate(float mutatePerc, float mutationProb, float mutationAmount)
+    public void AutoRepopulate(float mutatePerc)
     {
         CrossBestSecondBest();
 
@@ -201,7 +193,7 @@ public class EvolutionController : MonoBehaviour
         PopulationStart();
     }
 
-    public void Repopulate(float mutationProb, float mutationAmount, params Agent[] crossAgents)
+    public void Repopulate(params Agent[] crossAgents)
     {
         CrossAgents(crossAgents, false);
 
@@ -218,6 +210,9 @@ public class EvolutionController : MonoBehaviour
             agent.OnAgentDied += AgentDied;
             ((Runner)agent).GenerationCount++;
         }
+
+        LevelController.Instance.StartTimeoutTimer();
+
         aliveCount = Population.Length;
     }
 

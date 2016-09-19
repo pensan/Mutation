@@ -147,6 +147,8 @@ public class GameStateManager : MonoBehaviour
         EvolutionController.CreatePopulation(DummyAgent);
         EvolutionController.gameObject.SetActive(true);
 
+        Debug.Log("Start Evolution");
+
         if (IsMultiplayer)
         {
             Agent challengerAgent = DummyAgent.CreateInstance();
