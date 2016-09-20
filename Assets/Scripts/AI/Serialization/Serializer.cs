@@ -11,7 +11,7 @@ public static class Serializer
 {
 
     private static string filename = "neuralNet.txt";
-    private static string resourcesPath = Path.Combine(Application.persistentDataPath, "NeuralNet");
+    private static string resourcesPath = Path.Combine(Application.dataPath, "Resources");
     private static string fullFilePath  = Path.Combine(resourcesPath, filename);
 
     public static SerializeableNeuralNetwork ToSerializable(NeuralNetwork net)
@@ -42,8 +42,8 @@ public static class Serializer
         Directory.CreateDirectory(resourcesPath);
 
         File.WriteAllText(fullFilePath, json);
-
-        Debug.Log("Saved network.");
+        
+        Debug.Log("Saved network to " + fullFilePath);
     }
 
     public static string ToJsonString(SerializeableNeuralNetwork net)
@@ -61,6 +61,7 @@ public static class Serializer
     {
         if (File.Exists(fullFilePath))
         {
+            Debug.Log("Loaded " + fullFilePath);
             string contents = File.ReadAllText(fullFilePath);
             return JsonConvert.DeserializeObject<SerializeableNeuralNetwork>(contents);
         }

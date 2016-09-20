@@ -557,6 +557,16 @@ Prefab:
       value: 
       objectReference: {fileID: 1000012881264464, guid: ed8e636140a04224bb6c2d8636eb6ef1,
         type: 2}
+    - target: {fileID: 114000011255245072, guid: c003057658e35e74fadb45385c0bfb83,
+        type: 2}
+      propertyPath: UseUserInput
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 50000012639507104, guid: c003057658e35e74fadb45385c0bfb83,
+        type: 2}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c003057658e35e74fadb45385c0bfb83, type: 2}
   m_IsPrefabParent: 0
@@ -737,7 +747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79c0b7599e5e45c448830af0c59dbe8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PopulationCount: 5
+  PopulationCount: 10
   mutationProb: 0.25
   mutationAmount: 0.5
 --- !u!4 &2073617981

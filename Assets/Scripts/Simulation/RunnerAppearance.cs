@@ -60,7 +60,7 @@ public class RunnerAppearance : MonoBehaviour
                 FixedJoint2D joint = limb.masterJoint;
                 if (joint != null)
                 {
-                    joint.connectedBody = masterRigidBody;
+                    joint.connectedBody = GetComponent<Rigidbody2D>();
                 }
 
                 foreach (SpriteRenderer spr in limb.SpriteRenderers)

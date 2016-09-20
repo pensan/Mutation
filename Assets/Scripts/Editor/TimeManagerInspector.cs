@@ -1,32 +1,21 @@
 ﻿// REDOX Game Labs 2016
 
+#if UNITY_EDITOR
+
 #region INCLUDES
 using UnityEngine;
+using UnityEditor;
 #endregion
 
-public class TimeManagerInspector : MonoBehaviour 
+[CustomEditor(typeof(TimeManager))]
+public class TimeManagerInspector : Editor 
 {
-	/// <summary>
-	/// Used for initialisation and creating references
-	/// </summary>
-	void Awake () 
-	{
-	
-	}
-	
-	/// <summary>
-	/// Used for setting up MonoBehaviour
-	/// </summary>
-	void Start () 
-	{
-	
-	}
-	
-	/// <summary>
-	/// Update Loop, called once per frame
-	/// </summary>
-	void Update () 
-	{
-	
-	}
+    public override void OnInspectorGUI()
+    {
+        TimeManager timeManger = (TimeManager)target;
+
+        timeManger.CustomTime = EditorGUILayout.Slider(timeManger.CustomTime, 1f, 10f);
+    }     
 }
+
+#endif
