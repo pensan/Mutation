@@ -7,7 +7,7 @@ public class Sensor : MonoBehaviour
 
     public SpriteRenderer cross;
 
-    private const float MAX_DIST = 5f;
+    private const float MAX_DIST = 10f;
     private const float MIN_DIST = 0.01f;
 
     public float Output

@@ -1227,7 +1227,7 @@ GameObject:
   - 4: {fileID: 455447233}
   - 212: {fileID: 455447235}
   - 61: {fileID: 455447234}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: hose_hor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1257,7 +1257,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: fbb2bea87d20cf447a3bc1f692fd680b, type: 2}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: -0.12}
   serializedVersion: 2
@@ -1649,7 +1649,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 702715095}
   - 212: {fileID: 702715096}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: hose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4629,7 +4629,7 @@ GameObject:
   - 4: {fileID: 2054392686}
   - 212: {fileID: 2054392688}
   - 61: {fileID: 2054392687}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: hose_hor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4658,7 +4658,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: fbb2bea87d20cf447a3bc1f692fd680b, type: 2}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: -0.0055267788, y: -0.0000053040117}
   serializedVersion: 2

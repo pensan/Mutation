@@ -546,26 +546,28 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 58000013452631222, guid: c003057658e35e74fadb45385c0bfb83,
-        type: 2}
-      propertyPath: m_Radius
-      value: 0.6
+    - target: {fileID: 4000011748185426, guid: c003057658e35e74fadb45385c0bfb83, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 22.6
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010865764272, guid: c003057658e35e74fadb45385c0bfb83,
+    - target: {fileID: 4000011748185426, guid: c003057658e35e74fadb45385c0bfb83, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 23.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000011740547058, guid: c003057658e35e74fadb45385c0bfb83,
         type: 2}
-      propertyPath: runnerAppearancePrefab
-      value: 
-      objectReference: {fileID: 1000012881264464, guid: ed8e636140a04224bb6c2d8636eb6ef1,
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000011740547058, guid: c003057658e35e74fadb45385c0bfb83,
         type: 2}
-    - target: {fileID: 114000011255245072, guid: c003057658e35e74fadb45385c0bfb83,
-        type: 2}
-      propertyPath: UseUserInput
+      propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 50000012639507104, guid: c003057658e35e74fadb45385c0bfb83,
+    - target: {fileID: 212000011740547058, guid: c003057658e35e74fadb45385c0bfb83,
         type: 2}
-      propertyPath: m_CollisionDetection
-      value: 1
+      propertyPath: m_Color.g
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c003057658e35e74fadb45385c0bfb83, type: 2}
