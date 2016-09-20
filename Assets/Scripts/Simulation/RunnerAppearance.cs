@@ -29,9 +29,6 @@ public class RunnerAppearance : MonoBehaviour
     {
         this.network = network;
 
-        float colorValue = Mathf.Abs((float)GetSummedWeight(2, 1)) + Mathf.Abs((float)GetSummedWeight(2, 3));
-        Color tintColor = Color.HSVToRGB(((colorValue * 255) % 255) / 255, 1, 0.5f);
-
         //Destroy previous limbs
         foreach (RunnerAppearanceLimb limb in limbs)
         {
@@ -42,34 +39,60 @@ public class RunnerAppearance : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
+        // Get index of highest weight to get a color which links the appearance somehow to the network
+        int totalcount = 0;
+        double highestValue = float.MinValue;
+        int highestIndex = -1;
 
-        for (int i = 0; i < network.Layers[1].Weights.GetLength(0); i++)
+        // iterate over hidden layers
+        for (int l = 0; l < network.Layers.Length - 1; l++)
         {
-            if (i < slots.Count)
+            // iterate all nodes
+            for (int w = 0; w < network.Layers[l].Weights.GetLength(0) - 1; w++)
             {
-                double summedWeight = GetSummedWeight(1, i);
-
-                GameObject go = Instantiate(GetSpriteForNode(summedWeight, bodyPartsPrefabs));
-
-                go.transform.SetParent(slots[i].transform, false);
-                go.transform.localScale *= 1.5f;
-                go.transform.localPosition = Vector2.zero;
-                go.transform.localRotation = Quaternion.identity;
-
-                RunnerAppearanceLimb limb = go.GetComponent<RunnerAppearanceLimb>();
-                FixedJoint2D joint = limb.masterJoint;
-                if (joint != null)
+                // iterate all weights
+                for (int wo = 0; wo < network.Layers[l].Weights.GetLength(1) - 1; wo++)
                 {
-                    joint.connectedBody = GetComponent<Rigidbody2D>();
-                }
+                    // Remember highest weight
+                    double val = Math.Abs(network.Layers[l].Weights[w, wo]);
 
-                foreach (SpriteRenderer spr in limb.SpriteRenderers)
-                {
-                    spr.color = tintColor;
-                }
+                    if (val > highestValue)
+                    {
+                        highestIndex = totalcount;
+                        highestValue = val;
+                    }
 
-                limbs.Add(limb);
+                    totalcount++;
+                }
             }
+        }
+
+        float hueVal = highestIndex / (float)totalcount;
+        Color tintColor = Color.HSVToRGB(hueVal, 1.0f, 0.5f);
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            GameObject go = Instantiate(GetSpriteForNode(1, bodyPartsPrefabs));
+
+            go.transform.SetParent(slots[i].transform, false);
+            go.transform.localScale *= 1.5f;
+            go.transform.localPosition = Vector2.zero;
+            go.transform.localRotation = Quaternion.identity;
+
+            RunnerAppearanceLimb limb = go.GetComponent<RunnerAppearanceLimb>();
+            FixedJoint2D joint = limb.masterJoint;
+            if (joint != null)
+            {
+                joint.connectedBody = GetComponent<Rigidbody2D>();
+            }
+
+            foreach (SpriteRenderer spr in limb.SpriteRenderers)
+            {
+                spr.color = tintColor;
+            }
+
+            limbs.Add(limb);
+            
         }
 
         body.color = tintColor;
