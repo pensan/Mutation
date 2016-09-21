@@ -4,7 +4,11 @@ using System;
 
 public class LevelController : MonoBehaviour
 {
-    public static LevelController Instance;
+    public static LevelController Instance
+    {
+        get;
+        private set;
+    }
 
     public enum EvolutionType
     {
@@ -83,25 +87,33 @@ public class LevelController : MonoBehaviour
 
     private void OnAllAgentsDiedHandler()
     {
-        StopCoroutine("TimeoutCo");
-        switch (EvoType)
+        if (!GameStateManager.Instance.IsMultiplayer)
         {
-            case EvolutionType.Automatic:
-                GameStateManager.Instance.EvolutionController.AutoRepopulate();
-                break;
-            case EvolutionType.User:
-                GUIController.Instance.CurrentMenu = GUIController.Instance.BreedMenu;
-                break;
+            StopCoroutine("TimeoutCo");
+            switch (EvoType)
+            {
+                case EvolutionType.Automatic:
+                    GameStateManager.Instance.EvolutionController.AutoRepopulate();
+                    break;
+                case EvolutionType.User:
+                    GUIController.Instance.CurrentMenu = GUIController.Instance.BreedMenu;
+                    break;
+            }
         }
     }
 
-    internal void StartTimeoutTimer()
+    public void StartTimeoutTimer()
     {
         if (autoTimeoutTime > 0.0f)
         {
             StopCoroutine("TimeoutCo");
             StartCoroutine("TimeoutCo");
         }
+    }
+
+    public void StopTimeoutTimer()
+    {
+        StopCoroutine("TimeoutCo");
     }
 
     private IEnumerator TimeoutCo()

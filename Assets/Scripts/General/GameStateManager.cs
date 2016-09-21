@@ -69,7 +69,12 @@ public class GameStateManager : MonoBehaviour
 
     public void LoadMultiplayerLevel(int index, string opponentName = "")
     {
-        /*StartCoroutine(GUIController.Instance.FadeAndWaitForCo(new CoroutineWithData(this, NetworkManager.GetOpponent(opponentName), delegate (object serverData) 
+        GUIController.Instance.FadeOperation(0.8f, delegate () { LoadMultiplayer(index, opponentName); }, EnableAllAgents);
+    }
+
+    private void LoadMultiplayer(int index, string opponentName = "")
+    {
+        new CoroutineWithData(this, NetworkManager.GetOpponent(opponentName), delegate (object serverData)
         {
             challengerNetwork = serverData as NeuralNetwork;
             if (challengerNetwork == null)
@@ -85,7 +90,7 @@ public class GameStateManager : MonoBehaviour
 
                 LoadLevel(index);
             }
-        })));*/
+        });
     }
 
     private IEnumerator LoadLevelCo(int index)
@@ -168,10 +173,10 @@ public class GameStateManager : MonoBehaviour
 
     public void StartEvolution()
     {
+        Debug.Log("Start Evolution");
+
         EvolutionController.CreatePopulation(DummyAgent);
         EvolutionController.gameObject.SetActive(true);
-
-        Debug.Log("Start Evolution");
 
         if (IsMultiplayer)
         {
@@ -179,6 +184,8 @@ public class GameStateManager : MonoBehaviour
             challengerAgent.Genome = new Genome(challengerNetwork);
             MultiplayerEvoController.CreatePopulation(challengerAgent);
             MultiplayerEvoController.gameObject.SetActive(true);
+
+            MultiplayerEvoController.ActivateAll(false);
         }
 
         EvolutionController.ActivateAll(false);
@@ -187,6 +194,8 @@ public class GameStateManager : MonoBehaviour
     public void EnableAllAgents()
     {
         EvolutionController.ActivateAll(true);
+        if (MultiplayerEvoController != null)
+            MultiplayerEvoController.ActivateAll(true);
     }
 
 }

@@ -15,6 +15,7 @@ public class IngameMenu : MenuScreen
         KillSwitch.onClick.AddListener(GameStateManager.Instance.EvolutionController.KillAll);
         BackToMain.onClick.AddListener(delegate() 
         {
+            LevelController.Instance.StopTimeoutTimer();
             if (GameStateManager.Instance.IsTraining)
             {
                 Genome saveGenome = GameStateManager.Instance.EvolutionController.AlphaGenome;

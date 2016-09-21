@@ -77,7 +77,11 @@ public class EvolutionController : MonoBehaviour
         }
         Population[Population.Length - 1] = seed;
         Population[Population.Length - 1].OnAgentDied += AgentDied;
-        seed.Restart();
+        if (seed.IsInitialized)
+            seed.Restart();
+        else
+            seed.Init();
+
         seed.GenerationCount = 0;
 
         MutateAll(mutatePerc, mutationProb, mutationAmount, seed);
