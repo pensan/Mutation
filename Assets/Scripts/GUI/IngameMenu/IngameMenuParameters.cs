@@ -16,8 +16,10 @@ public class IngameMenuParameters : MenuScreen
     public Slider timeoutSlider;
     public Text timeoutSliderTitle;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         MutationProbSlider.onValueChanged.AddListener(MutationPropSliderChangedHandler);
         MutationAmountSlider.onValueChanged.AddListener(MutatioAmountSliderChangedHandler);
 

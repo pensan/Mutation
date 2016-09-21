@@ -13,8 +13,10 @@ public class BreedMenu : MenuScreen
 
     public Button ManualBreedButton;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         ManualBreedButton.onClick.AddListener(StartManualBreed);
         SelectedAgents = GetComponentInChildren<SelectedAgentsPanel>();
         SelectedAgents.OnAgentAdded += SelectedAgentsChanged;

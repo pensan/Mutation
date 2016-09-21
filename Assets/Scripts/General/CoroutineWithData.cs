@@ -8,6 +8,12 @@ public class CoroutineWithData
     private IEnumerator target;
     public event System.Action<object> OnFinish;
 
+    public bool IsFinished
+    {
+        get;
+        private set;
+    }
+
     public CoroutineWithData(MonoBehaviour owner, IEnumerator target, System.Action<object> OnFinishMethod = null)
     {
         this.target = target;
@@ -15,6 +21,8 @@ public class CoroutineWithData
 
         if (OnFinishMethod != null)
             OnFinish += OnFinishMethod;
+
+        IsFinished = false;
     }
 
     private IEnumerator Run()
@@ -27,5 +35,7 @@ public class CoroutineWithData
 
         if (OnFinish != null)
             OnFinish(data);
+
+        IsFinished = true;
     }
 }

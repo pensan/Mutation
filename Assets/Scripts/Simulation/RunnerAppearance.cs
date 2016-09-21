@@ -25,6 +25,19 @@ public class RunnerAppearance : MonoBehaviour
         StartCoroutine(SetAppearanceCo(network));
     }
 
+    private bool isHidden = false;
+
+    public void Hide(bool hide)
+    {
+        isHidden = hide;
+        foreach (RunnerAppearanceLimb limb in limbs)
+            limb.gameObject.SetActive(!hide);
+
+        if (body != null)
+            body.enabled = !hide;
+
+    }
+
     private IEnumerator SetAppearanceCo(NeuralNetwork network)
     {
         this.network = network;
@@ -91,6 +104,7 @@ public class RunnerAppearance : MonoBehaviour
                 spr.color = tintColor;
             }
 
+            limb.gameObject.SetActive(!isHidden);
             limbs.Add(limb);
             
         }

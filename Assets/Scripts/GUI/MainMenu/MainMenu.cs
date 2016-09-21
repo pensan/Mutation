@@ -10,8 +10,9 @@ public class MainMenu : MenuScreen
 
     public int LevelIndex = 1;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         BreedButton.onClick.AddListener(delegate ()
         {
             GameStateManager.Instance.LoadSingleplayerLevel(LevelIndex);

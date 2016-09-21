@@ -49,14 +49,14 @@ public class GameStateManager : MonoBehaviour
 
     void Awake()
     {
-        SceneManager.LoadScene("GUI", LoadSceneMode.Additive);
-        LoadMainMenu();
-
         Instance = this;
 
         IsInLevel = false;
-        IsTraining = true;
+        IsTraining = false;
         IsMultiplayer = false;
+
+        SceneManager.LoadScene("GUI", LoadSceneMode.Additive);
+        LoadMainMenu();
     }
 
     public void LoadSingleplayerLevel(int index)
@@ -64,12 +64,12 @@ public class GameStateManager : MonoBehaviour
         IsMultiplayer = false;
         IsTraining = true;
 
-        LoadLevel(index);
+        GUIController.Instance.FadeOperation(0.5f, delegate { LoadLevel(index); }, EnableAllAgents);
     }
 
     public void LoadMultiplayerLevel(int index, string opponentName = "")
     {
-        new CoroutineWithData(this, NetworkManager.GetOpponent(opponentName), delegate (object serverData) 
+        /*StartCoroutine(GUIController.Instance.FadeAndWaitForCo(new CoroutineWithData(this, NetworkManager.GetOpponent(opponentName), delegate (object serverData) 
         {
             challengerNetwork = serverData as NeuralNetwork;
             if (challengerNetwork == null)
@@ -85,7 +85,18 @@ public class GameStateManager : MonoBehaviour
 
                 LoadLevel(index);
             }
-        });
+        })));*/
+    }
+
+    private IEnumerator LoadLevelCo(int index)
+    {
+        yield return SceneManager.LoadSceneAsync("Level_" + index, LoadSceneMode.Additive);
+        CurLevel = SceneManager.GetSceneByName("Level_" + index);
+        SceneManager.UnloadScene("MainMenu");
+
+        IsInLevel = true;
+
+        GUIController.Instance.CurrentMenu = GUIController.Instance.IngameMenu;
     }
 
     private void LoadLevel(int index)
@@ -101,10 +112,29 @@ public class GameStateManager : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        if (GUIController.Instance == null)
+        {
+            LoadMain();
+            StartCoroutine(EnableAllCo());
+        }
+        else
+        {
+            GUIController.Instance.FadeOperation(0.8f, LoadMain, EnableAllAgents);
+        }
+    }
+
+    private void LoadMain()
+    {
         UnloadCurrentLevel();
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
         if (GUIController.Instance != null)
             GUIController.Instance.CurrentMenu = GUIController.Instance.MainMenu;
+    }
+
+    private IEnumerator EnableAllCo()
+    {
+        yield return new WaitForEndOfFrame(); //Need to wait 1 frame for level controller to initialize
+        EnableAllAgents();
     }
 
     private void UnloadCurrentLevel()
@@ -150,6 +180,13 @@ public class GameStateManager : MonoBehaviour
             MultiplayerEvoController.CreatePopulation(challengerAgent);
             MultiplayerEvoController.gameObject.SetActive(true);
         }
+
+        EvolutionController.ActivateAll(false);
+    }
+
+    public void EnableAllAgents()
+    {
+        EvolutionController.ActivateAll(true);
     }
 
 }

@@ -178,6 +178,17 @@ public class EvolutionController : MonoBehaviour
         }
     }
 
+    public void ActivateAll(bool activated)
+    {
+        if (Population != null)
+        {
+            foreach (Agent a in Population)
+            {
+                a.Hide(!activated);
+            }
+        }
+    }
+
     public void AutoRepopulate()
     {
         AutoRepopulate(mutatePerc);

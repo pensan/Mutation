@@ -3,7 +3,6 @@ using System.Collections;
 
 public class MenuScreen : MonoBehaviour
 {
-
     public bool IsShown
     {
         get;
@@ -11,9 +10,24 @@ public class MenuScreen : MonoBehaviour
     }
 
 
+    private CanvasGroup canvasGroup;
+
+    protected virtual void Awake()
+    {
+        this.canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    public void SetInteractable(bool interactable)
+    {
+        if (canvasGroup != null)
+            canvasGroup.interactable = interactable;
+    }
+
+
     public virtual void Show()
     {
         IsShown = true;
+        SetInteractable(true);
         this.gameObject.SetActive(true);
     }
 

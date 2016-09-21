@@ -221,6 +221,14 @@ public class Runner : Agent
         base.Die();
     }
 
+    public override void Hide(bool hide)
+    {
+        base.Hide(hide);
+        
+        if (this.Appearance != null)
+            this.Appearance.Hide(hide);
+    }
+
 
     void OnTriggerEnter2D(Collider2D collider)
     {

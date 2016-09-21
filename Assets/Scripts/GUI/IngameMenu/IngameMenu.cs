@@ -8,8 +8,10 @@ public class IngameMenu : MenuScreen
     public Button KillSwitch;
     public Button BackToMain;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         KillSwitch.onClick.AddListener(GameStateManager.Instance.EvolutionController.KillAll);
         BackToMain.onClick.AddListener(delegate() 
         {

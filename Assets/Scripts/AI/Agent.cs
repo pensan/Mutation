@@ -130,5 +130,10 @@ public class Agent : MonoBehaviour, IComparable<Agent>
     {
         return this.Genome.CompareTo(other.Genome);
     }
+
+    public virtual void Hide(bool hide)
+    {
+        this.gameObject.SetActive(!hide);
+    }
 }
 
