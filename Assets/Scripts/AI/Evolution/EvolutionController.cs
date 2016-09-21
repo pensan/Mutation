@@ -172,11 +172,6 @@ public class EvolutionController : MonoBehaviour
             AlphaGenome = BestAgent.Genome.DeepCopy();
             Debug.Log("New alpha genome");
         }
-        else
-        {
-            BestAgent.Genome = AlphaGenome.DeepCopy();
-            Debug.Log("Reusing alpha genome");
-        }
     }
 
     public void AutoRepopulate()
@@ -186,6 +181,12 @@ public class EvolutionController : MonoBehaviour
 
     public void AutoRepopulate(float mutatePerc)
     {
+        if (AlphaGenome != null && AlphaGenome.Fitness > BestAgent.Genome.Fitness)
+        {
+            BestAgent.Genome = AlphaGenome.DeepCopy();
+            Debug.Log("Reusing alpha genome");
+        }    
+
         CrossBestSecondBest();
 
         MutateAll(mutatePerc, mutationProb, mutationAmount);
