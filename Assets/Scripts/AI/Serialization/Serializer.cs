@@ -54,7 +54,14 @@ public static class Serializer
     public static SerializeableNeuralNetwork LoadNetworkFromServerResponse(string data)
     {
         JObject parsed = JObject.Parse(data);
-        return JsonConvert.DeserializeObject<SerializeableNeuralNetwork>(parsed["data"]["user"]["neuronal_network"].ToString());
+        if (parsed["data"]["user"]["neuronal_network"].ToString().Equals("{}"))
+        {
+            return null;
+        }
+        else
+        {
+            return JsonConvert.DeserializeObject<SerializeableNeuralNetwork>(parsed["data"]["user"]["neuronal_network"].ToString());
+        }
     }
 
     public static SerializeableNeuralNetwork LoadNetwork()

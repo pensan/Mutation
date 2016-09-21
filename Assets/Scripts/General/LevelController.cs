@@ -56,7 +56,17 @@ public class LevelController : MonoBehaviour
             DummyAgent.Init();
 
         if (LoadGenome)
-            DummyAgent.LoadCurrentGenome();
+        {
+            if (GameStateManager.Instance.CurrentNeuralNet == null)
+            {
+                Debug.Log("No neural network was loaded. Randomizing DummyAgent genome.");
+                DummyAgent.RandomizeGenome();
+            }
+            else
+            {
+                DummyAgent.Genome = new Genome(GameStateManager.Instance.CurrentNeuralNet);
+            }
+        }
         else
             DummyAgent.RandomizeGenome();
     }

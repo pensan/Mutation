@@ -14,6 +14,11 @@ public class GameStateManager : MonoBehaviour
     }
     public CameraMovement CamMovement;
     public Agent DummyAgent;
+    public NeuralNetwork CurrentNeuralNet
+    {
+        get;
+        private set;
+    }
 
     private NeuralNetwork challengerNetwork;
 
@@ -56,6 +61,73 @@ public class GameStateManager : MonoBehaviour
 
         SceneManager.LoadScene("GUI", LoadSceneMode.Additive);
         LoadMainMenu();
+        HandleServerStatus(SyncCoroutine(NetworkManager.GetServerstatus()));
+    }
+
+    public static object SyncCoroutine(IEnumerator target)
+    {
+        object data = null;
+        while (target.MoveNext())
+        {
+            data = target.Current;
+        }
+
+        return data;
+    }
+
+    private void HandleServerStatus(object data)
+    {
+        bool result = (bool)data;
+
+        if (result)
+        {
+            Debug.Log("Successfully connected to server! Posting login!");
+            HandleServerLogin(SyncCoroutine(NetworkManager.PostLogin()));
+        }
+        else
+        {
+            StartCoroutine(WaitedDialog("Server Error", "Couldn't connect to Server!\nPlayer try again at a later time."));
+        }
+    }
+
+    private void HandleServerLogin(object serverData)
+    {
+        if (serverData == null)
+            CurrentNeuralNet = null;
+        else
+        {
+            try
+            {
+                CurrentNeuralNet = (NeuralNetwork)serverData;
+                Debug.Log("Successfully loaded neuralNetwork from server");
+            }
+            catch (InvalidCastException)
+            {
+                bool status = (bool)serverData;
+                if (status)
+                    Debug.LogError("Server status was good but couldn't load neural network!");
+                else
+                    Debug.LogError("Connection error while trying to load neural network from server!");
+
+                WaitedDialog("Server Error", "Failed to load your population from server...\nPlease try again at a later time.");
+            }
+        }
+        
+    }
+
+    private IEnumerator WaitedDialog(string header, string content, System.Action okAction = null)
+    {
+        yield return new WaitForEndOfFrame();
+        GUIController.Instance.Dialog.Show(header, content, okAction);
+    }
+
+    public void SaveCurrentNeuralNet()
+    {
+        Debug.Log("Saving current best neural network.");
+        Genome saveGenome = EvolutionController.AlphaGenome;
+        if (saveGenome == null) saveGenome = EvolutionController.BestAgent.Genome;
+        CurrentNeuralNet = saveGenome.NeuralNet.DeepCopy();
+        StartCoroutine(NetworkManager.PostNeuralNet(saveGenome.NeuralNet));
     }
 
     public void LoadSingleplayerLevel(int index)
@@ -63,7 +135,12 @@ public class GameStateManager : MonoBehaviour
         IsMultiplayer = false;
         IsTraining = true;
 
-        GUIController.Instance.FadeOperation(0.5f, delegate { LoadLevel(index); }, EnableAllAgents);
+        GUIController.Instance.FadeOperation(0.5f, 
+            delegate 
+            {
+                LoadLevel(index);
+            }, 
+            EnableAllAgents);
     }
 
     public void LoadMultiplayerLevel(int index, string opponentName = "")

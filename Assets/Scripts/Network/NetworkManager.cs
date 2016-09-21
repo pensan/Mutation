@@ -28,6 +28,9 @@ public static class NetworkManager
         UnityWebRequest www = UnityWebRequest.Get(server_url);
         yield return www.Send();
 
+        while (!www.isDone)
+            yield return new WaitForEndOfFrame();
+
         if(www.isError)
         {
             Debug.LogError(www.error + ": " + server_url);
@@ -43,6 +46,7 @@ public static class NetworkManager
             }
             else
             {
+                Debug.Log("Server status good!");
                 yield return true;
             }                
         }
@@ -59,6 +63,9 @@ public static class NetworkManager
 
         WWW www = new WWW(server_url + post_user, form);
         yield return www;
+
+        while (!www.isDone)
+            yield return new WaitForEndOfFrame();
 
         if (!string.IsNullOrEmpty(www.error))
         {

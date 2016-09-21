@@ -18,14 +18,10 @@ public class IngameMenu : MenuScreen
             LevelController.Instance.StopTimeoutTimer();
             if (GameStateManager.Instance.IsTraining)
             {
-                Genome saveGenome = GameStateManager.Instance.EvolutionController.AlphaGenome;
-                if (saveGenome == null) saveGenome = GameStateManager.Instance.EvolutionController.BestAgent.Genome;
-                Serializer.SaveNetwork(saveGenome.NeuralNet);
-                StartCoroutine(NetworkManager.PostNeuralNet(saveGenome.NeuralNet));
+                GameStateManager.Instance.SaveCurrentNeuralNet();
             }
             GameStateManager.Instance.LoadMainMenu();
         });
-
     }
 
     public override void Show()
