@@ -9,28 +9,21 @@ using UnityEngine.Experimental.Networking;
 using UnityEngine.Networking;
 #endif
 
-public class NetworkManager : MonoBehaviour
+public static class NetworkManager
 {
 
-    string server_url   = "http://mutinder.herokuapp.com";
-    string post_user    = "/api/users";
-    string post_nn      = "/api/users/{0}";
-    string get_user     = "/api/users";
-    string get_opponent = "/api/users/{0}/opponent/{1}";
-    int player_id;
-
-	void Start ()
-    {
-        Debug.Log("API server url: " + server_url);
-
-        StartCoroutine(GetServerstatus());
-	}
+    static string server_url   = "http://mutinder.herokuapp.com";
+    static string post_user    = "/api/users";
+    static string post_nn      = "/api/users/{0}";
+    static string get_user     = "/api/users";
+    static string get_opponent = "/api/users/{0}/opponent/{1}";
+    static int player_id;
 
 
     /// <summary>
     /// Tests the connection to the server
     /// </summary>
-    IEnumerator GetServerstatus ()
+    public static IEnumerator GetServerstatus ()
     {
         UnityWebRequest www = UnityWebRequest.Get(server_url);
         yield return www.Send();
@@ -38,6 +31,7 @@ public class NetworkManager : MonoBehaviour
         if(www.isError)
         {
             Debug.LogError(www.error + ": " + server_url);
+            yield return false;
         }
         else
         {
@@ -45,11 +39,11 @@ public class NetworkManager : MonoBehaviour
             if ( www.responseCode.ToString()[0] != '2' )
             {
                 Debug.LogError("ConnectionError!");
+                yield return false;
             }
             else
             {
-                // Continue if response was 2XX
-                StartCoroutine(PostLogin());
+                yield return true;
             }                
         }
     }
@@ -57,7 +51,7 @@ public class NetworkManager : MonoBehaviour
     /// <summary>
     /// Sends the UUID to the server and fetches the user data
     /// </summary>
-    IEnumerator PostLogin ()
+    public static IEnumerator PostLogin ()
     {
         WWWForm form = new WWWForm();
 
@@ -69,26 +63,24 @@ public class NetworkManager : MonoBehaviour
         if (!string.IsNullOrEmpty(www.error))
         {
             Debug.LogError(www.error + ": " + server_url + post_user);
+            yield return false;
         }
         else
         {
             Debug.Log(www.text);
             JObject parsed = JObject.Parse(www.text);
             player_id = (int)parsed["data"]["user"]["id"];
+
+            yield return new NeuralNetwork(Serializer.LoadNetworkFromServerResponse(www.text));
         }
 
     }
 
 
-    public void SaveNeuralNet(NeuralNetwork net)
-    {
-        StartCoroutine(PostNeuralNet(net));
-    }
-
     /// <summary>
     /// Sends the NeuralNetwork to the server with current user data
     /// </summary>
-    IEnumerator PostNeuralNet(NeuralNetwork net)
+    public static IEnumerator PostNeuralNet(NeuralNetwork net)
     {
         WWWForm form = new WWWForm();
 
@@ -100,11 +92,13 @@ public class NetworkManager : MonoBehaviour
         if (!string.IsNullOrEmpty(www.error))
         {
             Debug.LogError(www.error + ": " + www.url);
+            yield return false;
         }
         else
         {
             Debug.Log(www.text);
             Debug.Log("Successfully posted network.");
+            yield return true;
         }
 
     }
@@ -112,7 +106,7 @@ public class NetworkManager : MonoBehaviour
     /// <summary>
     /// Returns an opponent
     /// </summary>
-    public IEnumerator GetOpponent(string opponent_id="")
+    public static IEnumerator GetOpponent(string opponent_id="")
     {
         string get_op = string.Format(get_opponent, player_id, opponent_id);
         UnityWebRequest www = UnityWebRequest.Get(server_url + get_op);
@@ -121,6 +115,7 @@ public class NetworkManager : MonoBehaviour
         if (www.isError)
         {
             Debug.LogError(www.error + ": " + server_url + get_op);
+            yield return false;
         }
         else
         {
@@ -128,6 +123,7 @@ public class NetworkManager : MonoBehaviour
             if (www.responseCode.ToString()[0] != '2')
             {
                 Debug.LogError("Connection Error!");
+                yield return false;
             }
             else
             {

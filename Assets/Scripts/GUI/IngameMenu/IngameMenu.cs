@@ -21,7 +21,7 @@ public class IngameMenu : MenuScreen
                 Genome saveGenome = GameStateManager.Instance.EvolutionController.AlphaGenome;
                 if (saveGenome == null) saveGenome = GameStateManager.Instance.EvolutionController.BestAgent.Genome;
                 Serializer.SaveNetwork(saveGenome.NeuralNet);
-                GameStateManager.Instance.NetworkManager.SaveNeuralNet(saveGenome.NeuralNet);
+                StartCoroutine(NetworkManager.PostNeuralNet(saveGenome.NeuralNet));
             }
             GameStateManager.Instance.LoadMainMenu();
         });

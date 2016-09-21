@@ -12,7 +12,6 @@ public class GameStateManager : MonoBehaviour
         get;
         private set;
     }
-    public NetworkManager NetworkManager;
     public CameraMovement CamMovement;
     public Agent DummyAgent;
 
