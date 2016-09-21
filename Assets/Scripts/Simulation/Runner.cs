@@ -184,7 +184,9 @@ public class Runner : Agent
             CalculateInputs();
 
         if (this.transform.position.y < -100)
+        {
             Die();
+        }
 
         Genome.UpdateFitness();
     }

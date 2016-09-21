@@ -113,7 +113,9 @@ public class Agent : MonoBehaviour, IComparable<Agent>
     public void Kill()
     {
         if (IsAlive)
+        {
             Die();
+        }
     }
 
     protected virtual void Die()

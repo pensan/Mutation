@@ -120,11 +120,15 @@ public class EvolutionController : MonoBehaviour
     {
         if (Population != null)
         {
+            List<Agent> aliveAgents = new List<Agent>();
             foreach (Agent agent in Population)
             {
                 if (agent.IsAlive)
-                    agent.Kill();
+                    aliveAgents.Add(agent);
             }
+
+            foreach (Agent agent in aliveAgents)
+                agent.Kill();
         }
     }
 
