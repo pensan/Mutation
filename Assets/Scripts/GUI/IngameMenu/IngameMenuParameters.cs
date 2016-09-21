@@ -56,12 +56,18 @@ public class IngameMenuParameters : MenuScreen
             TimeoutSliderChanged(timeoutSlider.value);
             LevelController.Instance.StartTimeoutTimer();
 
-            GameStateManager.Instance.EvolutionController.AutoRepopulate();
-            GUIController.Instance.CurrentMenu = GUIController.Instance.IngameMenu;
-            GameStateManager.Instance.CamMovement.SetCamPosInstant(GameStateManager.Instance.DummyAgent.StartPosition);
+            if (GUIController.Instance.BreedMenu.IsShown)
+                AutoRepopulate();
         }
 
         timeoutPanel.SetActive(v);
+    }
+
+    private void AutoRepopulate()
+    {
+        GameStateManager.Instance.EvolutionController.AutoRepopulate();
+        GUIController.Instance.CurrentMenu = GUIController.Instance.IngameMenu;
+        GameStateManager.Instance.CamMovement.SetCamPosInstant(GameStateManager.Instance.DummyAgent.StartPosition);
     }
 
     private void MutationPropSliderChangedHandler(float v)
