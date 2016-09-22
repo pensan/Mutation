@@ -9,7 +9,7 @@ public class NeuralLayer
 
     public delegate double ActivationFunction(double xValue);
 
-    public ActivationFunction ActivationMethod = MathHelper.GetActivationFunction(ActivationFunctions.SIGMOID);
+    private ActivationFunction activationMethod = MathHelper.GetActivationFunction(ActivationFunctions.SIGMOID);
 
     private ActivationFunctions currentActivationFunction;
     public ActivationFunctions CurrentActivationFunction
@@ -22,7 +22,7 @@ public class NeuralLayer
         set
         {
             currentActivationFunction = value;
-            ActivationMethod = MathHelper.GetActivationFunction(currentActivationFunction);
+            activationMethod = MathHelper.GetActivationFunction(currentActivationFunction);
         }
     }
 
@@ -94,10 +94,10 @@ public class NeuralLayer
             for (int i = 0; i < this.Weights.GetLength(0); i++)
                 sums[j] += inputs[i] * Weights[i, j];
 
-        if (ActivationMethod != null)
+        if (activationMethod != null)
         {
             for (int i = 0; i < sums.Length; i++)
-                sums[i] = ActivationMethod(sums[i]);
+                sums[i] = activationMethod(sums[i]);
         }
 
         return sums;
@@ -114,7 +114,7 @@ public class NeuralLayer
 
         NeuralLayer newLayer = new NeuralLayer(this.NodeCount, this.OutputCount);
         newLayer.Weights = copiedWeights;
-        newLayer.ActivationMethod = this.ActivationMethod;
+        newLayer.currentActivationFunction = this.CurrentActivationFunction;
 
         return newLayer;
     }

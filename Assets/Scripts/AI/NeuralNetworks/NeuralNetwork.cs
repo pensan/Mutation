@@ -60,7 +60,7 @@ public class NeuralNetwork
     {
         NeuralNetwork copy = new NeuralNetwork(this.Topology);
         for (int i = 0; i < Layers.Length; i++)
-            copy.Layers[i].ActivationMethod = this.Layers[i].ActivationMethod;
+            copy.Layers[i].CurrentActivationFunction = this.Layers[i].CurrentActivationFunction;
 
         return copy;
     }
