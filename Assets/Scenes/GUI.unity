@@ -2567,11 +2567,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 917834582}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -294, y: 112}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: 10, y: 8}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1227689000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2610,14 +2610,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 432f111911265644d8ef92ba67b06a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   distance: {x: 10, y: 10, z: 0}
-  speed: 0.2
+  speed: 0.3
 --- !u!222 &1227689002
 CanvasRenderer:
   m_ObjectHideFlags: 0
