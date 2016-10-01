@@ -6,7 +6,8 @@ using System;
 
 public class Runner : Agent
 {
-    public override Genome Genome
+
+	public override Genome Genome
     {
         get
         {
@@ -36,7 +37,8 @@ public class Runner : Agent
 
     private Sensor[] sensors;
 
-    public GameObject runnerAppearancePrefab;
+    //public GameObject runnerAppearancePrefab;
+	public List<GameObject> bodyTypePrefabs;
 
     public RunnerAppearance Appearance
     {
@@ -112,6 +114,12 @@ public class Runner : Agent
     private TrailRenderer trailRenderer;
     private Dragable dragComponenet;
 
+	public int GetRandomSlot()
+	{
+		System.Random r = new System.Random();
+		return r.Next(bodyTypePrefabs.Count);
+	}
+
     public override void Init()
     {
         sensors = GetComponentsInChildren<Sensor>();
@@ -123,9 +131,8 @@ public class Runner : Agent
         dragComponenet = GetComponent<Dragable>();
         dragComponenet.enabled = false;
         dragComponenet.OnDrag += DragThisAgent;
-
- 
-        Appearance = Instantiate(runnerAppearancePrefab).GetComponent<RunnerAppearance>();
+		Debug.Log ("Body Type Nr. = " + GetRandomSlot());
+		Appearance = Instantiate(bodyTypePrefabs[GetRandomSlot()]).GetComponent<RunnerAppearance>();
         Appearance.masterRigidBody = GetComponent<Rigidbody2D>();
 
         trailRenderer = GetComponentInChildren<TrailRenderer>();

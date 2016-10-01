@@ -38,6 +38,12 @@ public class RunnerAppearance : MonoBehaviour
 
     }
 
+	public int GetRandomSlot()
+	{
+		System.Random r = new System.Random();
+		return r.Next(0, slots.Count);
+	}
+
     private IEnumerator SetAppearanceCo(NeuralNetwork network)
     {
         this.network = network;
@@ -56,6 +62,7 @@ public class RunnerAppearance : MonoBehaviour
         int totalcount = 0;
         double highestValue = float.MinValue;
         int highestIndex = -1;
+		//int indexNumber = 0;
 
         // iterate over hidden layers
         for (int l = 0; l < network.Layers.Length - 1; l++)
@@ -73,6 +80,7 @@ public class RunnerAppearance : MonoBehaviour
                     {
                         highestIndex = totalcount;
                         highestValue = val;
+						//indexNumber = l;
                     }
 
                     totalcount++;
@@ -85,7 +93,8 @@ public class RunnerAppearance : MonoBehaviour
 
         for (int i = 0; i < slots.Count; i++)
         {
-            GameObject go = Instantiate(GetSpriteForNode(1, bodyPartsPrefabs));
+			GameObject go = Instantiate(GetSpriteForNode(GetRandomSlot(), bodyPartsPrefabs));
+			//GameObject go = Instantiate(GetSpriteForNode(GetSummedWeight(indexNumber, 1), bodyPartsPrefabs));
 
             go.transform.SetParent(slots[i].transform, false);
             go.transform.localScale *= 1.5f;
@@ -123,13 +132,17 @@ public class RunnerAppearance : MonoBehaviour
 
     private GameObject GetSpriteForNode(double summedWeight, List<GameObject> bodyParts)
     {
-        return bodyPartsPrefabs[Mathf.FloorToInt(Mathf.Abs((float)(summedWeight * bodyParts.Count))) % bodyParts.Count];
+		// Weird fact... when I do not Log the Random number, the seed wont change and it will always give the same result.
+		Debug.Log ("Bodypart Number = " + summedWeight);
+		return bodyPartsPrefabs[(int)summedWeight];
+		//return bodyPartsPrefabs[Mathf.FloorToInt(Mathf.Abs((float)(summedWeight * bodyParts.Count))) % bodyParts.Count];
     }
 
     double GetSummedWeight(int layerIndex, int nodeIndex)
     {
         double summedWeight = 0.0f;
         int weightCount = network.Layers[layerIndex].Weights.GetLength(1);
+		Debug.Log (weightCount);
 
         for (int j = 0; j < weightCount; j++)
         {

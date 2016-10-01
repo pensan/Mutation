@@ -561,6 +561,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
+  bodyTypePrefabs:
+  - {fileID: 1000012881264464, guid: ed8e636140a04224bb6c2d8636eb6ef1, type: 2}
+  - {fileID: 1000011031732666, guid: 879b8ddc6270aa84cb2663b58cd58d60, type: 2}
   runnerAppearancePrefab: {fileID: 1000012881264464, guid: ed8e636140a04224bb6c2d8636eb6ef1,
     type: 2}
 --- !u!114 &114000011255245072
