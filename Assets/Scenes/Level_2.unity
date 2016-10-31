@@ -670,6 +670,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 174879384}
   - 212: {fileID: 174879383}
+  - 60: {fileID: 174879385}
   m_Layer: 0
   m_Name: hose
   m_TagString: Untagged
@@ -723,6 +724,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 281224819}
   m_RootOrder: 0
+--- !u!60 &174879385
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 174879382}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+    m_Paths:
+    - - {x: 0.20189135, y: 0.37838605}
+      - {x: -0.08660704, y: 0.7774338}
+      - {x: -0.31020346, y: 1.269954}
+      - {x: -0.42024922, y: 0.2774431}
 --- !u!1 &184539619
 GameObject:
   m_ObjectHideFlags: 0
@@ -6621,6 +6640,10 @@ Prefab:
       value: 66
       objectReference: {fileID: 0}
     - target: {fileID: 1000010711545352, guid: 3751edaa2a5e5134caeb43ba383b9e10, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011245922776, guid: 3751edaa2a5e5134caeb43ba383b9e10, type: 2}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
