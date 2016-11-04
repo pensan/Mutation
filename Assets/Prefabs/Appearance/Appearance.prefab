@@ -377,6 +377,7 @@ MonoBehaviour:
   - {fileID: 1000014062953284, guid: 8b86728959567b14da8ba94a59fb4654, type: 2}
   - {fileID: 1000012373716356, guid: 7f47331cdd7bb934dbc964f94c8454a8, type: 2}
   - {fileID: 1000011482599478, guid: 69a4eb6013b7c1347b0292a281dcd1a8, type: 2}
+  - {fileID: 0}
   slots:
   - {fileID: 4000013308737704}
   - {fileID: 4000012643901004}
