@@ -10,6 +10,8 @@ using System.Collections.Generic;
 [System.Serializable]
 public class AgentPanel : MonoBehaviour
 {
+    private System.Random randomizer = new System.Random(); //Randomizer fix
+
 	public List<Sprite> portraitsBody1;
 	public List<Sprite> portraitsBody2;
 	public Image testImage;
@@ -44,12 +46,10 @@ public class AgentPanel : MonoBehaviour
 
 	public int getRandomImage(string bodyType) {
 		if (bodyType == "Body") {
-			System.Random r = new System.Random ();
-			return r.Next (0, portraitsBody1.Count);
-		} else if (bodyType == "Body2") {
-			System.Random r = new System.Random ();
-			return r.Next (0, portraitsBody2.Count);
-		} else {
+			return randomizer.Next (0, portraitsBody1.Count); //Randomizer fix
+        } else if (bodyType == "Body2") {
+			return randomizer.Next (0, portraitsBody2.Count); //Randomizer fix
+        } else {
 			return 0;
 		}
 	}	

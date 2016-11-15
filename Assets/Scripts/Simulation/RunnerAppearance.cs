@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class RunnerAppearance : MonoBehaviour 
 {
+    System.Random randomizer = new System.Random(); //Randomizer fix
+
     public List<GameObject> bodyPartsPrefabs;
     public List<Transform> slots;
 
@@ -40,9 +42,8 @@ public class RunnerAppearance : MonoBehaviour
 
 	public int GetRandomSlot()
 	{
-		System.Random r = new System.Random();
-		return r.Next(0, slots.Count);
-	}
+		return randomizer.Next(0, slots.Count); //Randomizer fix
+    }
 
     private IEnumerator SetAppearanceCo(NeuralNetwork network)
     {
@@ -132,8 +133,6 @@ public class RunnerAppearance : MonoBehaviour
 
     private GameObject GetSpriteForNode(double summedWeight, List<GameObject> bodyParts)
     {
-		// Weird fact... when I do not Log the Random number, the seed wont change and it will always give the same result.
-		Debug.Log ("Bodypart Number = " + summedWeight);
 		return bodyPartsPrefabs[(int)summedWeight];
 		//return bodyPartsPrefabs[Mathf.FloorToInt(Mathf.Abs((float)(summedWeight * bodyParts.Count))) % bodyParts.Count];
     }

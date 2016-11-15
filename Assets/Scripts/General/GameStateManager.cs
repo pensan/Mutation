@@ -115,6 +115,12 @@ public class GameStateManager : MonoBehaviour
         
     }
 
+    public void ResetNeuralNet()
+    {
+        Debug.Log("Resetting neural network...");
+        CurrentNeuralNet = null;
+    }
+
     private IEnumerator WaitedDialog(string header, string content, System.Action okAction = null)
     {
         yield return new WaitForEndOfFrame();

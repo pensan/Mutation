@@ -131,7 +131,6 @@ public class Runner : Agent
         dragComponenet = GetComponent<Dragable>();
         dragComponenet.enabled = false;
         dragComponenet.OnDrag += DragThisAgent;
-		Debug.Log ("Body Type Nr. = " + GetRandomSlot());
 		Appearance = Instantiate(bodyTypePrefabs[GetRandomSlot()]).GetComponent<RunnerAppearance>();
         Appearance.masterRigidBody = GetComponent<Rigidbody2D>();
 
