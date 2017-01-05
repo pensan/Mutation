@@ -61,7 +61,7 @@ public class GameStateManager : MonoBehaviour
 
         SceneManager.LoadScene("GUI", LoadSceneMode.Additive);
         LoadMainMenu();
-        HandleServerStatus(SyncCoroutine(NetworkManager.GetServerstatus()));
+        //HandleServerStatus(SyncCoroutine(NetworkManager.GetServerstatus()));
     }
 
     public static object SyncCoroutine(IEnumerator target)
