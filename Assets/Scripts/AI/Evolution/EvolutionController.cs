@@ -9,8 +9,8 @@ public class EvolutionController : MonoBehaviour
 
     public int PopulationCount = 5;
 
-    public float mutationProb = 0.25f;
-    public float mutationAmount = 0.5f;
+    public float mutationProb = 0.1f;
+    public float mutationAmount = 0.25f;
 
     public Agent[] Population
     {

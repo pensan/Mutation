@@ -45,7 +45,8 @@ public class IngameMenuParameters : MenuScreen
     public override void Show()
     {
         base.Show();
-
+		MutationProbSlider.value = GameStateManager.Instance.EvolutionController.mutationProb;
+		MutationAmountSlider.value = GameStateManager.Instance.EvolutionController.mutationAmount;
         AutoBreedToggle.gameObject.SetActive(!GameStateManager.Instance.IsMultiplayer);
     }
 

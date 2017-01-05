@@ -5,6 +5,7 @@ using System.Collections;
 public class MainMenu : MenuScreen
 {
     public Button BreedButton;
+	public Button TutorialButton;
     public Button ChallengeButton;
     public Button ExitButton;
 
@@ -13,10 +14,20 @@ public class MainMenu : MenuScreen
     protected override void Awake()
     {
         base.Awake();
-        BreedButton.onClick.AddListener(delegate ()
+		TutorialButton.onClick.AddListener(delegate ()
         {
-            GameStateManager.Instance.LoadSingleplayerLevel(LevelIndex);
+			GameStateManager.Instance.EvolutionController.PopulationCount = 2;
+			GameStateManager.Instance.EvolutionController.mutationAmount = 1.0f;
+			GameStateManager.Instance.EvolutionController.mutationProb = 1.0f;
+            GameStateManager.Instance.LoadSingleplayerLevel(1);
         });
+		BreedButton.onClick.AddListener(delegate ()
+		{
+			GameStateManager.Instance.EvolutionController.PopulationCount = 10;
+			GameStateManager.Instance.EvolutionController.mutationAmount = 0.5f;
+			GameStateManager.Instance.EvolutionController.mutationProb = 0.15f;
+			GameStateManager.Instance.LoadSingleplayerLevel(LevelIndex);
+		});
         ChallengeButton.onClick.AddListener(delegate ()
         {
             GameStateManager.Instance.LoadMultiplayerLevel(LevelIndex);
