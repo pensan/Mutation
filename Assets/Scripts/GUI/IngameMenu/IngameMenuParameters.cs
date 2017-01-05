@@ -82,6 +82,6 @@ public class IngameMenuParameters : MenuScreen
     private void MutatioAmountSliderChangedHandler(float v)
     {
         GameStateManager.Instance.EvolutionController.mutationAmount = v;
-        MutationAmountSliderValueText.text = string.Format("Mutation Strength: {0}", v.ToString("0.##"));
+        MutationAmountSliderValueText.text = string.Format("Mutation Strength: {0}", v.ToString("0.#"));
     }
 }

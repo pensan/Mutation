@@ -181,6 +181,8 @@ public class GameStateManager : MonoBehaviour
         CurLevel = SceneManager.GetSceneByName("Level_" + index);
         SceneManager.UnloadScene("MainMenu");
 
+		UnloadCurrentLevel ();
+
         IsInLevel = true;
 
         GUIController.Instance.CurrentMenu = GUIController.Instance.IngameMenu;
@@ -191,6 +193,8 @@ public class GameStateManager : MonoBehaviour
         SceneManager.LoadScene("Level_" + index, LoadSceneMode.Additive);
         CurLevel = SceneManager.GetSceneByName("Level_" + index);
         SceneManager.UnloadScene("MainMenu");
+
+		UnloadCurrentLevel ();
 
         IsInLevel = true;
 

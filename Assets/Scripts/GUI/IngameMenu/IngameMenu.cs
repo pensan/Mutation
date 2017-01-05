@@ -7,6 +7,7 @@ public class IngameMenu : MenuScreen
 {
     public Button KillSwitch;
     public Button BackToMain;
+	private int tutStatus = 0;
 
     protected override void Awake()
     {
@@ -27,11 +28,23 @@ public class IngameMenu : MenuScreen
     public override void Show()
     {
         base.Show();
-
+		GUIController.Instance.DialogInGame.Hide();
+		InTutorial();
         GUIController.Instance.IngameMenuParameters.Show();
 
         KillSwitch.gameObject.SetActive(!GameStateManager.Instance.IsMultiplayer);
     }
+
+	private void InTutorial() {
+		if (tutStatus == 0) {
+			GUIController.Instance.DialogInGame.Show(
+				"Level 1",
+				"Test"
+			);
+			tutStatus++;
+		}
+
+	}
 
     public override void Hide()
     {

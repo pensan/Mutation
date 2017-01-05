@@ -16,7 +16,7 @@ public class MainMenu : MenuScreen
         base.Awake();
 		TutorialButton.onClick.AddListener(delegate ()
         {
-			GameStateManager.Instance.EvolutionController.PopulationCount = 2;
+			GameStateManager.Instance.EvolutionController.PopulationCount = 4;
 			GameStateManager.Instance.EvolutionController.mutationAmount = 1.0f;
 			GameStateManager.Instance.EvolutionController.mutationProb = 1.0f;
             GameStateManager.Instance.LoadSingleplayerLevel(1);

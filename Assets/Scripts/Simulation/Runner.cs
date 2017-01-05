@@ -238,10 +238,15 @@ public class Runner : Agent
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.layer == LayerMask.NameToLayer("Trap"))
-        {
-            Die();
-        }
+		if (collider.gameObject.layer == LayerMask.NameToLayer ("Trap")) {
+			Die ();
+		} else if (collider.gameObject.layer == LayerMask.NameToLayer ("Finish")) {
+			GUIController.Instance.DialogInGame.Show(
+				"Level 1",
+				"Test " + GameStateManager.Instance.EvolutionController.getAliveCount(),
+				true
+			);
+		}	
     }
 
 

@@ -20,6 +20,10 @@ public class EvolutionController : MonoBehaviour
 
     private int aliveCount;
 
+	public int getAliveCount() {
+		return aliveCount;
+	}
+
     private Agent bestGenome;
     public Agent BestAgent
     {

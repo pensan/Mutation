@@ -42,6 +42,12 @@ public class GUIController : MonoBehaviour
         private set;
     }
 
+	public DialogInGame DialogInGame
+	{
+		get;
+		private set;
+	}
+
     public static GUIController Instance
     {
         get;
@@ -75,8 +81,10 @@ public class GUIController : MonoBehaviour
         IngameMenuParameters = GetComponentInChildren<IngameMenuParameters>(true);
 
         Dialog = GetComponentInChildren<Dialog>(true);
+		DialogInGame = GetComponentInChildren<DialogInGame>(true);
 
-        Dialog.Hide(); //Just making sure
+        Dialog.Hide(); 
+		DialogInGame.Hide(); //Just making sure
 
         MenuScreens = new List<MenuScreen>();
         MenuScreens.Add(MainMenu);
