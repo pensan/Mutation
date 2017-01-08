@@ -239,11 +239,16 @@ public class Runner : Agent
     void OnTriggerEnter2D(Collider2D collider)
     {
 		if (collider.gameObject.layer == LayerMask.NameToLayer ("Trap")) {
-			Die ();
+			Die();
 		} else if (collider.gameObject.layer == LayerMask.NameToLayer ("Finish")) {
+			LevelController.Instance.StopTimeoutTimer ();
 			GUIController.Instance.DialogInGame.Show(
-				"Level 1",
-				"Test " + GameStateManager.Instance.EvolutionController.getAliveCount(),
+				"Level " + GUIController.Instance.MainMenu.LevelIndex,
+				"Your bacteria made it!\n" +
+				"\n" +
+				"Survivors: " + GameStateManager.Instance.EvolutionController.getAliveCount() + "\n" +
+				//"Level time: " + TODO Timer is only active when Autobreed, cus it will killALL on >autotime
+				"Are you ready for the next challenge?",
 				true
 			);
 		}	

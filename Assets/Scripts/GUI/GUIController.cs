@@ -83,8 +83,8 @@ public class GUIController : MonoBehaviour
         Dialog = GetComponentInChildren<Dialog>(true);
 		DialogInGame = GetComponentInChildren<DialogInGame>(true);
 
-        Dialog.Hide(); 
-		DialogInGame.Hide(); //Just making sure
+		DialogInGame.Hide ();
+        Dialog.Hide();  //Just making sure
 
         MenuScreens = new List<MenuScreen>();
         MenuScreens.Add(MainMenu);

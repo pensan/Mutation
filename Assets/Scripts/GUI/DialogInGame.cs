@@ -11,7 +11,7 @@ public class DialogInGame : MonoBehaviour
     
     void Awake()
     {
-        OKButton.onClick.AddListener(Hide);
+		OKButton.onClick.AddListener(Hide);
 		NextButton.onClick.AddListener(delegate() 
 		{
 			Time.timeScale = 1.0f;	
@@ -20,7 +20,7 @@ public class DialogInGame : MonoBehaviour
 			{
 				GameStateManager.Instance.SaveCurrentNeuralNet();
 			}
-				GUIController.Instance.MainMenu.LevelIndex+=1;
+				GUIController.Instance.MainMenu.LevelIndex++;
 				GameStateManager.Instance.EvolutionController.PopulationCount = 10;
 				GameStateManager.Instance.EvolutionController.mutationAmount = 0.5f;
 				GameStateManager.Instance.EvolutionController.mutationProb = 0.15f;
@@ -47,10 +47,10 @@ public class DialogInGame : MonoBehaviour
 		Time.timeScale = 0.0f;
     }
 
-    public void Hide()
-    {
+	public void Hide()
+	{
 		Time.timeScale = 1.0f;
-        this.gameObject.SetActive(false);
-    }
+		this.gameObject.SetActive (false);
+	}
 		
 }
