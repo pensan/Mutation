@@ -46,39 +46,52 @@ public class IngameMenu : MenuScreen
 				GUIController.Instance.DialogInGame.Show (
 					"Tutorial",
 					"Welcome to Mutate & Escape!\n" +
-					"Master your first obstacles by playing with the " +
+					"Master your first obstacles by playing with the\n" +
 					"\"Mutation Strength\" slider, that controls the " +
-					"bacterias ability mutation strength. The higher " +
-					"the value the bigger the impact on the abilites."
+					"mutation strength of the bacterias abilities. The higher " +
+					"the value the bigger the impact on their abilites."
 				);
-				Debug.Log (tutStatus);
-				WaitForDialog();
-				tutStatus++;
+				StartCoroutine(WaitForDialog());
 			} else if (tutStatus == 1) {
 				GUIController.Instance.DialogInGame.Show (
 					"Tutorial",
-					"Test\nTest"
+					"When your bacteria died, choose 2 or more of them " +
+					"to breed them to a new and stronger type!\n" +
+					"Select, drag & drop the bacteria with your mouse " +
+					"and move the camera with the WASD or arrow keys."
 				);
-				WaitForDialog();
-				Debug.Log (tutStatus);
-				tutStatus++;
+				StartCoroutine(WaitForDialog());
 			} else if (tutStatus == 2) {
 				GUIController.Instance.DialogInGame.Show (
-					"Tutorial 2",
-					"Test\nTest2"
+					"Tutorial",
+					"Control the percentage of mutated bacteria with the\n" +
+					"\"Mutation Amount\" slider.\n" +
+					"Use these sliders and choose your bacteria wisely to " +
+					"create the ultimate breed!"
 				);
-				WaitForDialog();
-				Debug.Log (tutStatus);
-				tutStatus++;
+				StartCoroutine(WaitForDialog());
+			}
+		}
+		if (GUIController.Instance.MainMenu.LevelIndex == 2) {
+			if (tutStatus == 3) {
+				GUIController.Instance.DialogInGame.Show (
+					"Level 1",
+					"In this level, your breed will face its " +
+					"first bigger challenges. Teach them to survive " +
+					"and avoid the obstacles through selective breeding " +
+					"and clever mutating!\n" +
+					"Good luck!"
+				);
+				StartCoroutine(WaitForDialog());
 			}
 		}
 	}
 
 	private IEnumerator WaitForDialog() {
-		Debug.Log (GUIController.Instance.DialogInGame.isActiveAndEnabled);
-		while (true) {
-			Debug.Log (GUIController.Instance.DialogInGame.isActiveAndEnabled);
-			yield return GUIController.Instance.DialogInGame.isActiveAndEnabled;
+		while (GUIController.Instance.DialogInGame.isActiveAndEnabled) {
+			yield return null;
 		}
+		tutStatus++;
+		InTutorial();
 	}
 }

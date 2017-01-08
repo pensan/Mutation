@@ -243,7 +243,7 @@ public class Runner : Agent
 		} else if (collider.gameObject.layer == LayerMask.NameToLayer ("Finish")) {
 			LevelController.Instance.StopTimeoutTimer ();
 			GUIController.Instance.DialogInGame.Show(
-				"Level " + GUIController.Instance.MainMenu.LevelIndex,
+				"Level complete!",
 				"Your bacteria made it!\n" +
 				"\n" +
 				"Survivors: " + GameStateManager.Instance.EvolutionController.getAliveCount() + "\n" +

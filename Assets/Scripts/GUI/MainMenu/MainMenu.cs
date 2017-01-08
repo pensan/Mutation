@@ -19,13 +19,15 @@ public class MainMenu : MenuScreen
 			GameStateManager.Instance.EvolutionController.PopulationCount = 4;
 			GameStateManager.Instance.EvolutionController.mutationAmount = 1.0f;
 			GameStateManager.Instance.EvolutionController.mutationProb = 1.0f;
-            GameStateManager.Instance.LoadSingleplayerLevel(1);
+				LevelIndex = 1;
+				GameStateManager.Instance.LoadSingleplayerLevel(LevelIndex);
         });
 		BreedButton.onClick.AddListener(delegate ()
 		{
 			GameStateManager.Instance.EvolutionController.PopulationCount = 10;
 			GameStateManager.Instance.EvolutionController.mutationAmount = 0.5f;
 			GameStateManager.Instance.EvolutionController.mutationProb = 0.15f;
+			LevelIndex = 2;
 			GameStateManager.Instance.LoadSingleplayerLevel(LevelIndex);
 		});
         ChallengeButton.onClick.AddListener(delegate ()
