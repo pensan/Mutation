@@ -140,7 +140,7 @@ public class GameStateManager : MonoBehaviour
     {
         IsMultiplayer = false;
         IsTraining = true;
-
+		Debug.Log (IsTraining);
         GUIController.Instance.FadeOperation(0.5f, 
             delegate 
             {

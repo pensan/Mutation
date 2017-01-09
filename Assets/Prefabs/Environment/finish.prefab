@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013665622430}
   - 61: {fileID: 61000012827735776}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FinishPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010378175388}
   - 61: {fileID: 61000013905529764}
-  - 61: {fileID: 61000010586900332}
   - 61: {fileID: 61000010760040146}
   m_Layer: 8
   m_Name: CatchBox
@@ -98,7 +97,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010684626308}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 486.13, y: -14.84, z: 0}
+  m_LocalPosition: {x: 97.2, y: -14.84, z: 0}
   m_LocalScale: {x: 9.04823, y: 9.048226, z: 9.048226}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -147,20 +146,6 @@ BoxCollider2D:
   m_Offset: {x: 1.4434956, y: -3.8064272}
   serializedVersion: 2
   m_Size: {x: 0.96301454, y: 2.3871598}
---- !u!61 &61000010586900332
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012754973110}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: fbb2bea87d20cf447a3bc1f692fd680b, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
 --- !u!61 &61000010760040146
 BoxCollider2D:
   m_ObjectHideFlags: 1
