@@ -140,7 +140,6 @@ public class GameStateManager : MonoBehaviour
     {
         IsMultiplayer = false;
         IsTraining = true;
-		Debug.Log (IsTraining);
         GUIController.Instance.FadeOperation(0.5f, 
             delegate 
             {
@@ -191,10 +190,9 @@ public class GameStateManager : MonoBehaviour
     private void LoadLevel(int index)
     {
         SceneManager.LoadScene("Level_" + index, LoadSceneMode.Additive);
+		UnloadCurrentLevel();
         CurLevel = SceneManager.GetSceneByName("Level_" + index);
         SceneManager.UnloadScene("MainMenu");
-
-		UnloadCurrentLevel ();
 
         IsInLevel = true;
 
