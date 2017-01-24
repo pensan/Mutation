@@ -177,10 +177,11 @@ public class GameStateManager : MonoBehaviour
     private IEnumerator LoadLevelCo(int index)
     {
         yield return SceneManager.LoadSceneAsync("Level_" + index, LoadSceneMode.Additive);
-        CurLevel = SceneManager.GetSceneByName("Level_" + index);
-		SceneManager.UnloadSceneAsync("MainMenu");
-
 		UnloadCurrentLevel ();
+		if (SceneManager.GetSceneByName ("MainMenu").name != null) {
+			SceneManager.UnloadSceneAsync ("MainMenu");
+		}
+        CurLevel = SceneManager.GetSceneByName("Level_" + index);
 
         IsInLevel = true;
 
@@ -189,19 +190,12 @@ public class GameStateManager : MonoBehaviour
 
     private void LoadLevel(int index)
     {
-<<<<<<< HEAD
 		UnloadCurrentLevel ();
 		if (SceneManager.GetSceneByName ("MainMenu").name != null) {
 			SceneManager.UnloadSceneAsync ("MainMenu");
 		}
 		SceneManager.LoadScene("Level_" + index, LoadSceneMode.Additive);
 		CurLevel = SceneManager.GetSceneByName("Level_" + index);
-=======
-        SceneManager.LoadScene("Level_" + index, LoadSceneMode.Additive);
-		UnloadCurrentLevel();
-        CurLevel = SceneManager.GetSceneByName("Level_" + index);
-        SceneManager.UnloadScene("MainMenu");
->>>>>>> bb7090b5af4fb6b9899b6c0b0be6b23de2a54162
 
         IsInLevel = true;
 
