@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <title>Mutate &amp; Escape</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="author" content="https://redox-labs.com/" />
+
+  <link rel="stylesheet" type="text/css" href="css/mutant.css" />
+  <!-- <link rel="stylesheet" href="TemplateData/style.css"> -->
+  <link rel="shortcut icon" href="images/favicon.png" />
+
+  <script src="TemplateData/UnityProgress.js"></script>
+</head>
+
+
+<body>
+
+  <div class="container">
+
+
+    <div class="grid">
+      <div class="col-3">
+        <div class="logo">
+          <img src="images/logo.png" alt="Mutate &amp; Escape">
+        </div>
+      </div>
+
+      <div class="col-7">
+        <div class="info">
+          It's the year 1963, in a secret shady lab in the vicinity of Hallein,<br>
+          there has happend the inexplicable:<br>
+          The bacteria have evolved and they are trying to escape!
+        </div>
+      </div>
+    </div>
+
+    <div class="grid text-right">
+
+      <div class="col-3">
+        <p>
+          The bacteria utilize neural networks with genetic algorithms (Neuro-evolution) in order to autonomously learn how to progress within the level.
+        </p>
+
+        <div class="spacer"></div>
+
+        <p>
+          <a class="schmiede" href=" http://schmiede.ca/" target="_blank"><img src="images/schmiede_logo.png" alt="schmiede.ca"></a>
+        </p>
+        <p>
+          This project has evolved during the GameJam at the <a href=" http://schmiede.ca/" target="_blank">Schmiede</a> Festival 2016.
+        </p>
+      </div>
+
+      <div class="col-7">
+        <div class="player">
+          <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="960px"></canvas>
+        </div>
+        <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <footer>
+
+    <div>
+      made 2016 with <span aria-hidden="true">&#x2764;</span> by <br>
+      <span aria-hidden="true">&#9000;</span> <a href="https://redox-labs.com" target="_blank">REDOX Game Labs</a> (Code & Art)<br>
+      <span aria-hidden="true">&#9998;</span> <a href="http://skodone.at" target="_blank">Ben "skodone" Wahl</a> (2D Artist)<br>
+      <span aria-hidden="true">&#9836;</span> <a href="https://soundcloud.com/defrain_j" target="_blank">Andreas Gröstlinger</a> (Audio)
+    </div>
+
+  </footer>
+
+
+  <script type='text/javascript'>
+    var Module = {
+      TOTAL_MEMORY: 268435456,
+      errorhandler: null,			// arguments: err, url, line. This function must return 'true' if the error is handled, otherwise 'false'
+      compatibilitycheck: null,
+      dataUrl: "Development/WebGL.data",
+      codeUrl: "Development/WebGL.js",
+      memUrl: "Development/WebGL.mem",
+    };
+  </script>
+  <script src="Development/UnityLoader.js"></script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-90097477-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+</body>
+
+</html>
