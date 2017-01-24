@@ -140,7 +140,6 @@ public class GameStateManager : MonoBehaviour
     {
         IsMultiplayer = false;
         IsTraining = true;
-		Debug.Log (IsTraining);
         GUIController.Instance.FadeOperation(0.5f, 
             delegate 
             {
@@ -179,7 +178,7 @@ public class GameStateManager : MonoBehaviour
     {
         yield return SceneManager.LoadSceneAsync("Level_" + index, LoadSceneMode.Additive);
         CurLevel = SceneManager.GetSceneByName("Level_" + index);
-        SceneManager.UnloadScene("MainMenu");
+		SceneManager.UnloadSceneAsync("MainMenu");
 
 		UnloadCurrentLevel ();
 
@@ -190,11 +189,12 @@ public class GameStateManager : MonoBehaviour
 
     private void LoadLevel(int index)
     {
-        SceneManager.LoadScene("Level_" + index, LoadSceneMode.Additive);
-        CurLevel = SceneManager.GetSceneByName("Level_" + index);
-        SceneManager.UnloadScene("MainMenu");
-
 		UnloadCurrentLevel ();
+		if (SceneManager.GetSceneByName ("MainMenu").name != null) {
+			SceneManager.UnloadSceneAsync ("MainMenu");
+		}
+		SceneManager.LoadScene("Level_" + index, LoadSceneMode.Additive);
+		CurLevel = SceneManager.GetSceneByName("Level_" + index);
 
         IsInLevel = true;
 
@@ -232,11 +232,10 @@ public class GameStateManager : MonoBehaviour
     {
         if (IsInLevel)
         {
-            SceneManager.UnloadScene(CurLevel);
+			SceneManager.UnloadSceneAsync(CurLevel);
             IsInLevel = false;
         }
-
-        if (IsMultiplayer)
+		if (IsMultiplayer)
         {
             UnloadMultiplayer();
         }

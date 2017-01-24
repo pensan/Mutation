@@ -20,14 +20,14 @@ public class DialogInGame : MonoBehaviour
 			{
 				GameStateManager.Instance.SaveCurrentNeuralNet();
 			}
-				GUIController.Instance.MainMenu.LevelIndex++;
-				GameStateManager.Instance.EvolutionController.PopulationCount = 10;
-				GameStateManager.Instance.EvolutionController.mutationAmount = 0.5f;
-				GameStateManager.Instance.EvolutionController.mutationProb = 0.15f;
+			GUIController.Instance.MainMenu.LevelIndex++;
+			GameStateManager.Instance.EvolutionController.PopulationCount = 10;
+			GameStateManager.Instance.EvolutionController.mutationAmount = 0.5f;
+			GameStateManager.Instance.EvolutionController.mutationProb = 0.15f;
 
-				GameStateManager.Instance.LoadSingleplayerLevel(GUIController.Instance.MainMenu.LevelIndex);
+			GameStateManager.Instance.LoadSingleplayerLevel(GUIController.Instance.MainMenu.LevelIndex);
 
-				this.gameObject.SetActive(false);
+			this.gameObject.SetActive(false);
 		});
     }
 
